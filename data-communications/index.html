@@ -14,11 +14,11 @@
     --border: #2e2e2e;
     --text: #e8e8e0;
     --muted: #888;
-    --accent1: #7ee8a2; /* green */
-    --accent2: #f9c74f; /* amber */
-    --accent3: #90e0ef; /* cyan */
-    --accent4: #f4a261; /* orange */
-    --accent5: #c77dff; /* purple */
+    --accent1: #7ee8a2;
+    --accent2: #f9c74f;
+    --accent3: #90e0ef;
+    --accent4: #f4a261;
+    --accent5: #c77dff;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'Noto Sans KR', sans-serif;
   }
@@ -69,9 +69,7 @@
     break-inside: avoid;
   }
 
-  .card.wide {
-    grid-column: 1 / -1;
-  }
+  .card.wide { grid-column: 1 / -1; }
 
   .card-title {
     font-family: var(--mono);
@@ -84,17 +82,13 @@
     border-bottom: 0.5px solid var(--border);
   }
 
-  .card-title.green { color: var(--accent1); }
-  .card-title.amber { color: var(--accent2); }
-  .card-title.cyan  { color: var(--accent3); }
-  .card-title.orange{ color: var(--accent4); }
-  .card-title.purple{ color: var(--accent5); }
+  .card-title.green  { color: var(--accent1); }
+  .card-title.amber  { color: var(--accent2); }
+  .card-title.cyan   { color: var(--accent3); }
+  .card-title.orange { color: var(--accent4); }
+  .card-title.purple { color: var(--accent5); }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
 
   th {
     color: var(--muted);
@@ -105,12 +99,7 @@
     font-size: 11px;
   }
 
-  td {
-    padding: 5px 8px;
-    border-bottom: 0.5px solid #1e1e1e;
-    vertical-align: top;
-  }
-
+  td { padding: 5px 8px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; }
   tr:last-child td { border-bottom: none; }
 
   .tag {
@@ -158,25 +147,13 @@
   }
 
   .row:last-child { border-bottom: none; }
-
-  .row .key {
-    color: var(--muted);
-    min-width: 90px;
-    font-size: 11px;
-  }
-
-  .row .val {
-    text-align: right;
-    color: var(--text);
-  }
+  .row .key { color: var(--muted); min-width: 90px; font-size: 11px; }
+  .row .val { text-align: right; color: var(--text); }
 
   .highlight { color: var(--accent1); font-weight: 500; }
   .dim { color: var(--muted); }
 
-  .steps {
-    counter-reset: step;
-    list-style: none;
-  }
+  .steps { counter-reset: step; list-style: none; }
 
   .steps li {
     counter-increment: step;
@@ -207,25 +184,10 @@
     margin-top: 1px;
   }
 
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-  .mini-card {
-    background: var(--surface2);
-    border-radius: 5px;
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .mini-card .mc-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
+  .mini-card { background: var(--surface2); border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .mini-card .mc-title { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 4px; }
 
   footer {
     margin-top: 24px;
@@ -245,7 +207,6 @@
 
 <div class="grid">
 
-  <!-- CH01: 기본 개념 -->
   <div class="card">
     <div class="card-title green">CH01 · 데이터 통신 기본</div>
     <div class="row"><span class="key">구성 5요소</span><span class="val">송신자 · 수신자 · 메시지 · 전송매체 · <span class="highlight">프로토콜</span></span></div>
@@ -256,7 +217,6 @@
     <p class="note">현재 주류 = 패킷 교환. 인터넷 대부분</p>
   </div>
 
-  <!-- 토폴로지 -->
   <div class="card">
     <div class="card-title amber">CH01 · 토폴로지 비교</div>
     <table>
@@ -271,7 +231,6 @@
     <p class="note">가격: 버스 &lt; 링 &lt; 스타 &lt; 그물 · 보안/안정: 그물 > 스타 > 링 > 버스</p>
   </div>
 
-  <!-- OSI / TCP-IP -->
   <div class="card">
     <div class="card-title cyan">CH02 · OSI 7계층 vs TCP/IP</div>
     <table>
@@ -287,7 +246,6 @@
     <p class="note">OSI = 교육용 · TCP/IP = 실제 사용 · 세션·표현 → 응용으로 합침</p>
   </div>
 
-  <!-- MAC vs IP -->
   <div class="card">
     <div class="card-title purple">CH02 · MAC vs IP · Switch vs Router</div>
     <div class="two-col" style="margin-bottom:10px;">
@@ -312,7 +270,6 @@
     </div>
   </div>
 
-  <!-- 신호 기초 -->
   <div class="card">
     <div class="card-title green">CH03 · 신호 기초</div>
     <div class="row"><span class="key">정현파 공식</span><span class="val" style="font-family:var(--mono);color:var(--accent2)">s = A·sin(2πft + φ)</span></div>
@@ -324,7 +281,6 @@
     <p class="note">디지털 신호 = 무한 대역폭 (수직 전환에 무한 고주파 필요)</p>
   </div>
 
-  <!-- 아날로그 vs 디지털 -->
   <div class="card">
     <div class="card-title amber">CH03 · 아날로그 vs 디지털</div>
     <table>
@@ -336,7 +292,6 @@
     </table>
   </div>
 
-  <!-- 전송률 한계 -->
   <div class="card">
     <div class="card-title cyan">CH03 · 전송률 한계 공식</div>
     <div class="formula">나이퀴스트 (잡음 없음)<br>Bit Rate = 2 × BW × log₂L</div>
@@ -346,7 +301,6 @@
     <p class="note">실제 설계: 섀논으로 상한 → 나이퀴스트로 신호 준위 수 계산</p>
   </div>
 
-  <!-- PCM -->
   <div class="card">
     <div class="card-title purple">CH04 · PCM (아날로그→디지털)</div>
     <ul class="steps">
@@ -357,7 +311,6 @@
     <p class="note">예) 음성: 8000 samples/s × 8bit = 64,000 bps</p>
   </div>
 
-  <!-- 회선 부호화 + 전송 방식 -->
   <div class="card">
     <div class="card-title orange">CH04 · 회선 부호화 · 전송 방식</div>
     <table>
@@ -381,7 +334,6 @@
     <p class="note">직렬: 비동기(시작/정지 비트) vs 동기(프레임 단위, 고속)</p>
   </div>
 
-  <!-- 핵심 암기 -->
   <div class="card wide">
     <div class="card-title green">핵심 암기 모음</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
@@ -397,6 +349,13 @@
 </div>
 
 <footer>Data Communications Cheat Sheet · DC_01–DC_05</footer>
+
+<div style="text-align:center;margin-top:20px;">
+  <a href="../notes.html?repo=Data-Communications"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7ee8a2;border:0.5px solid #1a3a25;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;transition:border-color 0.2s,background 0.2s;">
+    자세히 보기 →
+  </a>
+</div>
 
 </body>
 </html>
