@@ -18,5 +18,10 @@
     "id": "machine-learning",
     "href": "./machine-learning/index.html",
     "desc": "-"
+  },
+  {
+    "id": "web-programming",
+    "href": "./web-programming/index.html",
+    "desc": "-"
   }
 ]
