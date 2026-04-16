@@ -1,5 +1,10 @@
 [
   {
+    "id": "compiler-design",
+    "href": "./compiler-design/index.html",
+    "desc": "-"
+  },
+  {
     "id": "data-communications",
     "href": "./data-communications/index.html",
     "desc": "-"
