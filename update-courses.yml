@@ -1,0 +1,51 @@
+name: Update courses.json
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-courses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate courses.json
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+
+          # 루트에서 index.html 과 courses.json 이 있는 폴더 제외
+          exclude = {'.git', '.github', 'node_modules'}
+
+          courses = []
+          for entry in sorted(os.listdir('.')):
+              if entry in exclude:
+                  continue
+              if not os.path.isdir(entry):
+                  continue
+              # 폴더 안에 index.html 이 있을 때만 추가
+              if os.path.exists(os.path.join(entry, 'index.html')):
+                  courses.append({
+                      "id": entry,
+                      "href": f"./{entry}/index.html"
+                  })
+
+          with open('courses.json', 'w', encoding='utf-8') as f:
+              json.dump(courses, f, ensure_ascii=False, indent=2)
+
+          print(f"courses.json 업데이트 완료: {len(courses)}개")
+          for c in courses:
+              print(f"  - {c['id']}")
+          EOF
+
+      - name: Commit courses.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add courses.json
+          git diff --cached --quiet || git commit -m "auto: update courses.json"
+          git push
