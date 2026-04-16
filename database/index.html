@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database 치트시트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: #2e2e2e;
+    --text: #e8e8e0;
+    --muted: #888;
+    --accent1: #7ee8a2;
+    --accent2: #f9c74f;
+    --accent3: #90e0ef;
+    --accent4: #f4a261;
+    --accent5: #c77dff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 24px 20px;
+  }
+
+  header {
+    border-left: 3px solid var(--accent3);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent3);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    break-inside: avoid;
+  }
+
+  .card.wide { grid-column: 1 / -1; }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .card-title.green  { color: var(--accent1); }
+  .card-title.amber  { color: var(--accent2); }
+  .card-title.cyan   { color: var(--accent3); }
+  .card-title.orange { color: var(--accent4); }
+  .card-title.purple { color: var(--accent5); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { color: var(--muted); font-weight: 500; text-align: left; padding: 5px 8px; border-bottom: 0.5px solid var(--border); font-size: 11px; }
+  td { padding: 5px 8px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent3);
+  }
+
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 10px;
+    padding: 1px 6px; border-radius: 3px; font-weight: 600;
+  }
+  .tag.g { background: #1a3a25; color: var(--accent1); }
+  .tag.a { background: #3a2e10; color: var(--accent2); }
+  .tag.c { background: #0e2e38; color: var(--accent3); }
+  .tag.o { background: #3a2010; color: var(--accent4); }
+  .tag.p { background: #2a1a40; color: var(--accent5); }
+
+  .note {
+    font-size: 11px; color: var(--muted);
+    margin-top: 6px; padding-left: 8px;
+    border-left: 2px solid var(--border);
+  }
+
+  .row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 5px 0; border-bottom: 0.5px solid #1e1e1e; font-size: 12px; gap: 8px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .key { color: var(--muted); min-width: 100px; font-size: 11px; }
+  .row .val { text-align: right; color: var(--text); }
+
+  .highlight { color: var(--accent1); font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-card { background: var(--surface2); border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .mini-card .mc-title { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 4px; }
+
+  footer { margin-top: 24px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Database — 치트시트</h1>
+  <p>DB_00–DB_04 · DBMS 개념, 인덱스, SQL, 설계</p>
+</header>
+
+<div class="grid">
+
+  <!-- DBMS 기본 개념 -->
+  <div class="card">
+    <div class="card-title cyan">DB_00 · DBMS 기본 개념</div>
+    <div class="row"><span class="key">DB 4가지 정의</span><span class="val">공유·통합·저장·운영 데이터</span></div>
+    <div class="row"><span class="key">DB 4가지 특징</span><span class="val">실시간·계속변화·동시공유·내용기반</span></div>
+    <div class="row"><span class="key">파일시스템 문제</span><span class="val">데이터 중복성 + 종속성</span></div>
+    <div class="row"><span class="key">SQL 구성</span><span class="val">DDL + DML + DCL</span></div>
+    <p class="note">모델링 순서: ER → Relational → SQL</p>
+  </div>
+
+  <!-- 3단계 구조 -->
+  <div class="card">
+    <div class="card-title amber">DB_00 · 3단계 구조 (ANSI/SPARC)</div>
+    <table>
+      <thead><tr><th>단계</th><th>스키마</th><th>개수</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag c">외부</span></td><td>외부 스키마 · 사용자 관점</td><td>여러 개</td></tr>
+        <tr><td><span class="tag a">개념</span></td><td>개념 스키마 · 조직 전체</td><td>1개</td></tr>
+        <tr><td><span class="tag g">내부</span></td><td>내부 스키마 · 저장 장치</td><td>1개</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="margin-top:10px;">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent3)">논리적 독립성</div>
+        개념 변경 → 외부 영향 없음
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent1)">물리적 독립성</div>
+        내부 변경 → 개념 영향 없음
+      </div>
+    </div>
+  </div>
+
+  <!-- 인덱스 -->
+  <div class="card">
+    <div class="card-title green">DB_01 · 인덱스 (Index)</div>
+    <div class="row"><span class="key">없을 때</span><span class="val">Full Table Scan → O(n)</span></div>
+    <div class="row"><span class="key">있을 때</span><span class="val">포인터로 바로 접근 → O(log n)</span></div>
+    <div class="row"><span class="key">읽기</span><span class="val highlight">빠름 ↑</span></div>
+    <div class="row"><span class="key">쓰기</span><span class="val" style="color:var(--accent4)">느림 ↓ (인덱스도 갱신)</span></div>
+    <div class="row"><span class="key">PK / UNIQUE</span><span class="val">자동 인덱스 생성</span></div>
+    <p class="note">단순 DB: db_set O(1) / db_get O(n) → 인덱스 필요</p>
+  </div>
+
+  <!-- 인덱스 타입 -->
+  <div class="card">
+    <div class="card-title cyan">DB_01 · PostgreSQL 인덱스 타입</div>
+    <table>
+      <thead><tr><th>타입</th><th>용도</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">B-Tree</span></td><td>범위·정렬·등호 — <strong>기본값</strong></td></tr>
+        <tr><td><span class="tag c">Hash</span></td><td>= 동등 비교만 (범위 불가)</td></tr>
+        <tr><td><span class="tag g">GIN</span></td><td>배열, JSONB, Full-text</td></tr>
+        <tr><td><span class="tag o">GiST</span></td><td>공간 데이터, 기하 연산</td></tr>
+        <tr><td><span class="tag p">BRIN</span></td><td>대용량 순차 로그 테이블</td></tr>
+      </tbody>
+    </table>
+    <p class="note">복합 인덱스: Leftmost Prefix Rule — 왼쪽 컬럼부터 순서대로</p>
+  </div>
+
+  <!-- DDL -->
+  <div class="card">
+    <div class="card-title amber">DB_02–03 · DDL / DML 핵심</div>
+    <table>
+      <thead><tr><th>명령어</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>CREATE TABLE</code></td><td>테이블 생성</td></tr>
+        <tr><td><code>DROP TABLE</code></td><td>테이블 삭제</td></tr>
+        <tr><td><code>INSERT INTO</code></td><td>데이터 삽입</td></tr>
+        <tr><td><code>SELECT ... WHERE</code></td><td>조건 조회</td></tr>
+        <tr><td><code>UPDATE ... SET</code></td><td>데이터 수정</td></tr>
+        <tr><td><code>DELETE FROM</code></td><td>데이터 삭제</td></tr>
+        <tr><td><code>ON CONFLICT</code></td><td>충돌 시 UPSERT 처리</td></tr>
+      </tbody>
+    </table>
+    <p class="note">LIKE: % = 0개 이상 임의 문자 / _ = 정확히 1개</p>
+  </div>
+
+  <!-- SELECT 고급 -->
+  <div class="card">
+    <div class="card-title purple">DB_03 · SELECT 고급</div>
+    <div class="row"><span class="key">AS</span><span class="val">컬럼 별칭 (조회 결과에서만)</span></div>
+    <div class="row"><span class="key">ORDER BY</span><span class="val">ASC(기본) / DESC 정렬</span></div>
+    <div class="row"><span class="key">LIMIT / OFFSET</span><span class="val">페이지네이션</span></div>
+    <div class="row"><span class="key">GROUP BY</span><span class="val">집계 기준 컬럼</span></div>
+    <div class="row"><span class="key">HAVING</span><span class="val">GROUP BY 결과 필터 (WHERE 아님)</span></div>
+    <div class="row"><span class="key">집계 함수</span><span class="val">COUNT / SUM / AVG / MAX / MIN</span></div>
+    <p class="note">실행 순서: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</p>
+  </div>
+
+  <!-- 제약 조건 -->
+  <div class="card">
+    <div class="card-title green">DB_04 · 제약 조건</div>
+    <table>
+      <thead><tr><th>제약</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">PK</span></td><td>중복·NULL 불가 · 테이블당 1개 · 자동 인덱스</td></tr>
+        <tr><td><span class="tag c">UNIQUE</span></td><td>중복 불가 · NULL 허용 · 여러 개 가능</td></tr>
+        <tr><td><span class="tag g">FK</span></td><td>참조 무결성 · N쪽에 위치</td></tr>
+        <tr><td><span class="tag o">CHECK</span></td><td>비즈니스 로직 DB 레벨 강제</td></tr>
+        <tr><td><span class="tag p">NOT NULL</span></td><td>NULL 불허</td></tr>
+      </tbody>
+    </table>
+    <p class="note">ON DELETE CASCADE: 부모 삭제 시 자식도 삭제 / RESTRICT: 자식 있으면 삭제 막음</p>
+  </div>
+
+  <!-- 정규화 -->
+  <div class="card">
+    <div class="card-title orange">DB_04 · 정규화 (Normalization)</div>
+    <div class="row"><span class="key">갱신 이상</span><span class="val">일부만 수정 → 불일치</span></div>
+    <div class="row"><span class="key">삭제 이상</span><span class="val">삭제 시 다른 정보도 사라짐</span></div>
+    <div class="row"><span class="key">삽입 이상</span><span class="val">독립적 삽입 불가</span></div>
+    <div style="margin-top:10px;" class="two-col">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent2)">1NF</div>
+        모든 컬럼 값이 원자값<br>(한 셀에 여러 값 ❌)
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent4)">2NF</div>
+        부분 함수 종속 제거<br>(복합 PK일 때)
+      </div>
+    </div>
+    <p class="note">함수 종속: A → B (A가 결정되면 B도 결정)</p>
+  </div>
+
+  <!-- JOIN -->
+  <div class="card">
+    <div class="card-title cyan">DB_04 · JOIN</div>
+    <table>
+      <thead><tr><th>종류</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">INNER JOIN</span></td><td>양쪽 모두 있는 행만</td></tr>
+        <tr><td><span class="tag c">LEFT JOIN</span></td><td>왼쪽 전체 + 오른쪽 없으면 NULL</td></tr>
+        <tr><td><span class="tag o">RIGHT JOIN</span></td><td>오른쪽 전체 + 왼쪽 없으면 NULL</td></tr>
+        <tr><td><span class="tag p">CROSS JOIN</span></td><td>모든 조합 (m × n행, 주의)</td></tr>
+      </tbody>
+    </table>
+    <p class="note">정규화로 분리된 테이블을 다시 연결해서 조회</p>
+  </div>
+
+  <!-- View / ACL -->
+  <div class="card">
+    <div class="card-title purple">DB_04 · View & Access Control</div>
+    <div class="row"><span class="key">View</span><span class="val">가상 테이블 · 실제 데이터 저장 안함</span></div>
+    <div class="row"><span class="key">View 용도</span><span class="val">쿼리 재사용 / 컬럼 숨기기 / 구조 변경 대응</span></div>
+    <div class="row"><span class="key">GRANT</span><span class="val">Role → User 권한 부여</span></div>
+    <div class="row"><span class="key">REVOKE</span><span class="val">권한 취소 (TO → FROM)</span></div>
+    <p class="note">Role 생성 → Role에 권한 → User에 Role 부여 (3단계)</p>
+  </div>
+
+  <!-- 핵심 암기 -->
+  <div class="card wide">
+    <div class="card-title cyan">핵심 암기 모음</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">SQL 분류</div>DDL(구조) + DML(데이터) + DCL(제어)</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">인덱스 트레이드오프</div>읽기↑ 쓰기↓ · 공간 추가 사용</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">복합 인덱스</div>Leftmost Prefix Rule — 왼쪽부터 순서대로</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">3이상 현상</div>갱신·삭제·삽입 이상 → 정규화로 해결</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">SELECT 실행 순서</div>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">FK 위치</div>항상 N(다수) 쪽 테이블에 위치</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Database Cheat Sheet · DB_00–DB_04</footer>
+
+<div style="text-align:center;margin-top:20px;">
+  <a href="../notes.html?repo=DataBase"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#90e0ef;border:0.5px solid #0e2e38;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
+    자세히 보기 →
+  </a>
+</div>
+
+</body>
+</html>
