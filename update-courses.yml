@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install dependencies
         run: pip install requests
@@ -30,7 +30,6 @@ jobs:
 
           exclude = {'.git', '.github', 'node_modules'}
 
-          # 기존 courses.json 읽기 (저장된 설명 유지)
           existing = {}
           if os.path.exists('courses.json'):
               try:
@@ -79,7 +78,6 @@ jobs:
                   continue
 
               prev = existing.get(entry, {})
-              # 기존에 설명이 있으면 유지, 없으면 AI 생성
               if prev.get('desc') and prev['desc'] != '-':
                   desc = prev['desc']
                   print(f'  {entry}: 기존 설명 유지')
@@ -105,5 +103,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add courses.json
-          git diff --cached --quiet || git commit -m "auto: update courses.json with AI descriptions"
+          git diff --cached --quiet || git commit -m "auto: update courses.json"
+          git pull --rebase origin main
           git push
