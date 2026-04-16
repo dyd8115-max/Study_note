@@ -443,6 +443,21 @@ async function showFile(filename) {
     // 3단계: 플레이스홀더 복원
     html = html.replace(/MATHBLOCK(\d+)END/g, (_, i) => mathBlocks[i]);
 
+    // 5단계: .md 링크를 GitHub 파일 URL로 변환
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    tempDiv.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute('href');
+      // ./DC_01.md 또는 DC_01.md 형태의 상대 링크만 변환
+      if (href && href.match(/^\.?\/?[\w\-]+\.md$/)) {
+        const mdFile = href.replace(/^\.\//, '');
+        a.href = `https://github.com/${OWNER}/${repo}/blob/${BRANCH}/${mdFile}`;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
+    });
+    html = tempDiv.innerHTML;
+
     document.getElementById('md-content').innerHTML = html;
     document.title = filename;
 
