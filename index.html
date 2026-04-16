@@ -29,10 +29,7 @@
     padding: 60px 24px;
   }
 
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
-  }
+  .container { max-width: 760px; margin: 0 auto; }
 
   header {
     margin-bottom: 60px;
@@ -88,13 +85,12 @@
     border: 0.5px solid var(--border);
     border-radius: 10px;
     padding: 20px;
-    text-decoration: none;
     color: var(--text);
-    display: block;
-    transition: border-color 0.2s, transform 0.2s, background 0.2s;
-    animation: fadeUp 0.6s ease both;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    animation: fadeUp 0.6s ease both;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    cursor: pointer;
   }
 
   .card:hover {
@@ -103,33 +99,8 @@
     transform: translateY(-2px);
   }
 
-  .card:hover .card-arrow {
-    opacity: 1;
-    transform: translate(2px, -2px);
-  }
-
-  .card-tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 3px;
-    display: inline-block;
-    margin-bottom: 12px;
-  }
-
-  .card-title {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
+  .card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
+  .card:hover .edit-btn { opacity: 1; }
 
   .card-arrow {
     position: absolute;
@@ -140,39 +111,110 @@
     transition: opacity 0.2s, transform 0.2s;
     color: var(--accent);
     font-family: var(--mono);
+    pointer-events: none;
   }
 
-  .card-coming {
-    background: var(--surface);
-    border: 0.5px dashed var(--border);
-    border-radius: 10px;
-    padding: 20px;
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    user-select: none;
+  }
+
+  .card-tag:hover { opacity: 0.8; }
+
+  .card-title-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    animation: fadeUp 0.6s ease both;
+    gap: 6px;
+    margin-bottom: 6px;
   }
 
-  .card-coming-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border);
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    flex: 1;
+  }
+
+  .edit-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
     flex-shrink: 0;
+    line-height: 1;
   }
 
-  .card-coming-text {
-    font-family: var(--mono);
-    font-size: 11px;
+  .edit-btn:hover { color: var(--accent); }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    cursor: text;
+    min-height: 18px;
+  }
+
+  .edit-input {
+    background: var(--surface2);
+    border: 0.5px solid var(--accent);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 2px 6px;
+    width: 100%;
+    outline: none;
+  }
+
+  .edit-input.desc {
+    font-size: 12px;
+    font-weight: 400;
     color: var(--muted);
   }
 
-  /* 색상별 태그 */
-  .tag-cyan  { background: #0e2e38; color: #90e0ef; }
-  .tag-green { background: #1a3a25; color: #7ee8a2; }
-  .tag-amber { background: #3a2e10; color: #f9c74f; }
-  .tag-purple{ background: #2a1a40; color: #c77dff; }
-  .tag-coral { background: #3a1a10; color: #f4a261; }
+  .color-palette {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: #1e1e1e;
+    border: 0.5px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+    width: 148px;
+    z-index: 200;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .color-palette.open { display: flex; }
+
+  .color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+
+  .color-dot:hover { transform: scale(1.2); }
+  .color-dot.active { border-color: white; }
 
   footer {
     margin-top: 80px;
@@ -186,11 +228,6 @@
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  .card:nth-child(1) { animation-delay: 0.05s; }
-  .card:nth-child(2) { animation-delay: 0.10s; }
-  .card:nth-child(3) { animation-delay: 0.15s; }
-  .card-coming       { animation-delay: 0.20s; }
 </style>
 </head>
 <body>
@@ -203,37 +240,197 @@
   </header>
 
   <div class="divider"></div>
-
   <p class="section-label">전공 과목</p>
-
-  <div class="grid">
-
-    <!-- 데이터 통신 -->
-    <a class="card" href="./data-communications/index.html">
-      <span class="card-arrow">↗</span>
-      <span class="card-tag tag-cyan">Data Communications</span>
-      <div class="card-title">데이터 통신</div>
-      <div class="card-desc">OSI 7계층, TCP/IP, 신호 이론, 나이퀴스트/섀논, PCM</div>
-    </a>
-
-    <!-- 기계학습 -->
-    <a class="card" href="./machine-learning/index.html">
-      <span class="card-arrow">↗</span>
-      <span class="card-tag tag-purple">Machine Learning</span>
-      <div class="card-title">기계학습</div>
-      <div class="card-desc">선형대수, 확률, 기초통계, MLE/MAP, 확률분포</div>
-    </a>
-
-    <!-- 추가 예정 슬롯 -->
-    <div class="card-coming">
-      <div class="card-coming-dot"></div>
-      <span class="card-coming-text">추가 예정</span>
-    </div>
-
-  </div>
+  <div class="grid" id="grid"></div>
 
   <footer>Study Notes · dyd8115-max.github.io</footer>
-
 </div>
+
+<script>
+const COLORS = [
+  { bg: '#0e2e38', text: '#90e0ef' }, // cyan
+  { bg: '#1a3a25', text: '#7ee8a2' }, // green
+  { bg: '#3a2e10', text: '#f9c74f' }, // amber
+  { bg: '#2a1a40', text: '#c77dff' }, // purple
+  { bg: '#3a1a10', text: '#f4a261' }, // coral
+  { bg: '#1a2a3a', text: '#74b0ff' }, // blue
+  { bg: '#2a1a2a', text: '#ff8fab' }, // pink
+  { bg: '#1a3a38', text: '#52e0c4' }, // teal
+];
+
+function getSaved(id) {
+  try { return JSON.parse(localStorage.getItem('card_' + id)) || {}; } catch { return {}; }
+}
+
+function save(id, data) {
+  localStorage.setItem('card_' + id, JSON.stringify({ ...getSaved(id), ...data }));
+}
+
+function formatId(id) {
+  return id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+function buildCard(course, index) {
+  const saved = getSaved(course.id);
+  const colorIdx = saved.colorIdx !== undefined ? saved.colorIdx : (index % COLORS.length);
+  const color = COLORS[colorIdx];
+  const title = saved.title || formatId(course.id);
+  const desc = saved.desc || '-';
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.animationDelay = (index * 0.05 + 0.05) + 's';
+
+  card.innerHTML = `
+    <span class="card-arrow">↗</span>
+
+    <div style="position:relative;display:inline-block;">
+      <span class="card-tag"
+            style="background:${color.bg};color:${color.text};"
+            data-id="${course.id}">
+        ${formatId(course.id)}
+      </span>
+      <div class="color-palette" id="palette-${course.id}">
+        ${COLORS.map((c, i) => `
+          <div class="color-dot ${i === colorIdx ? 'active' : ''}"
+               style="background:${c.text};"
+               data-idx="${i}"></div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card-title-row">
+      <div class="card-title" id="title-${course.id}">${title}</div>
+      <button class="edit-btn" title="제목 편집">✎</button>
+    </div>
+
+    <div class="card-desc" id="desc-${course.id}">${desc}</div>
+  `;
+
+  // 카드 클릭 → 링크 이동
+  card.addEventListener('click', (e) => {
+    if (
+      e.target.closest('.edit-btn') ||
+      e.target.closest('.card-tag') ||
+      e.target.closest('.color-palette') ||
+      e.target.closest('.edit-input') ||
+      e.target.closest('.card-desc')
+    ) return;
+    window.location.href = course.href;
+  });
+
+  return card;
+}
+
+function attachEvents(course, card) {
+  const tag = card.querySelector('.card-tag');
+  const palette = card.querySelector('.color-palette');
+  const editBtn = card.querySelector('.edit-btn');
+  const titleEl = card.querySelector('.card-title');
+  const descEl = card.querySelector('.card-desc');
+
+  // 태그 클릭 → 팔레트 토글
+  tag.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = palette.classList.contains('open');
+    document.querySelectorAll('.color-palette.open').forEach(p => p.classList.remove('open'));
+    if (!isOpen) palette.classList.add('open');
+  });
+
+  // 색상 선택
+  palette.querySelectorAll('.color-dot').forEach((dot, i) => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const color = COLORS[i];
+      tag.style.background = color.bg;
+      tag.style.color = color.text;
+      palette.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      save(course.id, { colorIdx: i });
+      palette.classList.remove('open');
+    });
+  });
+
+  // 제목 편집
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const currentTitle = card.querySelector('.card-title') || card.querySelector('.edit-input');
+    if (currentTitle.tagName === 'INPUT') return;
+
+    const input = document.createElement('input');
+    input.className = 'edit-input';
+    input.value = currentTitle.textContent;
+    currentTitle.replaceWith(input);
+    input.focus();
+    input.select();
+
+    function commit() {
+      const val = input.value.trim() || formatId(course.id);
+      const newEl = document.createElement('div');
+      newEl.className = 'card-title';
+      newEl.id = 'title-' + course.id;
+      newEl.textContent = val;
+      input.replaceWith(newEl);
+      save(course.id, { title: val });
+    }
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); commit(); }
+    });
+  });
+
+  // 설명 클릭 → 편집
+  descEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (descEl.querySelector('input')) return;
+
+    const input = document.createElement('input');
+    input.className = 'edit-input desc';
+    input.value = descEl.textContent === '-' ? '' : descEl.textContent;
+    input.placeholder = '설명 입력...';
+    descEl.textContent = '';
+    descEl.appendChild(input);
+    input.focus();
+
+    function commit() {
+      const val = input.value.trim() || '-';
+      descEl.textContent = val;
+      save(course.id, { desc: val });
+    }
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); commit(); }
+    });
+  });
+}
+
+// 팔레트 외부 클릭 시 닫기
+document.addEventListener('click', () => {
+  document.querySelectorAll('.color-palette.open').forEach(p => p.classList.remove('open'));
+});
+
+// 메인 실행
+fetch('./courses.json')
+  .then(r => r.json())
+  .then(courses => {
+    const grid = document.getElementById('grid');
+    courses.forEach((course, i) => {
+      const card = buildCard(course, i);
+      grid.appendChild(card);
+      attachEvents(course, card);
+    });
+
+    // 추가 예정 슬롯
+    const coming = document.createElement('div');
+    coming.style.cssText = 'background:var(--surface);border:0.5px dashed var(--border);border-radius:10px;padding:20px;display:flex;align-items:center;gap:10px;';
+    coming.innerHTML = `
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;"></div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">추가 예정</span>
+    `;
+    grid.appendChild(coming);
+  });
+</script>
 </body>
 </html>
