@@ -429,14 +429,33 @@ async function showFile(filename) {
     const res = await fetch(`${RAW_BASE}/${filename}`);
     const text = await res.text();
 
-    // math 블록 처리 (```math → <pre class="math">)
-    const processed = text.replace(/```math\n([\s\S]*?)```/g, (_, code) => {
-      return `<pre class="math-block"><code>${code.trim()}</code></pre>`;
+    // 1단계: ```math 블록을 플레이스홀더로 보호
+    const mathBlocks = [];
+    let processed = text.replace(/```math\n([\s\S]*?)```/g, (_, code) => {
+      const idx = mathBlocks.length;
+      mathBlocks.push(`\\[${code.trim()}\\]`);
+      return `MATHBLOCK_${idx}_END`;
     });
 
-    document.getElementById('md-content').innerHTML = marked.parse(processed);
+    // 2단계: 인라인 수식 $...$ 보호
+    const inlineMath = [];
+    processed = processed.replace(/\$([^$\n]+?)\$/g, (_, math) => {
+      const idx = inlineMath.length;
+      inlineMath.push(`\\(${math}\\)`);
+      return `INLINEMATH_${idx}_END`;
+    });
+
+    // 3단계: 마크다운 파싱
+    let html = marked.parse(processed);
+
+    // 4단계: 플레이스홀더 복원
+    html = html.replace(/MATHBLOCK_(\d+)_END/g, (_, i) => mathBlocks[i]);
+    html = html.replace(/INLINEMATH_(\d+)_END/g, (_, i) => inlineMath[i]);
+
+    document.getElementById('md-content').innerHTML = html;
     document.title = filename;
-    // 수식 재렌더링
+
+    // 5단계: MathJax 수식 렌더링
     if (window.MathJax) MathJax.typesetPromise([document.getElementById('md-content')]);
   } catch (e) {
     document.getElementById('md-content').innerHTML =
