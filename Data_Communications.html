@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Communications 치트시트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: #2e2e2e;
+    --text: #e8e8e0;
+    --muted: #888;
+    --accent1: #7ee8a2; /* green */
+    --accent2: #f9c74f; /* amber */
+    --accent3: #90e0ef; /* cyan */
+    --accent4: #f4a261; /* orange */
+    --accent5: #c77dff; /* purple */
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 24px 20px;
+  }
+
+  header {
+    border-left: 3px solid var(--accent1);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent1);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    break-inside: avoid;
+  }
+
+  .card.wide {
+    grid-column: 1 / -1;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .card-title.green { color: var(--accent1); }
+  .card-title.amber { color: var(--accent2); }
+  .card-title.cyan  { color: var(--accent3); }
+  .card-title.orange{ color: var(--accent4); }
+  .card-title.purple{ color: var(--accent5); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 5px 8px;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 11px;
+  }
+
+  td {
+    padding: 5px 8px;
+    border-bottom: 0.5px solid #1e1e1e;
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .tag.g { background: #1a3a25; color: var(--accent1); }
+  .tag.a { background: #3a2e10; color: var(--accent2); }
+  .tag.c { background: #0e2e38; color: var(--accent3); }
+  .tag.o { background: #3a2010; color: var(--accent4); }
+  .tag.p { background: #2a1a40; color: var(--accent5); }
+
+  .formula {
+    background: var(--surface2);
+    border-left: 2px solid var(--accent2);
+    padding: 8px 12px;
+    border-radius: 0 4px 4px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent2);
+    margin: 8px 0;
+  }
+
+  .note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    padding-left: 8px;
+    border-left: 2px solid var(--border);
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 5px 0;
+    border-bottom: 0.5px solid #1e1e1e;
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .row:last-child { border-bottom: none; }
+
+  .row .key {
+    color: var(--muted);
+    min-width: 90px;
+    font-size: 11px;
+  }
+
+  .row .val {
+    text-align: right;
+    color: var(--text);
+  }
+
+  .highlight { color: var(--accent1); font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  .steps {
+    counter-reset: step;
+    list-style: none;
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 12px;
+    border-bottom: 0.5px solid #1e1e1e;
+    align-items: flex-start;
+  }
+
+  .steps li:last-child { border-bottom: none; }
+
+  .steps li::before {
+    content: counter(step);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent5);
+    background: #2a1a40;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .mini-card {
+    background: var(--surface2);
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .mini-card .mc-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  footer {
+    margin-top: 24px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Data Communications — 치트시트</h1>
+  <p>CH01–CH04 · DC_01 ~ DC_05</p>
+</header>
+
+<div class="grid">
+
+  <!-- CH01: 기본 개념 -->
+  <div class="card">
+    <div class="card-title green">CH01 · 데이터 통신 기본</div>
+    <div class="row"><span class="key">구성 5요소</span><span class="val">송신자 · 수신자 · 메시지 · 전송매체 · <span class="highlight">프로토콜</span></span></div>
+    <div class="row"><span class="key">단방향</span><span class="val">키보드, 모니터</span></div>
+    <div class="row"><span class="key">반이중</span><span class="val">무전기, CB라디오</span></div>
+    <div class="row"><span class="key">전이중</span><span class="val">전화</span></div>
+    <div class="row"><span class="key">교환방식</span><span class="val">회선교환 = 전세 / 패킷교환 = 합송택배</span></div>
+    <p class="note">현재 주류 = 패킷 교환. 인터넷 대부분</p>
+  </div>
+
+  <!-- 토폴로지 -->
+  <div class="card">
+    <div class="card-title amber">CH01 · 토폴로지 비교</div>
+    <table>
+      <thead><tr><th>종류</th><th>특징</th><th>약점</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag g">그물</span></td><td>n(n-1)/2 링크, 가장 안전</td><td>비용 큼</td></tr>
+        <tr><td><span class="tag c">스타</span></td><td>가장 많이 사용, LAN</td><td>허브 고장 → 전체 마비</td></tr>
+        <tr><td><span class="tag a">버스</span></td><td>설치 쉬움, 최소 케이블</td><td>중추 결함 → 전체 영향</td></tr>
+        <tr><td><span class="tag o">링</span></td><td>각 장치에 중계기</td><td>링 결함 → 전체 마비</td></tr>
+      </tbody>
+    </table>
+    <p class="note">가격: 버스 &lt; 링 &lt; 스타 &lt; 그물 · 보안/안정: 그물 > 스타 > 링 > 버스</p>
+  </div>
+
+  <!-- OSI / TCP-IP -->
+  <div class="card">
+    <div class="card-title cyan">CH02 · OSI 7계층 vs TCP/IP</div>
+    <table>
+      <thead><tr><th>#</th><th>OSI</th><th>TCP/IP</th><th>주소</th></tr></thead>
+      <tbody>
+        <tr><td class="dim">7·6·5</td><td>응용·표현·세션</td><td>응용층</td><td>이름(도메인)</td></tr>
+        <tr><td class="dim">4</td><td>전송층</td><td>전송층</td><td>포트번호</td></tr>
+        <tr><td class="dim">3</td><td>네트워크층</td><td>인터넷층</td><td>IP주소</td></tr>
+        <tr><td class="dim">2</td><td>데이터링크층</td><td>데이터링크층</td><td>MAC주소</td></tr>
+        <tr><td class="dim">1</td><td>물리층</td><td>물리층</td><td>없음</td></tr>
+      </tbody>
+    </table>
+    <p class="note">OSI = 교육용 · TCP/IP = 실제 사용 · 세션·표현 → 응용으로 합침</p>
+  </div>
+
+  <!-- MAC vs IP -->
+  <div class="card">
+    <div class="card-title purple">CH02 · MAC vs IP · Switch vs Router</div>
+    <div class="two-col" style="margin-bottom:10px;">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent5)">MAC</div>
+        2계층 · 물리주소<br>LAN 범위만 유효<br>홉마다 교체<br><span class="dim">= 주민등록번호</span>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent3)">IP</div>
+        3계층 · 논리주소<br>출발~목적지 유지<br>네트워크마다 바뀜<br><span class="dim">= 집 주소</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent2)">Switch</div>
+        MAC으로 LAN 내 전달<br>2계층 장비
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent1)">Router</div>
+        IP로 네트워크 간 연결<br>3계층 장비
+      </div>
+    </div>
+  </div>
+
+  <!-- 신호 기초 -->
+  <div class="card">
+    <div class="card-title green">CH03 · 신호 기초</div>
+    <div class="row"><span class="key">정현파 공식</span><span class="val" style="font-family:var(--mono);color:var(--accent2)">s = A·sin(2πft + φ)</span></div>
+    <div class="row"><span class="key">주파수 f ↑</span><span class="val">파형 촘촘 → 데이터 전송↑</span></div>
+    <div class="row"><span class="key">파장 λ</span><span class="val" style="font-family:var(--mono);color:var(--accent2)">λ = c/f</span></div>
+    <div class="row"><span class="key">대역폭</span><span class="val" style="font-family:var(--mono);color:var(--accent2)">f_max − f_min</span></div>
+    <div class="row"><span class="key">모뎀</span><span class="val">디지털 ↔ 아날로그 신호</span></div>
+    <div class="row"><span class="key">코덱</span><span class="val">아날로그 데이터 ↔ 디지털 신호</span></div>
+    <p class="note">디지털 신호 = 무한 대역폭 (수직 전환에 무한 고주파 필요)</p>
+  </div>
+
+  <!-- 아날로그 vs 디지털 -->
+  <div class="card">
+    <div class="card-title amber">CH03 · 아날로그 vs 디지털</div>
+    <table>
+      <thead><tr><th></th><th>아날로그</th><th>디지털</th></tr></thead>
+      <tbody>
+        <tr><td>장점</td><td>자연 신호 그대로, 변환손실 없음</td><td>잡음에 강함, 암호화 용이, 복사 품질 유지</td></tr>
+        <tr><td>단점</td><td>잡음 취약, 복사 품질 저하, 암호화 어려움</td><td>변환 시 정보 손실, 대역폭 많이 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 전송률 한계 -->
+  <div class="card">
+    <div class="card-title cyan">CH03 · 전송률 한계 공식</div>
+    <div class="formula">나이퀴스트 (잡음 없음)<br>Bit Rate = 2 × BW × log₂L</div>
+    <div class="formula">섀논 (잡음 있음)<br>C = BW × log₂(1 + SNR)</div>
+    <div class="formula">SNR_dB = 10 × log₁₀(SNR)</div>
+    <div class="formula">감쇠 dB = 10 × log₁₀(P₂/P₁)</div>
+    <p class="note">실제 설계: 섀논으로 상한 → 나이퀴스트로 신호 준위 수 계산</p>
+  </div>
+
+  <!-- PCM -->
+  <div class="card">
+    <div class="card-title purple">CH04 · PCM (아날로그→디지털)</div>
+    <ul class="steps">
+      <li><div><strong>표본화 (Sampling)</strong> — 일정 간격으로 진폭 측정<br><span class="dim">나이퀴스트: 표본화율 ≥ 최대주파수 × 2</span></div></li>
+      <li><div><strong>양자화 (Quantizing)</strong> — 측정값을 정수로 근사<br><span class="dim">양자화 잡음 발생</span></div></li>
+      <li><div><strong>부호화 (Encoding)</strong> — n비트 코드로 변환<br><span class="dim">Bit rate = f_s × n_b</span></div></li>
+    </ul>
+    <p class="note">예) 음성: 8000 samples/s × 8bit = 64,000 bps</p>
+  </div>
+
+  <!-- 회선 부호화 + 전송 방식 -->
+  <div class="card">
+    <div class="card-title orange">CH04 · 회선 부호화 · 전송 방식</div>
+    <table>
+      <thead><tr><th>방식</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag c">NRZ</span></td><td>비트 간격 동안 전압 유지</td></tr>
+        <tr><td><span class="tag g">맨체스터</span></td><td>중간 반전 → 동기화+비트 표현</td></tr>
+        <tr><td><span class="tag a">차분 맨체스터</span></td><td>중간 반전=동기화, 시작점 전이 여부=비트</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;" class="two-col">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent3)">병렬 전송</div>
+        n비트 동시 · n배 빠름<br>비용 높음 · 단거리
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent1)">직렬 전송</div>
+        1비트씩 · 저렴<br>장거리 가능
+      </div>
+    </div>
+    <p class="note">직렬: 비동기(시작/정지 비트) vs 동기(프레임 단위, 고속)</p>
+  </div>
+
+  <!-- 핵심 암기 -->
+  <div class="card wide">
+    <div class="card-title green">핵심 암기 모음</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">OSI 7계층</div>물데네전세표응</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">PCM 3단계</div>표양부 (표본화→양자화→부호화)</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">IP vs MAC</div>IP = 집주소 유지 / MAC = 정거장 교체</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">교환방식</div>회선 = 전세트럭 / 패킷 = 합송택배</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">나이퀴스트 vs 섀논</div>잡음 없음 vs 잡음 있음</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">디지털 단점</div>변환 손실 + 대역폭 많이 필요</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Data Communications Cheat Sheet · DC_01–DC_05</footer>
+
+</body>
+</html>
