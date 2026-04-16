@@ -101,6 +101,7 @@
 
   .card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
   .card:hover .edit-btn { opacity: 1; }
+  .card:hover .ai-btn { opacity: 1; }
 
   .card-arrow {
     position: absolute;
@@ -159,12 +160,44 @@
 
   .edit-btn:hover { color: var(--accent); }
 
+  /* 설명 영역 */
+  .card-desc-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 20px;
+  }
+
   .card-desc {
     font-size: 12px;
     color: var(--muted);
     line-height: 1.6;
     cursor: text;
-    min-height: 18px;
+    flex: 1;
+  }
+
+  /* AI 버튼 */
+  .ai-btn {
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .ai-btn:hover { color: #f9c74f; }
+  .ai-btn.loading { color: #f9c74f; opacity: 1; animation: spin 1s linear infinite; }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .edit-input {
@@ -248,14 +281,14 @@
 
 <script>
 const COLORS = [
-  { bg: '#0e2e38', text: '#90e0ef' }, // cyan
-  { bg: '#1a3a25', text: '#7ee8a2' }, // green
-  { bg: '#3a2e10', text: '#f9c74f' }, // amber
-  { bg: '#2a1a40', text: '#c77dff' }, // purple
-  { bg: '#3a1a10', text: '#f4a261' }, // coral
-  { bg: '#1a2a3a', text: '#74b0ff' }, // blue
-  { bg: '#2a1a2a', text: '#ff8fab' }, // pink
-  { bg: '#1a3a38', text: '#52e0c4' }, // teal
+  { bg: '#0e2e38', text: '#90e0ef' },
+  { bg: '#1a3a25', text: '#7ee8a2' },
+  { bg: '#3a2e10', text: '#f9c74f' },
+  { bg: '#2a1a40', text: '#c77dff' },
+  { bg: '#3a1a10', text: '#f4a261' },
+  { bg: '#1a2a3a', text: '#74b0ff' },
+  { bg: '#2a1a2a', text: '#ff8fab' },
+  { bg: '#1a3a38', text: '#52e0c4' },
 ];
 
 function getSaved(id) {
@@ -270,12 +303,29 @@ function formatId(id) {
   return id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
+async function generateDesc(id) {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 100,
+      messages: [{
+        role: 'user',
+        content: `학부 전공 과목 "${formatId(id)}" 의 핵심 주제를 한국어로 한 줄(30자 이내)로 요약해줘. 키워드 나열 형식으로, 예시처럼: "OSI 7계층, TCP/IP, 신호 이론, PCM". 설명 없이 키워드만.`
+      }]
+    })
+  });
+  const data = await response.json();
+  return data.content[0].text.trim();
+}
+
 function buildCard(course, index) {
   const saved = getSaved(course.id);
   const colorIdx = saved.colorIdx !== undefined ? saved.colorIdx : (index % COLORS.length);
   const color = COLORS[colorIdx];
   const title = saved.title || formatId(course.id);
-  const desc = saved.desc || '-';
+  const desc = saved.desc || course.desc || '-';
 
   const card = document.createElement('div');
   card.className = 'card';
@@ -304,13 +354,17 @@ function buildCard(course, index) {
       <button class="edit-btn" title="제목 편집">✎</button>
     </div>
 
-    <div class="card-desc" id="desc-${course.id}">${desc}</div>
+    <div class="card-desc-row">
+      <div class="card-desc" id="desc-${course.id}">${desc}</div>
+      <button class="ai-btn" title="AI 설명 자동 생성">✦</button>
+    </div>
   `;
 
   // 카드 클릭 → 링크 이동
   card.addEventListener('click', (e) => {
     if (
       e.target.closest('.edit-btn') ||
+      e.target.closest('.ai-btn') ||
       e.target.closest('.card-tag') ||
       e.target.closest('.color-palette') ||
       e.target.closest('.edit-input') ||
@@ -326,7 +380,7 @@ function attachEvents(course, card) {
   const tag = card.querySelector('.card-tag');
   const palette = card.querySelector('.color-palette');
   const editBtn = card.querySelector('.edit-btn');
-  const titleEl = card.querySelector('.card-title');
+  const aiBtn = card.querySelector('.ai-btn');
   const descEl = card.querySelector('.card-desc');
 
   // 태그 클릭 → 팔레트 토글
@@ -354,13 +408,13 @@ function attachEvents(course, card) {
   // 제목 편집
   editBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const currentTitle = card.querySelector('.card-title') || card.querySelector('.edit-input');
-    if (currentTitle.tagName === 'INPUT') return;
+    const titleEl = card.querySelector('.card-title');
+    if (!titleEl) return;
 
     const input = document.createElement('input');
     input.className = 'edit-input';
-    input.value = currentTitle.textContent;
-    currentTitle.replaceWith(input);
+    input.value = titleEl.textContent;
+    titleEl.replaceWith(input);
     input.focus();
     input.select();
 
@@ -380,7 +434,7 @@ function attachEvents(course, card) {
     });
   });
 
-  // 설명 클릭 → 편집
+  // 설명 클릭 → 직접 편집
   descEl.addEventListener('click', (e) => {
     e.stopPropagation();
     if (descEl.querySelector('input')) return;
@@ -404,6 +458,31 @@ function attachEvents(course, card) {
       if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); commit(); }
     });
   });
+
+  // AI 버튼 → 자동 생성
+  aiBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (aiBtn.classList.contains('loading')) return;
+
+    aiBtn.classList.add('loading');
+    aiBtn.textContent = '↻';
+    descEl.style.color = '#444';
+    descEl.textContent = '생성 중...';
+
+    try {
+      const result = await generateDesc(course.id);
+      descEl.textContent = result;
+      descEl.style.color = '';
+      save(course.id, { desc: result });
+    } catch (err) {
+      descEl.textContent = '-';
+      descEl.style.color = '';
+      console.error(err);
+    }
+
+    aiBtn.classList.remove('loading');
+    aiBtn.textContent = '✦';
+  });
 }
 
 // 팔레트 외부 클릭 시 닫기
@@ -422,7 +501,6 @@ fetch('./courses.json')
       attachEvents(course, card);
     });
 
-    // 추가 예정 슬롯
     const coming = document.createElement('div');
     coming.style.cssText = 'background:var(--surface);border:0.5px dashed var(--border);border-radius:10px;padding:20px;display:flex;align-items:center;gap:10px;';
     coming.innerHTML = `
