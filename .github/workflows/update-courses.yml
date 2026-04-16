@@ -1,0 +1,105 @@
+name: Update courses.json
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-courses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate courses.json with AI descriptions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 << 'EOF'
+          import os
+          import json
+          import requests
+
+          exclude = {'.git', '.github', 'node_modules'}
+
+          # 기존 courses.json 읽기 (저장된 설명 유지)
+          existing = {}
+          if os.path.exists('courses.json'):
+              try:
+                  for c in json.load(open('courses.json')):
+                      existing[c['id']] = c
+              except:
+                  pass
+
+          def format_id(id):
+              return ' '.join(w.capitalize() for w in id.split('-'))
+
+          def get_ai_desc(id):
+              api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+              if not api_key:
+                  return '-'
+              try:
+                  res = requests.post(
+                      'https://api.anthropic.com/v1/messages',
+                      headers={
+                          'x-api-key': api_key,
+                          'anthropic-version': '2023-06-01',
+                          'content-type': 'application/json'
+                      },
+                      json={
+                          'model': 'claude-haiku-4-5-20251001',
+                          'max_tokens': 100,
+                          'messages': [{
+                              'role': 'user',
+                              'content': f'학부 전공 과목 "{format_id(id)}" 의 핵심 주제를 한국어로 한 줄(30자 이내)로 요약해줘. 키워드 나열 형식으로, 예시처럼: "OSI 7계층, TCP/IP, 신호 이론, PCM". 설명 없이 키워드만.'
+                          }]
+                      },
+                      timeout=15
+                  )
+                  return res.json()['content'][0]['text'].strip()
+              except Exception as e:
+                  print(f'AI 오류 ({id}): {e}')
+                  return '-'
+
+          courses = []
+          for entry in sorted(os.listdir('.')):
+              if entry in exclude:
+                  continue
+              if not os.path.isdir(entry):
+                  continue
+              if not os.path.exists(os.path.join(entry, 'index.html')):
+                  continue
+
+              prev = existing.get(entry, {})
+              # 기존에 설명이 있으면 유지, 없으면 AI 생성
+              if prev.get('desc') and prev['desc'] != '-':
+                  desc = prev['desc']
+                  print(f'  {entry}: 기존 설명 유지')
+              else:
+                  print(f'  {entry}: AI 설명 생성 중...')
+                  desc = get_ai_desc(entry)
+                  print(f'  → {desc}')
+
+              courses.append({
+                  'id': entry,
+                  'href': f'./{entry}/index.html',
+                  'desc': desc
+              })
+
+          with open('courses.json', 'w', encoding='utf-8') as f:
+              json.dump(courses, f, ensure_ascii=False, indent=2)
+
+          print(f'\ncourses.json 업데이트 완료: {len(courses)}개')
+          EOF
+
+      - name: Commit courses.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add courses.json
+          git diff --cached --quiet || git commit -m "auto: update courses.json with AI descriptions"
+          git push
