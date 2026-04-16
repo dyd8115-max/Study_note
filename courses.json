@@ -1,10 +1,12 @@
 [
   {
     "id": "data-communications",
-    "href": "./data-communications/index.html"
+    "href": "./data-communications/index.html",
+    "desc": "-"
   },
   {
     "id": "machine-learning",
-    "href": "./machine-learning/index.html"
+    "href": "./machine-learning/index.html",
+    "desc": "-"
   }
 ]
