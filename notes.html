@@ -319,18 +319,10 @@
 <!-- marked.js 마크다운 파서 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 
-<!-- MathJax 수식 렌더링 -->
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$']],
-    displayMath: [['$$', '$$']],
-    processEscapes: true
-  },
-  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!-- KaTeX 수식 렌더링 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
 <script>
 // URL에서 파라미터 읽기
@@ -429,34 +421,39 @@ async function showFile(filename) {
     const res = await fetch(`${RAW_BASE}/${filename}`);
     const text = await res.text();
 
-    // 1단계: ```math 블록을 플레이스홀더로 보호
-    const mathBlocks = [];
+    // 1단계: ```math 블록을 $$ $$ 로 변환
     let processed = text.replace(/```math\n([\s\S]*?)```/g, (_, code) => {
-      const idx = mathBlocks.length;
-      mathBlocks.push(`\\[${code.trim()}\\]`);
-      return `MATHBLOCK_${idx}_END`;
+      return `\n$$\n${code.trim()}\n$$\n`;
     });
 
-    // 2단계: 인라인 수식 $...$ 보호
-    const inlineMath = [];
-    processed = processed.replace(/\$([^$\n]+?)\$/g, (_, math) => {
-      const idx = inlineMath.length;
-      inlineMath.push(`\\(${math}\\)`);
-      return `INLINEMATH_${idx}_END`;
+    // 2단계: 마크다운 파싱 ($ 기호 이스케이프 방지)
+    // marked가 _ 를 em으로 바꾸지 않도록 수식 보호
+    const mathBlocks = [];
+    processed = processed.replace(/\$\$([\s\S]*?)\$\$/g, (m) => {
+      mathBlocks.push(m);
+      return `MATHBLOCK${mathBlocks.length - 1}END`;
+    });
+    processed = processed.replace(/\$([^$\n]+?)\$/g, (m) => {
+      mathBlocks.push(m);
+      return `MATHBLOCK${mathBlocks.length - 1}END`;
     });
 
-    // 3단계: 마크다운 파싱
     let html = marked.parse(processed);
 
-    // 4단계: 플레이스홀더 복원
-    html = html.replace(/MATHBLOCK_(\d+)_END/g, (_, i) => mathBlocks[i]);
-    html = html.replace(/INLINEMATH_(\d+)_END/g, (_, i) => inlineMath[i]);
+    // 3단계: 플레이스홀더 복원
+    html = html.replace(/MATHBLOCK(\d+)END/g, (_, i) => mathBlocks[i]);
 
     document.getElementById('md-content').innerHTML = html;
     document.title = filename;
 
-    // 5단계: MathJax 수식 렌더링
-    if (window.MathJax) MathJax.typesetPromise([document.getElementById('md-content')]);
+    // 4단계: KaTeX 렌더링
+    renderMathInElement(document.getElementById('md-content'), {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false }
+      ],
+      throwOnError: false
+    });
   } catch (e) {
     document.getElementById('md-content').innerHTML =
       `<div class="loading">파일을 불러올 수 없습니다.<br><small>${e.message}</small></div>`;
