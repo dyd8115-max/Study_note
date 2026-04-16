@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: #2e2e2e;
+    --text: #e8e8e0;
+    --muted: #888;
+    --accent: #c77dff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* 상단 네비 */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .nav a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav a:hover { opacity: 0.7; }
+  .nav-sep { color: var(--border); }
+
+  /* 헤더 */
+  .page-header {
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  .page-header h1 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .page-header p {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  /* 파일 목록 */
+  #file-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .file-item {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .file-item:hover {
+    border-color: var(--accent);
+    background: #1f1f1f;
+    transform: translateX(4px);
+  }
+
+  .file-icon {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #2a1a40;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .file-name {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .file-arrow {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    transition: color 0.2s;
+  }
+
+  .file-item:hover .file-arrow { color: var(--accent); }
+
+  /* 마크다운 렌더링 영역 */
+  #md-view { display: none; }
+
+  .md-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    cursor: pointer;
+    margin-bottom: 24px;
+    padding: 6px 10px;
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+
+  .md-back:hover { border-color: var(--accent); background: var(--surface); }
+
+  .md-content {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 32px;
+    line-height: 1.8;
+  }
+
+  /* 마크다운 스타일 */
+  .md-content h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--text);
+  }
+
+  .md-content h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 28px 0 12px;
+    color: var(--accent);
+  }
+
+  .md-content h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 20px 0 8px;
+    color: #f9c74f;
+  }
+
+  .md-content h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 16px 0 6px;
+    color: #90e0ef;
+  }
+
+  .md-content p {
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .md-content ul, .md-content ol {
+    margin: 8px 0 12px 20px;
+    font-size: 14px;
+  }
+
+  .md-content li { margin-bottom: 4px; }
+
+  .md-content code {
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #90e0ef;
+  }
+
+  .md-content pre {
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .md-content pre code {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    color: #f9c74f;
+  }
+
+  .md-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 8px 14px;
+    margin: 12px 0;
+    color: var(--muted);
+    font-size: 13px;
+    background: var(--surface2);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .md-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+
+  .md-content th {
+    background: var(--surface2);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .md-content td {
+    padding: 8px 12px;
+    border-bottom: 0.5px solid #1e1e1e;
+    font-size: 13px;
+  }
+
+  .md-content tr:last-child td { border-bottom: none; }
+
+  .md-content strong { color: var(--text); font-weight: 700; }
+  .md-content em { color: #f4a261; font-style: italic; }
+
+  .md-content hr {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .md-content a { color: var(--accent); text-decoration: none; }
+  .md-content a:hover { text-decoration: underline; }
+
+  /* 로딩 */
+  .loading {
+    text-align: center;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 40px;
+  }
+
+  footer {
+    margin-top: 60px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="../index.html">Study Notes</a>
+    <span class="nav-sep">/</span>
+    <span id="repo-name">Notes</span>
+    <span class="nav-sep" id="nav-sep2" style="display:none;">/</span>
+    <span id="nav-file" style="display:none;"></span>
+  </nav>
+
+  <!-- 파일 목록 -->
+  <div id="list-view">
+    <div class="page-header">
+      <h1 id="list-title">Notes</h1>
+      <p id="list-subtitle"></p>
+    </div>
+    <div id="file-list"><div class="loading">파일 목록 불러오는 중...</div></div>
+  </div>
+
+  <!-- 마크다운 뷰 -->
+  <div id="md-view">
+    <a class="md-back" id="back-btn" href="#">← 목록으로</a>
+    <div class="md-content" id="md-content"></div>
+  </div>
+
+  <footer id="footer">Notes · dyd8115-max.github.io</footer>
+
+</div>
+
+<!-- marked.js 마크다운 파서 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+
+<script>
+// URL에서 파라미터 읽기
+const params = new URLSearchParams(location.search);
+const repo = params.get('repo') || inferRepo();
+const fileParam = params.get('file');
+
+// 폴더명으로 레포 이름 추론
+function inferRepo() {
+  const path = location.pathname;
+  const parts = path.split('/').filter(Boolean);
+  // /Study_note/machine-learning/notes.html → machine-learning
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] === 'notes.html' || parts[i+1] === 'notes.html') {
+      const folder = parts[i] === 'notes.html' ? parts[i-1] : parts[i];
+      return toRepoName(folder);
+    }
+  }
+  return parts[parts.length - 2] || 'machine-learning';
+}
+
+function toRepoName(folder) {
+  // machine-learning → Machine-Learning 같은 형식 시도
+  // 실제 레포명과 다를 수 있으니 파라미터로도 받을 수 있게
+  return folder.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('-');
+}
+
+const OWNER = 'dyd8115-max';
+const BRANCH = 'main';
+const API_BASE = `https://api.github.com/repos/${OWNER}/${repo}/contents`;
+const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${repo}/${BRANCH}`;
+
+// 레포 이름 표시
+document.getElementById('repo-name').textContent = repo;
+document.getElementById('list-title').textContent = repo;
+document.getElementById('list-subtitle').textContent = `${OWNER}/${repo}`;
+
+if (fileParam) {
+  showFile(fileParam);
+} else {
+  loadFileList();
+}
+
+async function loadFileList() {
+  try {
+    const res = await fetch(API_BASE);
+    const files = await res.json();
+    const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a, b) => a.name.localeCompare(b.name));
+
+    const list = document.getElementById('file-list');
+    if (mdFiles.length === 0) {
+      list.innerHTML = '<div class="loading">마크다운 파일이 없습니다.</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    mdFiles.forEach((file, i) => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      item.style.animationDelay = (i * 0.05) + 's';
+      item.innerHTML = `
+        <span class="file-icon">MD</span>
+        <span class="file-name">${file.name}</span>
+        <span class="file-arrow">→</span>
+      `;
+      item.addEventListener('click', () => {
+        history.pushState({}, '', `?repo=${repo}&file=${file.name}`);
+        showFile(file.name);
+      });
+      list.appendChild(item);
+    });
+  } catch (e) {
+    document.getElementById('file-list').innerHTML =
+      `<div class="loading">파일 목록을 불러올 수 없습니다.<br><small>${e.message}</small></div>`;
+  }
+}
+
+async function showFile(filename) {
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('md-view').style.display = 'block';
+  document.getElementById('nav-sep2').style.display = '';
+  document.getElementById('nav-file').style.display = '';
+  document.getElementById('nav-file').textContent = filename;
+  document.getElementById('md-content').innerHTML = '<div class="loading">불러오는 중...</div>';
+
+  document.getElementById('back-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    history.pushState({}, '', `?repo=${repo}`);
+    document.getElementById('list-view').style.display = 'block';
+    document.getElementById('md-view').style.display = 'none';
+    document.getElementById('nav-sep2').style.display = 'none';
+    document.getElementById('nav-file').style.display = 'none';
+  });
+
+  try {
+    const res = await fetch(`${RAW_BASE}/${filename}`);
+    const text = await res.text();
+
+    // math 블록 처리 (```math → <pre class="math">)
+    const processed = text.replace(/```math\n([\s\S]*?)```/g, (_, code) => {
+      return `<pre class="math-block"><code>${code.trim()}</code></pre>`;
+    });
+
+    document.getElementById('md-content').innerHTML = marked.parse(processed);
+    document.title = filename;
+  } catch (e) {
+    document.getElementById('md-content').innerHTML =
+      `<div class="loading">파일을 불러올 수 없습니다.<br><small>${e.message}</small></div>`;
+  }
+}
+
+// 브라우저 뒤로가기
+window.addEventListener('popstate', () => {
+  const p = new URLSearchParams(location.search);
+  if (p.get('file')) {
+    showFile(p.get('file'));
+  } else {
+    document.getElementById('list-view').style.display = 'block';
+    document.getElementById('md-view').style.display = 'none';
+    document.getElementById('nav-sep2').style.display = 'none';
+    document.getElementById('nav-file').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
