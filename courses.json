@@ -10,6 +10,11 @@
     "desc": "-"
   },
   {
+    "id": "database",
+    "href": "./database/index.html",
+    "desc": "-"
+  },
+  {
     "id": "machine-learning",
     "href": "./machine-learning/index.html",
     "desc": "-"
