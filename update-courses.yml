@@ -103,6 +103,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add courses.json
-          git diff --cached --quiet || git commit -m "auto: update courses.json"
-          git pull --rebase origin main
-          git push
+          if git diff --cached --quiet; then
+            echo "변경사항 없음, 스킵"
+          else
+            git commit -m "auto: update courses.json"
+            git push origin HEAD:main --force-with-lease
+          fi
