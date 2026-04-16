@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Programming 치트시트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: #2e2e2e;
+    --text: #e8e8e0;
+    --muted: #888;
+    --accent1: #7ee8a2;
+    --accent2: #f9c74f;
+    --accent3: #90e0ef;
+    --accent4: #f4a261;
+    --accent5: #c77dff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 24px 20px;
+  }
+
+  header {
+    border-left: 3px solid var(--accent4);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent4);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    break-inside: avoid;
+  }
+
+  .card.wide { grid-column: 1 / -1; }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .card-title.green  { color: var(--accent1); }
+  .card-title.amber  { color: var(--accent2); }
+  .card-title.cyan   { color: var(--accent3); }
+  .card-title.orange { color: var(--accent4); }
+  .card-title.purple { color: var(--accent5); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { color: var(--muted); font-weight: 500; text-align: left; padding: 5px 8px; border-bottom: 0.5px solid var(--border); font-size: 11px; }
+  td { padding: 5px 8px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  code { font-family: var(--mono); font-size: 11px; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--accent3); }
+
+  .tag { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+  .tag.g { background: #1a3a25; color: var(--accent1); }
+  .tag.a { background: #3a2e10; color: var(--accent2); }
+  .tag.c { background: #0e2e38; color: var(--accent3); }
+  .tag.o { background: #3a2010; color: var(--accent4); }
+  .tag.p { background: #2a1a40; color: var(--accent5); }
+
+  .note { font-size: 11px; color: var(--muted); margin-top: 6px; padding-left: 8px; border-left: 2px solid var(--border); }
+
+  .row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 0.5px solid #1e1e1e; font-size: 12px; gap: 8px; }
+  .row:last-child { border-bottom: none; }
+  .row .key { color: var(--muted); min-width: 110px; font-size: 11px; }
+  .row .val { text-align: right; color: var(--text); }
+
+  .highlight { color: var(--accent1); font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-card { background: var(--surface2); border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .mini-card .mc-title { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 4px; }
+
+  footer { margin-top: 24px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Web Programming — 치트시트</h1>
+  <p>Web_01–04 · 렌더링, HTTP, 소켓, JS 런타임</p>
+</header>
+
+<div class="grid">
+
+  <!-- 렌더링 방식 -->
+  <div class="card">
+    <div class="card-title orange">Web_01 · 렌더링 방식</div>
+    <table>
+      <thead><tr><th>방식</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">SSR</span></td><td>서버에서 완성된 HTML 전달 · SEO 유리</td></tr>
+        <tr><td><span class="tag c">CSR</span></td><td>빈 HTML + JS → 클라이언트에서 렌더링 · SEO 불리</td></tr>
+        <tr><td><span class="tag g">하이브리드</span></td><td>Next.js, Nuxt.js — SSR+CSR 조합</td></tr>
+        <tr><td><span class="tag p">SPA</span></td><td>컴포넌트 바꿔치기 · 새로고침 없음 · AJAX</td></tr>
+        <tr><td><span class="tag o">MPA</span></td><td>페이지마다 HTML · 이동 시 새로고침</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Render Tree = DOM + CSSOM 합쳐서 실제 화면에 그릴 요소만</p>
+  </div>
+
+  <!-- HTTP -->
+  <div class="card">
+    <div class="card-title cyan">Web_02 · HTTP 메서드 & 상태코드</div>
+    <div class="two-col">
+      <div>
+        <table>
+          <thead><tr><th>메서드</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag g">GET</span></td><td>조회</td></tr>
+            <tr><td><span class="tag a">POST</span></td><td>생성</td></tr>
+            <tr><td><span class="tag c">PUT</span></td><td>전체 수정</td></tr>
+            <tr><td><span class="tag o">PATCH</span></td><td>일부 수정</td></tr>
+            <tr><td><span class="tag p">DELETE</span></td><td>삭제</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>코드</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag g">200</span></td><td>성공</td></tr>
+            <tr><td><span class="tag g">201</span></td><td>생성 성공</td></tr>
+            <tr><td><span class="tag a">400</span></td><td>잘못된 요청</td></tr>
+            <tr><td><span class="tag a">401</span></td><td>인증 필요</td></tr>
+            <tr><td><span class="tag o">404</span></td><td>없음</td></tr>
+            <tr><td><span class="tag p">500</span></td><td>서버 에러</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">TCP: 안전·순서 보장 / UDP: 빠름·비보장 (게임·실시간)</p>
+  </div>
+
+  <!-- 소켓 & 웹서버 -->
+  <div class="card">
+    <div class="card-title green">Web_02 · 소켓 & 웹서버 흐름</div>
+    <div class="row"><span class="key">소켓 1</span><span class="val">리스닝 전용 · 새 클라이언트 대기</span></div>
+    <div class="row"><span class="key">소켓 2</span><span class="val">클라이언트 소켓 (브라우저 자동 생성)</span></div>
+    <div class="row"><span class="key">소켓 3</span><span class="val">클라이언트 전용 서버 소켓 · 통신 담당</span></div>
+    <div class="row"><span class="key">5-튜플</span><span class="val">출발지IP·포트 + 목적지IP·포트 + 프로토콜</span></div>
+    <div class="row"><span class="key">바인딩</span><span class="val">소켓에 IP+포트+프로토콜 등록</span></div>
+    <p class="note">Non-Persistent: 요청마다 연결 / Persistent: keep-alive로 재사용</p>
+  </div>
+
+  <!-- C10K -->
+  <div class="card">
+    <div class="card-title amber">Web_02 · C10K Problem</div>
+    <div class="row"><span class="key">문제</span><span class="val">동시 10K 연결 처리</span></div>
+    <div class="row"><span class="key">과거 방식</span><span class="val">클라이언트당 스레드 1개 → 메모리 부족</span></div>
+    <div class="row"><span class="key">NGINX</span><span class="val">이벤트 드리븐 + 비동기 논블로킹</span></div>
+    <div class="row"><span class="key">Node.js</span><span class="val">싱글 스레드 + 이벤트 루프</span></div>
+    <p class="note">worker = CPU 코어 수만큼 · 각 worker가 수천 개 연결 처리</p>
+  </div>
+
+  <!-- JS 자료형 -->
+  <div class="card">
+    <div class="card-title purple">Web_03 · JS 자료형 & 변수</div>
+    <div class="two-col">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent5)">원시 타입 (이뮤터블)</div>
+        string · number · boolean<br>null · undefined · bigint · symbol
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent4)">참조 타입 (뮤터블)</div>
+        object · array · function<br>내부 값 직접 수정 가능
+      </div>
+    </div>
+    <table style="margin-top:10px;">
+      <thead><tr><th>키워드</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><code>const</code></td><td>재할당 불가 · 객체 내부는 수정 가능</td></tr>
+        <tr><td><code>let</code></td><td>재할당 가능 · 블록 스코프</td></tr>
+        <tr><td><code>var</code></td><td>함수 스코프 · 호이스팅 · 비권장</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 프로토타입 -->
+  <div class="card">
+    <div class="card-title cyan">Web_03 · 프로토타입 & 객체 생성</div>
+    <div class="row"><span class="key">프로토타입 체인</span><span class="val">없으면 위로 올라가며 탐색</span></div>
+    <div class="row"><span class="key">Object.prototype</span><span class="val">모든 객체의 최상위 (null에서 끝)</span></div>
+    <div class="row"><span class="key">객체 리터럴</span><span class="val"><code>{ }</code> — 실무에서 가장 많이 사용</span></div>
+    <div class="row"><span class="key">class (ES6+)</span><span class="val">현재 표준 · new 없이 호출 시 에러</span></div>
+    <div class="row"><span class="key">생성자 함수</span><span class="val">레거시 코드 · new 없이 호출 시 버그</span></div>
+    <p class="note">프로퍼티 디스크립터: writable · enumerable · configurable</p>
+  </div>
+
+  <!-- JS 런타임 -->
+  <div class="card">
+    <div class="card-title orange">Web_04 · JS 런타임 & V8 엔진</div>
+    <div class="row"><span class="key">V8</span><span class="val">크롬·Node.js 사용 JS 엔진</span></div>
+    <div class="row"><span class="key">JIT 컴파일</span><span class="val">자주 쓰는 코드만 머신코드로 변환</span></div>
+    <div class="row"><span class="key">Ignition</span><span class="val">인터프리터 · 바이트코드로 즉시 실행</span></div>
+    <div class="row"><span class="key">TurboFan</span><span class="val">JIT 컴파일러 · 핫코드만 머신코드</span></div>
+    <div class="row"><span class="key">콜스택</span><span class="val">함수 실행 순서 관리 (LIFO)</span></div>
+    <div class="row"><span class="key">메모리 힙</span><span class="val">객체·배열 등 참조 타입 저장</span></div>
+    <p class="note">변환 흐름: JS → AST → 바이트코드 → (핫코드만) 머신코드</p>
+  </div>
+
+  <!-- 비동기 -->
+  <div class="card">
+    <div class="card-title green">Web_04 · 비동기 & 이벤트 루프</div>
+    <div class="row"><span class="key">싱글스레드</span><span class="val">한 번에 하나 · Web API에 위임</span></div>
+    <div class="row"><span class="key">Web API</span><span class="val">setTimeout · fetch · DOM 이벤트</span></div>
+    <div class="row"><span class="key">마이크로태스크 큐</span><span class="val">Promise · async/await — 우선순위 높음</span></div>
+    <div class="row"><span class="key">태스크 큐</span><span class="val">setTimeout · DOM 이벤트 — 우선순위 낮음</span></div>
+    <div class="row"><span class="key">이벤트 루프</span><span class="val">콜스택 빌 때 큐에서 꺼내 올려줌</span></div>
+    <div class="row"><span class="key">웹 워커</span><span class="val">별도 스레드 · DOM 접근 불가</span></div>
+    <p class="note">순서: 마이크로태스크 큐 먼저 → 태스크 큐</p>
+  </div>
+
+  <!-- 핵심 암기 -->
+  <div class="card wide">
+    <div class="card-title orange">핵심 암기 모음</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">CSR vs SSR</div>CSR = 빈 HTML + JS 렌더링 / SSR = 완성 HTML 전달</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">TCP vs UDP</div>TCP = 안전·순서 / UDP = 빠름·비보장</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">소켓 1 vs 3</div>소켓 1 = 대기 전용 / 소켓 3 = 클라이언트 전용 통신</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">큐 우선순위</div>마이크로태스크(Promise) > 태스크(setTimeout)</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">const vs let</div>const = 재할당 불가 (내부 수정 가능) / let = 재할당 가능</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">typeof null</div>"object" — JS 설계 버그, null은 원시 타입</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Web Programming Cheat Sheet · Web_01–04</footer>
+
+<div style="text-align:center;margin-top:20px;">
+  <a href="../notes.html?repo=Web-programming"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#f4a261;border:0.5px solid #3a2010;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
+    자세히 보기 →
+  </a>
+</div>
+
+</body>
+</html>
