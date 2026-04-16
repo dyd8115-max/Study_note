@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compiler Design 치트시트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: #2e2e2e;
+    --text: #e8e8e0;
+    --muted: #888;
+    --accent1: #7ee8a2;
+    --accent2: #f9c74f;
+    --accent3: #90e0ef;
+    --accent4: #f4a261;
+    --accent5: #c77dff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 24px 20px;
+  }
+
+  header {
+    border-left: 3px solid var(--accent2);
+    padding-left: 14px;
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent2);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    break-inside: avoid;
+  }
+
+  .card.wide { grid-column: 1 / -1; }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .card-title.green  { color: var(--accent1); }
+  .card-title.amber  { color: var(--accent2); }
+  .card-title.cyan   { color: var(--accent3); }
+  .card-title.orange { color: var(--accent4); }
+  .card-title.purple { color: var(--accent5); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    color: var(--muted); font-weight: 500; text-align: left;
+    padding: 5px 8px; border-bottom: 0.5px solid var(--border); font-size: 11px;
+  }
+  td { padding: 5px 8px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 10px;
+    padding: 1px 6px; border-radius: 3px; font-weight: 600;
+  }
+  .tag.g { background: #1a3a25; color: var(--accent1); }
+  .tag.a { background: #3a2e10; color: var(--accent2); }
+  .tag.c { background: #0e2e38; color: var(--accent3); }
+  .tag.o { background: #3a2010; color: var(--accent4); }
+  .tag.p { background: #2a1a40; color: var(--accent5); }
+
+  .formula {
+    background: var(--surface2);
+    border-left: 2px solid var(--accent2);
+    padding: 8px 12px;
+    border-radius: 0 4px 4px 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    margin: 8px 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .note {
+    font-size: 11px; color: var(--muted);
+    margin-top: 6px; padding-left: 8px;
+    border-left: 2px solid var(--border);
+  }
+
+  .row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 5px 0; border-bottom: 0.5px solid #1e1e1e; font-size: 12px; gap: 8px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .key { color: var(--muted); min-width: 100px; font-size: 11px; }
+  .row .val { text-align: right; color: var(--text); }
+
+  .highlight { color: var(--accent1); font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  .steps { counter-reset: step; list-style: none; }
+  .steps li {
+    counter-increment: step; display: flex; gap: 10px;
+    padding: 5px 0; font-size: 12px; border-bottom: 0.5px solid #1e1e1e; align-items: flex-start;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step); font-family: var(--mono); font-size: 10px; font-weight: 600;
+    color: var(--accent2); background: #3a2e10; width: 18px; height: 18px;
+    border-radius: 3px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-card { background: var(--surface2); border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .mini-card .mc-title { font-family: var(--mono); font-size: 10px; font-weight: 600; margin-bottom: 4px; }
+
+  footer { margin-top: 24px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Compiler Design — 치트시트</h1>
+  <p>CH01–CH03 · 컴파일러 구조, CFG, 파싱</p>
+</header>
+
+<div class="grid">
+
+  <!-- 컴파일러 구조 -->
+  <div class="card">
+    <div class="card-title amber">CH01 · 컴파일러 구조</div>
+    <div class="row"><span class="key">전단부 (Front-end)</span><span class="val">언어 의존적 · 분석 담당</span></div>
+    <div class="row"><span class="key">후단부 (Back-end)</span><span class="val">기계 의존적 · 합성 담당</span></div>
+    <div class="row"><span class="key">중간 코드 (IC)</span><span class="val">기계 독립적 중간 표현</span></div>
+    <div class="row"><span class="key">심볼 테이블</span><span class="val">식별자 정보 · 모든 단계 공유</span></div>
+    <div class="row"><span class="key">리터럴 테이블</span><span class="val">상수값 저장 · 중복 방지</span></div>
+    <p class="note">IC 예시: Java 바이트코드, LLVM IR, Python .pyc</p>
+  </div>
+
+  <!-- 컴파일 단계 -->
+  <div class="card">
+    <div class="card-title cyan">CH01 · 컴파일 단계 (6단계)</div>
+    <ul class="steps">
+      <li><div><strong>어휘 분석 (Scanner)</strong> — 소스 → 토큰<br><span class="dim">a[index] = 4+2 → id1 := id2 + id3 * 60</span></div></li>
+      <li><div><strong>구문 분석 (Parser)</strong> — 토큰 → 구문 트리<br><span class="dim">AST 생성 (불필요한 기호 제거)</span></div></li>
+      <li><div><strong>의미 분석 (Semantic)</strong> — AST → 주석 트리<br><span class="dim">타입 정보 추가, inttoreal 삽입</span></div></li>
+      <li><div><strong>중간 코드 생성</strong> — 주석 트리 → IC<br><span class="dim">3주소 코드: t = a op b</span></div></li>
+      <li><div><strong>코드 최적화</strong> — 상수 접기 등<br><span class="dim">4+2 → 6 (컴파일 시점에 미리 계산)</span></div></li>
+      <li><div><strong>코드 생성</strong> — IC → 기계어<br><span class="dim">레지스터 할당, 주소 지정</span></div></li>
+    </ul>
+  </div>
+
+  <!-- 번역기 종류 -->
+  <div class="card">
+    <div class="card-title green">CH02 · 번역기 종류</div>
+    <table>
+      <thead><tr><th>번역기</th><th>입력</th><th>출력</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">컴파일러</span></td><td>고급 언어</td><td>어셈블리/기계어</td></tr>
+        <tr><td><span class="tag c">인터프리터</span></td><td>고급 언어</td><td>실행 결과</td></tr>
+        <tr><td><span class="tag g">어셈블러</span></td><td>어셈블리어</td><td>기계어</td></tr>
+        <tr><td><span class="tag o">전처리기</span></td><td>고급 언어</td><td>고급 언어</td></tr>
+        <tr><td><span class="tag p">링커</span></td><td>목적 파일들</td><td>실행 파일</td></tr>
+      </tbody>
+    </table>
+    <p class="note">컴파일러 = 전체 번역 후 실행 / 인터프리터 = 한 줄씩 실행</p>
+  </div>
+
+  <!-- Chomsky 분류 -->
+  <div class="card">
+    <div class="card-title purple">CH02 · Chomsky 형식 언어 분류</div>
+    <table>
+      <thead><tr><th>타입</th><th>언어</th><th>용도</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag g">Type-3</span></td><td>정규 언어</td><td>토큰 패턴 → 스캐너</td></tr>
+        <tr><td><span class="tag a">Type-2</span></td><td>문맥 자유 언어</td><td>문장 구조 → 파서</td></tr>
+        <tr><td><span class="tag c">Type-1</span></td><td>문맥 인식 언어</td><td>문맥 의존적 의미</td></tr>
+        <tr><td><span class="tag o">Type-0</span></td><td>재귀 열거 언어</td><td>튜링 머신</td></tr>
+      </tbody>
+    </table>
+    <p class="note">안쪽 ⊂ 바깥쪽 (정규 ⊂ 문맥자유 ⊂ 문맥인식 ⊂ 재귀열거)</p>
+  </div>
+
+  <!-- CFG / ac 언어 -->
+  <div class="card">
+    <div class="card-title amber">CH02 · CFG & ac 언어</div>
+    <div class="row"><span class="key">비단말 기호</span><span class="val">LHS+RHS 등장 · 확장 가능</span></div>
+    <div class="row"><span class="key">단말 기호</span><span class="val">RHS만 등장 · 더 이상 확장 불가</span></div>
+    <div class="row"><span class="key">시작 기호</span><span class="val">LHS에 한 번만 등장 (ac: Prog)</span></div>
+    <div class="row"><span class="key">λ (람다)</span><span class="val">빈 문자열 · 생략 가능</span></div>
+    <div class="row"><span class="key">$ (달러)</span><span class="val">입력 스트림의 끝</span></div>
+    <div style="margin-top: 10px;" class="two-col">
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent2)">ac 키워드</div>
+        f (float)<br>i (integer)<br>p (print)
+      </div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent3)">목적 코드</div>
+        dc (역폴란드)<br>2 3 + → 5<br>스택 기반 계산
+      </div>
+    </div>
+  </div>
+
+  <!-- 토큰 명세 -->
+  <div class="card">
+    <div class="card-title cyan">CH02 · ac 토큰 명세</div>
+    <table>
+      <thead><tr><th>토큰 타입</th><th>정규 표현식</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag a">floatdcl</span></td><td><code>"f"</code></td><td>f</td></tr>
+        <tr><td><span class="tag a">intdcl</span></td><td><code>"i"</code></td><td>i</td></tr>
+        <tr><td><span class="tag g">id</span></td><td><code>[a-e|g-h|j-o|q-z]</code></td><td>a, b, x</td></tr>
+        <tr><td><span class="tag c">inum</span></td><td><code>[0-9]+</code></td><td>5, 123</td></tr>
+        <tr><td><span class="tag c">fnum</span></td><td><code>[0-9]+.[0-9]+</code></td><td>3.14</td></tr>
+        <tr><td><span class="tag o">assign</span></td><td><code>"="</code></td><td>=</td></tr>
+        <tr><td><span class="tag o">plus/minus</span></td><td><code>"+" | "-"</code></td><td>+, -</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 순환 하강 파싱 -->
+  <div class="card">
+    <div class="card-title green">CH03 · 순환 하강 파싱 원칙</div>
+    <table>
+      <thead><tr><th>생성 규칙 RHS</th><th>코드 처리</th></tr></thead>
+      <tbody>
+        <tr><td>비단말기호</td><td>해당 함수 호출</td></tr>
+        <tr><td>단말기호</td><td><code>match()</code> 로 비교</td></tr>
+        <tr><td>λ (빈 생성)</td><td><code>pass</code></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;">
+      <div class="note" style="margin-top:0;padding:8px 10px;background:var(--surface2);border-radius:4px;border-left:2px solid var(--accent1);">
+        <strong style="color:var(--accent1)">λ-생성 조건</strong><br>
+        Dcls() λ : ID, PRINT, EOF<br>
+        Stmts() λ : EOF<br>
+        Expr() λ : ID, PRINT, EOF
+      </div>
+    </div>
+  </div>
+
+  <!-- Parser 함수 구조 -->
+  <div class="card">
+    <div class="card-title orange">CH03 · Parser 함수 구조</div>
+    <div class="row"><span class="key">Prog()</span><span class="val">시작기호 · Scanner 첫 호출</span></div>
+    <div class="row"><span class="key">Dcls()</span><span class="val">Dcl Dcls | λ</span></div>
+    <div class="row"><span class="key">Dcl()</span><span class="val">floatdcl id | intdcl id</span></div>
+    <div class="row"><span class="key">Stmts()</span><span class="val">Stmt Stmts | λ</span></div>
+    <div class="row"><span class="key">Stmt()</span><span class="val">id assign Val Expr | print id</span></div>
+    <div class="row"><span class="key">Expr()</span><span class="val">plus Val Expr | minus Val Expr | λ</span></div>
+    <div class="row"><span class="key">Val()</span><span class="val">id | inum | fnum</span></div>
+    <div class="row"><span class="key">match(t)</span><span class="val">토큰 일치 확인 → 다음 토큰 읽기</span></div>
+  </div>
+
+  <!-- 핵심 암기 -->
+  <div class="card wide">
+    <div class="card-title amber">핵심 암기 모음</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">컴파일 6단계</div>어휘→구문→의미→IC생성→최적화→코드생성</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">전단부 출력</div>토큰 → 파스트리 → 주석트리</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">AST vs 파스트리</div>AST = 파스트리에서 불필요 기호 제거</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">3주소 코드</div>t = a op b (임시변수로 쪼갬)</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">상수 접기</div>컴파일 시점에 4+2 → 6 미리 계산</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">역폴란드 표기</div>2 + 3 → 2 3 + (연산자 뒤에)</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Compiler Design Cheat Sheet · CH01–CH03</footer>
+
+<div style="text-align:center;margin-top:20px;">
+  <a href="../notes.html?repo=Compiler-Design"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#f9c74f;border:0.5px solid #3a2e10;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
+    자세히 보기 →
+  </a>
+</div>
+
+</body>
+</html>
