@@ -657,41 +657,63 @@
 
       <!-- 변조 파형 시각화 -->
       <div class="svg-wrap" style="margin-top:12px;">
-        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
-          <!-- 원본 디지털 -->
-          <text x="10" y="14" font-family="monospace" font-size="9" fill="#888">원본 디지털: 1  1  0  0  1</text>
+        <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- 원본 디지털: 1=위(y=22), 0=아래(y=34) -->
+          <text x="8" y="13" font-family="monospace" font-size="9" fill="#666">디지털: 1  1  0  0  1</text>
+          <!-- 1→1→0→0→1 순서로 수직 전이 포함 -->
           <polyline fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="square"
-            points="10,26 90,26 90,36 170,36 170,26 250,26 250,36 330,36 330,26 410,26"/>
+            points="8,22 168,22 168,34 328,34 328,22 408,22"/>
 
-          <!-- ASK: 1=큰 진폭, 0=진폭 없음 -->
-          <text x="10" y="62" font-family="monospace" font-size="9" fill="#90e0ef">ASK (진폭)</text>
-          <!-- 1: 큰 파형 (10~90) -->
-          <path d="M10,75 C20,52 40,52 50,75 C60,98 80,98 90,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
-          <!-- 1: 큰 파형 (90~170) -->
-          <path d="M90,75 C100,52 120,52 130,75 C140,98 160,98 170,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
-          <!-- 0: 진폭 없음 (평평, 170~250) -->
-          <line x1="170" y1="75" x2="250" y2="75" stroke="#90e0ef" stroke-width="1.8"/>
-          <!-- 0: 진폭 없음 (평평, 250~330) -->
-          <line x1="250" y1="75" x2="330" y2="75" stroke="#90e0ef" stroke-width="1.8"/>
-          <!-- 1: 큰 파형 (330~410) -->
-          <path d="M330,75 C340,52 360,52 370,75 C380,98 400,98 410,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
-          <text x="420" y="79" font-family="monospace" font-size="8" fill="#90e0ef">1=큰진폭, 0=없음</text>
+          <!-- ASK: 1=큰 파형(완전 1주기), 0=수평선 -->
+          <text x="8" y="62" font-family="monospace" font-size="9" fill="#90e0ef">ASK</text>
+          <line x1="8" y1="78" x2="408" y2="78" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 올라갔다 내려오는 완전 1주기 -->
+          <path d="M8,78 Q28,52 48,78 Q68,104 88,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트1 (88~168): 완전 1주기 -->
+          <path d="M88,78 Q108,52 128,78 Q148,104 168,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트0 (168~248): 평평 -->
+          <line x1="168" y1="78" x2="248" y2="78" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트0 (248~328): 평평 -->
+          <line x1="248" y1="78" x2="328" y2="78" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트1 (328~408): 완전 1주기 -->
+          <path d="M328,78 Q348,52 368,78 Q388,104 408,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <text x="415" y="74" font-family="monospace" font-size="8" fill="#90e0ef">1=파형</text>
+          <text x="415" y="85" font-family="monospace" font-size="8" fill="#90e0ef">0=평평</text>
 
-          <!-- FSK: 1=고주파, 0=저주파 -->
-          <text x="10" y="126" font-family="monospace" font-size="9" fill="#7ee8a2">FSK (주파수)</text>
-          <!-- 1: 고주파 (촘촘, 10~90) -->
-          <path d="M10,138 C15,128 25,128 30,138 C35,148 45,148 50,138 C55,128 65,128 70,138 C75,148 85,148 90,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
-          <!-- 1: 고주파 (촘촘, 90~170) -->
-          <path d="M90,138 C95,128 105,128 110,138 C115,148 125,148 130,138 C135,128 145,128 150,138 C155,148 165,148 170,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
-          <!-- 0: 저주파 (느슨, 170~250) -->
-          <path d="M170,138 C190,118 210,118 230,138 C250,158 250,158 250,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
-          <!-- 0: 저주파 (느슨, 250~330) -->
-          <path d="M250,138 C270,118 290,118 310,138 C330,158 330,158 330,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
-          <!-- 1: 고주파 (촘촘, 330~410) -->
-          <path d="M330,138 C335,128 345,128 350,138 C355,148 365,148 370,138 C375,128 385,128 390,138 C395,148 405,148 410,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
-          <text x="420" y="142" font-family="monospace" font-size="8" fill="#7ee8a2">1=고주파, 0=저주파</text>
+          <!-- FSK: 1=고주파(촘촘), 0=저주파(완만한 1주기) -->
+          <text x="8" y="118" font-family="monospace" font-size="9" fill="#7ee8a2">FSK</text>
+          <line x1="8" y1="134" x2="408" y2="134" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 고주파 4주기 -->
+          <path d="M8,134 Q18,120 28,134 Q38,148 48,134 Q58,120 68,134 Q78,148 88,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트1 (88~168): 고주파 4주기 -->
+          <path d="M88,134 Q98,120 108,134 Q118,148 128,134 Q138,120 148,134 Q158,148 168,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트0 (168~248): 저주파 완전 1주기 (올라갔다 내려옴) -->
+          <path d="M168,134 Q188,110 208,134 Q228,158 248,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트0 (248~328): 저주파 완전 1주기 -->
+          <path d="M248,134 Q268,110 288,134 Q308,158 328,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트1 (328~408): 고주파 4주기 -->
+          <path d="M328,134 Q338,120 348,134 Q358,148 368,134 Q378,120 388,134 Q398,148 408,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <text x="415" y="130" font-family="monospace" font-size="8" fill="#7ee8a2">1=고주파</text>
+          <text x="415" y="141" font-family="monospace" font-size="8" fill="#7ee8a2">0=저주파</text>
 
-          <text x="10" y="192" font-family="monospace" font-size="8" fill="#555">PSK: 위상(시작위치) 변화 · QAM: 진폭+위상 동시 변화</text>
+          <!-- PSK: 위상 반전 (1=위로, 0=아래로) -->
+          <text x="8" y="175" font-family="monospace" font-size="9" fill="#c77dff">PSK</text>
+          <line x1="8" y1="191" x2="408" y2="191" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 정상 위상 - 올라갔다 내려옴 -->
+          <path d="M8,191 Q28,165 48,191 Q68,217 88,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트1 (88~168): 정상 위상 -->
+          <path d="M88,191 Q108,165 128,191 Q148,217 168,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트0 (168~248): 반전 위상 - 내려갔다 올라옴 -->
+          <path d="M168,191 Q188,217 208,191 Q228,165 248,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트0 (248~328): 반전 위상 -->
+          <path d="M248,191 Q268,217 288,191 Q308,165 328,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트1 (328~408): 정상 위상 -->
+          <path d="M328,191 Q348,165 368,191 Q388,217 408,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <text x="415" y="187" font-family="monospace" font-size="8" fill="#c77dff">1=정상</text>
+          <text x="415" y="198" font-family="monospace" font-size="8" fill="#c77dff">0=반전</text>
+
+          <text x="8" y="230" font-family="monospace" font-size="8" fill="#444">QAM: 진폭+위상 동시 변화</text>
         </svg>
       </div>
     </div>
