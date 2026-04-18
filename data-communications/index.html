@@ -6,437 +6,774 @@
 <title>Data Communications 치트시트</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
+  body { max-width: 720px; margin: 0 auto; padding: 32px 20px; }
+
+  /* 챕터 그룹 박스 */
+  .chapter {
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .chapter-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .chapter-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* 섹션 카드 */
+  .section {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-title.green  { color: var(--accent1); }
+  .section-title.amber  { color: var(--accent2); }
+  .section-title.cyan   { color: var(--accent3); }
+  .section-title.orange { color: var(--accent4); }
+  .section-title.purple { color: var(--accent5); }
+
+  /* 2열 그리드 */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* 수식 */
+  .formula {
+    background: var(--surface2);
+    border-left: 2px solid var(--accent2);
+    padding: 9px 14px;
+    border-radius: 0 5px 5px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent2);
+    margin: 6px 0;
+  }
   .formula.green  { border-left-color: var(--accent1); color: var(--accent1); }
   .formula.cyan   { border-left-color: var(--accent3); color: var(--accent3); }
   .formula.purple { border-left-color: var(--accent5); color: var(--accent5); }
 
-  .waveform-svg { width: 100%; margin: 10px 0; }
-
-  .vis-container {
-    background: var(--surface2);
-    border-radius: 6px;
-    padding: 10px;
-    margin: 8px 0;
+  /* 변수 설명 */
+  .var-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3px 12px;
+    font-size: 11px;
+    margin: 6px 0;
   }
+  .var-key { font-family: var(--mono); color: var(--accent3); }
+  .var-val { color: var(--muted); }
 
-  .constellation {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+  /* 노트 */
+  .note {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-left: 2px solid var(--border);
     margin-top: 8px;
+    line-height: 1.6;
   }
 
-  .const-box {
+  /* 미니카드 */
+  .mini-card {
     background: var(--surface2);
-    border-radius: 5px;
-    padding: 8px;
-    flex: 1;
-    min-width: 80px;
-    text-align: center;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 12px;
   }
-
-  .const-label {
+  .mc-title {
     font-family: var(--mono);
     font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 6px;
+    font-weight: 600;
+    margin-bottom: 5px;
   }
 
-  .steps li::before {
-    background: #2a1a40;
-    color: var(--accent5);
+  /* 암기 그리드 */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
   }
+
+  /* SVG 래퍼 */
+  .svg-wrap { margin: 8px 0; }
+  .svg-wrap svg { width: 100%; display: block; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Data Communications — 치트시트</h1>
-  <p>CH01–CH05 · DC_01 ~ DC_06 핵심 요약</p>
+<header style="margin-bottom:32px;">
+  <h1 style="color:var(--accent1);">Data Communications</h1>
+  <p style="color:var(--muted);font-family:var(--mono);font-size:11px;margin-top:6px;">CH01–CH05 · DC_01 ~ DC_06 핵심 요약</p>
 </header>
 
-<div class="grid">
-
-  <!-- CH01: 기본 개념 -->
-  <div class="card">
-    <div class="card-title green">CH01 · 데이터 통신 기본</div>
-    <div class="row"><span class="key">구성 5요소</span><span class="val">송신자 · 수신자 · 메시지 · 전송매체 · <span class="highlight">프로토콜</span></span></div>
-    <div class="row"><span class="key">단방향</span><span class="val">키보드, 모니터</span></div>
-    <div class="row"><span class="key">반이중</span><span class="val">무전기, CB라디오</span></div>
-    <div class="row"><span class="key">전이중</span><span class="val">전화</span></div>
-    <div class="row"><span class="key">회선 교환</span><span class="val">전용 경로 독점 = 트럭 전세</span></div>
-    <div class="row"><span class="key">패킷 교환</span><span class="val">쪼개서 독립 전송 = 합송 택배</span></div>
-    <p class="note">현재 주류 = 패킷 교환 · 인터넷 대부분</p>
+<!-- ══════════════════════════════════════════ CH01 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 01</span>
+    <span class="chapter-title" style="color:var(--accent1);">데이터 통신의 개요</span>
   </div>
+  <div class="chapter-body">
 
-  <!-- CH01: 토폴로지 -->
-  <div class="card">
-    <div class="card-title amber">CH01 · 토폴로지 비교</div>
-    <table>
-      <thead><tr><th>종류</th><th>특징</th><th>약점</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">그물</span></td><td>n(n-1)/2 링크, 가장 안전</td><td>비용 큼</td></tr>
-        <tr><td><span class="tag c">스타</span></td><td>가장 많이 사용, LAN</td><td>허브 고장 → 전체 마비</td></tr>
-        <tr><td><span class="tag a">버스</span></td><td>설치 쉬움, 최소 케이블</td><td>중추 결함 → 전체 영향</td></tr>
-        <tr><td><span class="tag o">링</span></td><td>각 장치에 중계기</td><td>링 결함 → 전체 마비</td></tr>
-      </tbody>
-    </table>
-    <p class="note">가격: 버스 &lt; 링 &lt; 스타 &lt; 그물 · 보안/안정: 그물 > 스타 > 링 > 버스</p>
-  </div>
-
-  <!-- CH02: OSI/TCP-IP -->
-  <div class="card">
-    <div class="card-title cyan">CH02 · OSI 7계층 vs TCP/IP</div>
-    <table>
-      <thead><tr><th>#</th><th>OSI</th><th>TCP/IP</th><th>주소</th></tr></thead>
-      <tbody>
-        <tr><td class="dim">7·6·5</td><td>응용·표현·세션</td><td>응용층</td><td>이름(도메인)</td></tr>
-        <tr><td class="dim">4</td><td>전송층</td><td>전송층</td><td>포트번호</td></tr>
-        <tr><td class="dim">3</td><td>네트워크층</td><td>인터넷층</td><td>IP주소</td></tr>
-        <tr><td class="dim">2</td><td>데이터링크층</td><td>데이터링크층</td><td>MAC주소</td></tr>
-        <tr><td class="dim">1</td><td>물리층</td><td>물리층</td><td>없음</td></tr>
-      </tbody>
-    </table>
-    <p class="note">OSI = 교육용 · TCP/IP = 실제 사용 · 세션·표현 → 응용으로 합침</p>
-  </div>
-
-  <!-- CH02: MAC/IP/Switch/Router -->
-  <div class="card">
-    <div class="card-title purple">CH02 · MAC vs IP · Switch vs Router</div>
-    <div class="two-col" style="margin-bottom:10px;">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent5)">MAC</div>
-        2계층 · 물리주소<br>LAN 범위만 유효<br>홉마다 교체<br><span class="dim">= 주민등록번호 (정거장)</span>
+    <!-- 구성 요소 -->
+    <div class="section">
+      <div class="section-title green">구성 5요소</div>
+      <div class="three-col">
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">송신자</div>메시지를 보내는 장치</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">수신자</div>메시지를 받는 장치</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">메시지</div>전송되는 정보</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">전송매체</div>물리적 경로</div>
+        <div class="mini-card" style="border:0.5px solid var(--accent1);"><div class="mc-title" style="color:var(--accent1)">프로토콜 ← 자주 틀림</div>데이터 통신 수행 규칙 집합</div>
       </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent3)">IP</div>
-        3계층 · 논리주소<br>출발~목적지 유지<br>네트워크마다 바뀜<br><span class="dim">= 집 주소 (최종 목적지)</span>
-      </div>
+      <div class="note">데이터 흐름: 단방향(키보드) / 반이중(무전기) / 전이중(전화)</div>
     </div>
-    <div class="two-col">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent2)">Switch</div>
-        MAC으로 LAN 내 전달<br>2계층 장비
-      </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent1)">Router</div>
-        IP로 네트워크 간 연결<br>3계층 장비
-      </div>
-    </div>
-  </div>
 
-  <!-- CH03: 신호 기초 + 정현파 -->
-  <div class="card">
-    <div class="card-title green">CH03 · 신호 기초 & 정현파</div>
-    <div class="formula">s = A · sin(2πft + φ)</div>
-    <table style="margin-top:8px;">
-      <thead><tr><th>기호</th><th>의미</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">A</span></td><td>최대 진폭 (신호 세기)</td></tr>
-        <tr><td><span class="tag c">f</span></td><td>주파수 (Hz) — 높을수록 데이터 전송↑</td></tr>
-        <tr><td><span class="tag a">T</span></td><td>주기 = 1/f</td></tr>
-        <tr><td><span class="tag o">φ</span></td><td>위상 (파형 시작 위치)</td></tr>
-        <tr><td><span class="tag p">t</span></td><td>현재 시각 (흐르는 시간)</td></tr>
-      </tbody>
-    </table>
-    <div class="formula" style="margin-top:8px;">λ = c/f &nbsp;&nbsp; (c = 3×10⁸ m/s)</div>
-    <div class="formula">BW = f_max − f_min</div>
-    <p class="note">모뎀: 디지털↔아날로그 신호 / 코덱: 아날로그↔디지털</p>
-  </div>
+    <!-- 토폴로지 -->
+    <div class="section">
+      <div class="section-title amber">접속 형태 (Topology)</div>
+      <!-- 토폴로지 시각화 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- 그물형 -->
+          <text x="50" y="14" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">그물 (Mesh)</text>
+          <line x1="20" y1="40" x2="80" y2="40" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="20" y1="40" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="80" y1="40" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="20" y1="40" x2="50" y2="28" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="80" y1="40" x2="50" y2="28" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="50" y1="28" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <circle cx="20" cy="40" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="80" cy="40" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="50" cy="80" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="50" cy="28" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="50" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">안전·비싸</text>
 
-  <!-- CH03: 아날로그 vs 디지털 -->
-  <div class="card">
-    <div class="card-title amber">CH03 · 아날로그 vs 디지털 · 전압 준위</div>
-    <table>
-      <thead><tr><th></th><th>아날로그</th><th>디지털</th></tr></thead>
-      <tbody>
-        <tr><td>장점</td><td>자연 신호 그대로, 변환손실 없음</td><td>잡음에 강함, 암호화 용이, 복사 품질 유지</td></tr>
-        <tr><td>단점</td><td>잡음 취약, 복사 품질 저하</td><td>변환 시 정보 손실, 대역폭 많이 필요</td></tr>
-      </tbody>
-    </table>
-    <div class="two-col" style="margin-top:10px;">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent3)">단극형 (Unipolar)</div>
-        +V / 0V<br>직류 성분 심함
+          <!-- 스타형 -->
+          <text x="215" y="14" font-family="monospace" font-size="10" fill="#f9c74f" text-anchor="middle">스타 (Star)</text>
+          <line x1="215" y1="55" x2="185" y2="35" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="245" y2="35" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="185" y2="80" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="245" y2="80" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="215" y2="30" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <rect x="207" y="47" width="16" height="16" rx="3" fill="#3a2e10" stroke="#f9c74f" stroke-width="1.5"/>
+          <text x="215" y="58" font-family="monospace" font-size="8" fill="#f9c74f" text-anchor="middle">H</text>
+          <circle cx="185" cy="35" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="245" cy="35" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="185" cy="80" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="245" cy="80" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="215" cy="30" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <text x="215" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">가장 많이 사용</text>
+
+          <!-- 버스형 -->
+          <text x="390" y="14" font-family="monospace" font-size="10" fill="#f4a261" text-anchor="middle">버스 (Bus)</text>
+          <line x1="330" y1="55" x2="450" y2="55" stroke="#f4a261" stroke-width="2" opacity="0.8"/>
+          <line x1="355" y1="55" x2="355" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <line x1="390" y1="55" x2="390" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <line x1="425" y1="55" x2="425" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <circle cx="355" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <circle cx="390" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <circle cx="425" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <text x="390" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">설치 쉬움·저렴</text>
+
+          <!-- 링형 -->
+          <text x="590" y="14" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">링 (Ring)</text>
+          <circle cx="590" cy="55" r="30" fill="none" stroke="#90e0ef" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="590" cy="25" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="620" cy="55" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="590" cy="85" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="560" cy="55" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <text x="590" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">순환·중계기</text>
+        </svg>
       </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent1)">극형 (Polar)</div>
-        +V / -V<br>직류 성분 적음 (양음 균형)
-      </div>
-    </div>
-    <p class="note">디지털 = 이론상 무한 대역폭 (수직 전환에 무한 고주파 필요)</p>
-  </div>
-
-  <!-- CH03: 전송률 공식 -->
-  <div class="card">
-    <div class="card-title cyan">CH03 · 전송률 한계 공식</div>
-    <div class="formula">나이퀴스트 (잡음 없음)<br>Bit Rate = 2 × BW × log₂L</div>
-    <div class="formula">섀논 (잡음 있음)<br>C = BW × log₂(1 + SNR)</div>
-    <div class="formula">SNR_dB = 10 × log₁₀(SNR)</div>
-    <div class="formula">감쇠 dB = 10 × log₁₀(P₂/P₁)</div>
-    <p class="note">1+SNR 이유: SNR=0일 때 log₂(0)=∞ 방지 → C=0으로 자연스럽게 처리</p>
-    <p class="note">실제 설계: 섀논으로 상한 → 나이퀴스트로 신호 준위 수 계산</p>
-  </div>
-
-  <!-- CH04: 회선 부호화 기본 -->
-  <div class="card">
-    <div class="card-title green">CH04 · 회선 부호화 기본 개념</div>
-    <div class="formula green">S = N / r</div>
-    <table>
-      <thead><tr><th>기호</th><th>의미</th><th>단위</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">S</span></td><td>신호 전송률</td><td>baud</td></tr>
-        <tr><td><span class="tag c">N</span></td><td>데이터 전송률</td><td>bps</td></tr>
-        <tr><td><span class="tag a">r</span></td><td>신호 요소당 데이터 요소 수</td><td>-</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:10px;">
       <table>
-        <thead><tr><th>문제점</th><th>원인</th><th>해결</th></tr></thead>
+        <thead><tr><th>순위</th><th>가격(저렴)</th><th>보안/안정</th><th>설치(쉬움)</th></tr></thead>
         <tbody>
-          <tr><td>기준선 표류</td><td>연속 0/1 → 기준선 이동</td><td>맨체스터</td></tr>
-          <tr><td>직류 성분</td><td>저주파 → 전선 통과 불가</td><td>극형 방식</td></tr>
-          <tr><td>자기 동기화</td><td>클럭 불일치 → 오독</td><td>맨체스터</td></tr>
+          <tr><td>1위</td><td>버스</td><td>그물</td><td>버스</td></tr>
+          <tr><td>2위</td><td>링</td><td>스타</td><td>스타</td></tr>
+          <tr><td>3위</td><td>스타</td><td>링</td><td>링</td></tr>
+          <tr><td>4위</td><td>그물</td><td>버스</td><td>그물</td></tr>
         </tbody>
       </table>
     </div>
-  </div>
 
-  <!-- CH04: 파형 시각화 (Wide) -->
-  <div class="card wide">
-    <div class="card-title amber">CH04 · 회선 부호화 파형 비교 (비트: 1 0 1 1 0)</div>
-    <svg class="waveform-svg" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
-      <!-- 비트 레이블 -->
-      <text x="100" y="18" font-family="monospace" font-size="11" fill="#666">비트:</text>
-      <text x="178" y="18" font-family="monospace" font-size="12" fill="#e8e8e0" font-weight="bold">1</text>
-      <text x="258" y="18" font-family="monospace" font-size="12" fill="#e8e8e0" font-weight="bold">0</text>
-      <text x="338" y="18" font-family="monospace" font-size="12" fill="#e8e8e0" font-weight="bold">1</text>
-      <text x="418" y="18" font-family="monospace" font-size="12" fill="#e8e8e0" font-weight="bold">1</text>
-      <text x="498" y="18" font-family="monospace" font-size="12" fill="#e8e8e0" font-weight="bold">0</text>
-      <!-- 구분선 -->
-      <line x1="140" y1="25" x2="140" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-      <line x1="220" y1="25" x2="220" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-      <line x1="300" y1="25" x2="300" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-      <line x1="380" y1="25" x2="380" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-      <line x1="460" y1="25" x2="460" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-      <line x1="540" y1="25" x2="540" y2="335" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3 3"/>
-
-      <!-- NRZ -->
-      <text x="30" y="72" font-family="monospace" font-size="11" fill="#7ee8a2" font-weight="bold">NRZ</text>
-      <text x="30" y="84" font-family="monospace" font-size="9" fill="#666">전압유지</text>
-      <line x1="140" y1="78" x2="540" y2="78" stroke="#333" stroke-width="0.5"/>
-      <polyline fill="none" stroke="#7ee8a2" stroke-width="2.5" stroke-linecap="square"
-        points="140,58 220,58 220,98 300,98 300,58 380,58 380,58 460,58 460,98 540,98"/>
-      <text x="143" y="55" font-family="monospace" font-size="9" fill="#666">+V</text>
-      <text x="143" y="107" font-family="monospace" font-size="9" fill="#666">-V</text>
-
-      <!-- RZ -->
-      <text x="30" y="152" font-family="monospace" font-size="11" fill="#378ADD" font-weight="bold">RZ</text>
-      <text x="30" y="164" font-family="monospace" font-size="9" fill="#666">중간복귀</text>
-      <line x1="140" y1="158" x2="540" y2="158" stroke="#333" stroke-width="0.5"/>
-      <polyline fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="square" points="140,138 180,138 180,158 220,158"/>
-      <polyline fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="square" points="220,178 260,178 260,158 300,158"/>
-      <polyline fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="square" points="300,138 340,138 340,158 380,158"/>
-      <polyline fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="square" points="380,138 420,138 420,158 460,158"/>
-      <polyline fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="square" points="460,178 500,178 500,158 540,158"/>
-      <text x="143" y="135" font-family="monospace" font-size="9" fill="#666">+V</text>
-      <text x="143" y="185" font-family="monospace" font-size="9" fill="#666">-V</text>
-
-      <!-- 맨체스터 -->
-      <text x="30" y="232" font-family="monospace" font-size="10" fill="#D85A30" font-weight="bold">맨체스터</text>
-      <text x="30" y="244" font-family="monospace" font-size="9" fill="#666">중간반전</text>
-      <line x1="140" y1="238" x2="540" y2="238" stroke="#333" stroke-width="0.5"/>
-      <polyline fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="square" points="140,258 180,258 180,218 220,218"/>
-      <polyline fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="square" points="220,218 260,218 260,258 300,258"/>
-      <polyline fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="square" points="300,258 340,258 340,218 380,218"/>
-      <polyline fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="square" points="380,258 420,258 420,218 460,218"/>
-      <polyline fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="square" points="460,218 500,218 500,258 540,258"/>
-      <text x="185" y="215" font-family="monospace" font-size="9" fill="#D85A30">↑1</text>
-      <text x="265" y="215" font-family="monospace" font-size="9" fill="#D85A30">↓0</text>
-      <text x="143" y="215" font-family="monospace" font-size="9" fill="#666">+V</text>
-      <text x="143" y="268" font-family="monospace" font-size="9" fill="#666">-V</text>
-
-      <!-- 차분 맨체스터 -->
-      <text x="30" y="310" font-family="monospace" font-size="10" fill="#7F77DD" font-weight="bold">차분맨체스터</text>
-      <text x="30" y="322" font-family="monospace" font-size="9" fill="#666">전이유무</text>
-      <line x1="140" y1="318" x2="540" y2="318" stroke="#333" stroke-width="0.5"/>
-      <polyline fill="none" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="square" points="140,338 180,338 180,298 220,298"/>
-      <polyline fill="none" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="square" points="220,338 260,338 260,298 300,298"/>
-      <polyline fill="none" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="square" points="300,298 340,298 340,338 380,338"/>
-      <polyline fill="none" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="square" points="380,338 420,338 420,298 460,298"/>
-      <polyline fill="none" stroke="#7F77DD" stroke-width="2.5" stroke-linecap="square" points="460,338 500,338 500,298 540,298"/>
-      <circle cx="220" cy="338" r="4" fill="#7F77DD"/>
-      <circle cx="460" cy="338" r="4" fill="#7F77DD"/>
-      <text x="215" y="335" font-family="monospace" font-size="8" fill="#7F77DD" dy="12">전이=0</text>
-      <text x="455" y="335" font-family="monospace" font-size="8" fill="#7F77DD" dy="12">전이=0</text>
-    </svg>
-  </div>
-
-  <!-- CH04: 부호화 방식 비교 -->
-  <div class="card wide">
-    <div class="card-title orange">CH04 · 회선 부호화 방식 비교</div>
-    <table>
-      <thead><tr><th>방식</th><th>비트 표현</th><th>대역폭</th><th>동기화</th><th>잡음 저항</th><th>사용</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag c">NRZ</span></td><td>전압 유지 (1=+V, 0=-V)</td><td>1배</td><td>약함</td><td>보통</td><td>USB, 시리얼</td></tr>
-        <tr><td><span class="tag a">RZ</span></td><td>중간에 0 복귀 (2번 변화)</td><td>2배</td><td>좋음</td><td>보통</td><td>광섬유 일부</td></tr>
-        <tr><td><span class="tag g">맨체스터</span></td><td>중간 반전 방향 (↑=1, ↓=0)</td><td>2배</td><td>좋음</td><td>보통</td><td>이더넷, RFID</td></tr>
-        <tr><td><span class="tag p">차분 맨체스터</span></td><td>시작점 전이 유무 (전이=0, 무=1)</td><td>2배</td><td>좋음</td><td><span class="highlight">강함</span></td><td>토큰링</td></tr>
-      </tbody>
-    </table>
-    <div class="two-col" style="margin-top:10px;">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent4)">맨체스터 (절대적 기준)</div>
-        반전 방향 자체가 비트 의미<br>신호 극성 뒤집히면 → 오독
-      </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent5)">차분 맨체스터 (상대적 기준)</div>
-        전이 유무만 보면 됨<br>극성 뒤집혀도 → 정확히 읽음
+    <!-- 교환 방식 -->
+    <div class="section">
+      <div class="section-title cyan">교환 방식</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">회선 교환</div>
+          전용 경로 미리 확보 · 독점 사용<br>
+          효율 낮음 · 음성전화<br>
+          <span style="color:var(--muted);font-size:11px;">= 트럭 전세</span>
+        </div>
+        <div class="mini-card" style="border:0.5px solid var(--accent1);">
+          <div class="mc-title" style="color:var(--accent1)">패킷 교환 ← 현재 주류</div>
+          패킷으로 쪼개 독립 전송<br>
+          효율 높음 · 인터넷<br>
+          <span style="color:var(--muted);font-size:11px;">= 합송 택배</span>
+        </div>
       </div>
     </div>
-    <p class="note">RZ 대역폭 2배 이유: 비트당 변화가 NRZ 1번 → RZ 2번 (중간 복귀) → 2배 빠른 주파수 필요</p>
-  </div>
 
-  <!-- CH04: 다준위 방식 -->
-  <div class="card">
-    <div class="card-title cyan">CH04 · 다준위 방식 (4D-PAM5)</div>
-    <div class="row"><span class="key">선 수</span><span class="val">4개 회선 동시 사용</span></div>
-    <div class="row"><span class="key">준위 수</span><span class="val">5개 (-2, -1, 0, +1, +2)</span></div>
-    <div class="row"><span class="key">선당 비트</span><span class="val">log₂5 ≈ 2.32 비트</span></div>
-    <div class="row"><span class="key">총 전송</span><span class="val">4 × 2.32 ≈ 9비트/신호</span></div>
-    <div class="row"><span class="key">사용</span><span class="val">1Gbps LAN (기가비트 이더넷)</span></div>
-    <p class="note">쓰는 이유: 대역폭은 그대로, 준위 수 늘려 전송 효율↑</p>
   </div>
+</div>
 
-  <!-- CH04: PCM -->
-  <div class="card">
-    <div class="card-title purple">CH04 · PCM (아날로그→디지털) — 표양부</div>
-    <ul class="steps">
-      <li><div><strong>표본화 (Sampling)</strong> — 일정 간격으로 진폭 측정<br><span class="dim">나이퀴스트: 표본화율 ≥ 최대주파수 × 2</span><br><span class="dim">예) 음성 4,000Hz → 8,000 samples/s</span></div></li>
-      <li><div><strong>양자화 (Quantizing)</strong> — 실수값을 정수로 근사<br><span class="dim">양자화 잡음 발생 (근사 오차)</span></div></li>
-      <li><div><strong>부호화 (Encoding)</strong> — n비트 코드로 변환</div></li>
-    </ul>
-    <div class="formula purple" style="margin-top:10px;">Δ = (V_max − V_min) / L</div>
-    <div style="font-size:11px;color:var(--muted);padding:4px 0 8px;">
-      Δ(delta): 구간 크기 · V_max/V_min: 최대/최소 전압 · L(levels): 준위 수<br>
-      L↑ → Δ↓ → 더 세밀한 근사 → 양자화 잡음 감소
+<!-- ══════════════════════════════════════════ CH02 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 02</span>
+    <span class="chapter-title" style="color:var(--accent3);">네트워크 모델</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- OSI/TCP-IP -->
+    <div class="section">
+      <div class="section-title cyan">OSI 7계층 vs TCP/IP</div>
+      <table>
+        <thead><tr><th>#</th><th>OSI</th><th>TCP/IP</th><th>단위</th><th>주소</th></tr></thead>
+        <tbody>
+          <tr><td class="dim">7·6·5</td><td>응용·표현·세션</td><td>응용층</td><td>-</td><td>이름(도메인)</td></tr>
+          <tr><td class="dim">4</td><td>전송층</td><td>전송층</td><td>세그먼트</td><td>포트번호</td></tr>
+          <tr><td class="dim">3</td><td>네트워크층</td><td>인터넷층</td><td>패킷</td><td>IP주소</td></tr>
+          <tr><td class="dim">2</td><td>데이터링크층</td><td>데이터링크층</td><td>프레임</td><td>MAC주소</td></tr>
+          <tr><td class="dim">1</td><td>물리층</td><td>물리층</td><td>비트</td><td>없음</td></tr>
+        </tbody>
+      </table>
+      <div class="note">OSI = 교육용 개념 / TCP/IP = 실제 사용 · 세션·표현 → 응용으로 합쳐져 5계층</div>
     </div>
-    <div class="formula purple">Bit rate = f_s × n_b</div>
-    <div style="font-size:11px;color:var(--muted);padding:4px 0;">
-      f_s(sampling frequency): 1초당 표본화 횟수 · n_b(number of bits): 표본당 비트 수
-    </div>
-    <p class="note">예) 음성: 8,000 × 8bit = 64,000 bps</p>
-    <p class="note">PCM → 광대역: 아날로그→디지털(PCM) → 디지털→아날로그 변조(광대역) → 전송 (VoIP)</p>
-  </div>
 
-  <!-- CH04: 전송 방식 -->
-  <div class="card">
-    <div class="card-title green">CH04 · 전송 방식</div>
-    <table>
-      <thead><tr><th></th><th>병렬</th><th>직렬</th></tr></thead>
-      <tbody>
-        <tr><td>방식</td><td>n비트 동시</td><td>1비트씩</td></tr>
-        <tr><td>속도</td><td>n배 빠름</td><td>느림</td></tr>
-        <tr><td>비용</td><td>높음</td><td>낮음</td></tr>
-        <tr><td>거리</td><td>단거리</td><td>장거리</td></tr>
-      </tbody>
-    </table>
-    <div class="two-col" style="margin-top:10px;">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent3)">비동기식</div>
-        시작비트(0) + 데이터 + 정지비트(1)<br>바이트마다 재동기화
+    <!-- 캡슐화 시각화 -->
+    <div class="section">
+      <div class="section-title amber">캡슐화 (Encapsulation)</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- 전송층 세그먼트 -->
+          <rect x="10" y="10" width="600" height="32" rx="5" fill="#2a1a40" stroke="#c77dff" stroke-width="0.5"/>
+          <rect x="10" y="10" width="100" height="32" rx="5" fill="#3a2a50" stroke="#c77dff" stroke-width="0.5"/>
+          <text x="60" y="31" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="middle">TCP 헤더</text>
+          <text x="330" y="31" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">데이터</text>
+          <text x="615" y="31" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="end">← 세그먼트 (전송층)</text>
+
+          <!-- 인터넷층 패킷 -->
+          <rect x="10" y="52" width="600" height="32" rx="5" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+          <rect x="10" y="52" width="80" height="32" rx="5" fill="#1a3a48" stroke="#90e0ef" stroke-width="0.5"/>
+          <text x="50" y="73" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">IP 헤더</text>
+          <text x="340" y="73" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">[TCP 세그먼트]</text>
+          <text x="615" y="73" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="end">← 패킷 (인터넷층)</text>
+
+          <!-- 데이터링크층 프레임 -->
+          <rect x="10" y="94" width="600" height="32" rx="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="0.5"/>
+          <rect x="10" y="94" width="70" height="32" rx="5" fill="#2a4a35" stroke="#7ee8a2" stroke-width="0.5"/>
+          <rect x="545" y="94" width="65" height="32" rx="5" fill="#2a4a35" stroke="#7ee8a2" stroke-width="0.5"/>
+          <text x="45" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">MAC 헤더</text>
+          <text x="300" y="115" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">[IP 패킷]</text>
+          <text x="577" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">FCS</text>
+          <text x="615" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="end">← 프레임 (링크층)</text>
+        </svg>
       </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent1)">동기식</div>
-        프레임 단위 전송<br>간격 없음 · 고속 유리
+      <div class="note">송신: 위→아래 헤더 추가(캡슐화) · 수신: 아래→위 헤더 제거(역캡슐화) · IP는 전체 유지, MAC은 홉마다 교체</div>
+    </div>
+
+    <!-- MAC vs IP -->
+    <div class="section">
+      <div class="section-title purple">MAC vs IP · Switch vs Router</div>
+      <div class="two-col" style="margin-bottom:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent5)">MAC 주소</div>
+          2계층 · 물리주소 · LAN만 유효<br>홉마다 교체 · 48비트<br>
+          <span style="color:var(--muted);font-size:11px;">= 주민등록번호 (정거장)</span>
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">IP 주소</div>
+          3계층 · 논리주소 · 전체 경로 유지<br>네트워크마다 바뀜<br>
+          <span style="color:var(--muted);font-size:11px;">= 집 주소 (최종 목적지)</span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">Switch (2계층)</div>
+          MAC으로 LAN 내 전달<br>같은 네트워크 안 장치 연결
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">Router (3계층)</div>
+          IP로 네트워크 간 연결<br>외부망 연결 · 최적 경로 탐색
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH03 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 03</span>
+    <span class="chapter-title" style="color:var(--accent2);">물리층 개요</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 정현파 -->
+    <div class="section">
+      <div class="section-title green">정현파 & 신호 기초</div>
+      <div class="formula">s = A · sin(2πft + φ)</div>
+      <div class="var-list">
+        <span class="var-key">A</span><span class="var-val">최대 진폭 (신호 세기)</span>
+        <span class="var-key">f</span><span class="var-val">주파수 (Hz) — 높을수록 파형 촘촘 → 데이터 전송↑</span>
+        <span class="var-key">T</span><span class="var-val">주기 = 1/f (한 번 반복 시간)</span>
+        <span class="var-key">φ</span><span class="var-val">위상 (파형 시작 위치)</span>
+        <span class="var-key">t</span><span class="var-val">현재 시각 (흐르는 시간)</span>
+      </div>
+      <div class="formula" style="margin-top:10px;">λ = c/f &nbsp;&nbsp; c = 3×10⁸ m/s</div>
+      <div class="formula">BW (대역폭) = f_max − f_min</div>
+
+      <!-- 정현파 시각화 -->
+      <div class="svg-wrap" style="margin-top:12px;">
+        <svg viewBox="0 0 620 100" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="14" font-family="monospace" font-size="9" fill="#666">f 낮음 (파형 느슨)</text>
+          <line x1="10" y1="55" x2="290" y2="55" stroke="#333" stroke-width="0.5"/>
+          <path d="M10,55 C40,20 80,20 110,55 C140,90 180,90 210,55 C240,20 270,20 290,55" fill="none" stroke="#378ADD" stroke-width="2"/>
+          <text x="10" y="95" font-family="monospace" font-size="9" fill="#378ADD">데이터 전송↓</text>
+
+          <text x="320" y="14" font-family="monospace" font-size="9" fill="#666">f 높음 (파형 촘촘)</text>
+          <line x1="320" y1="55" x2="610" y2="55" stroke="#333" stroke-width="0.5"/>
+          <path d="M320,55 C332,30 348,30 360,55 C372,80 388,80 400,55 C412,30 428,30 440,55 C452,80 468,80 480,55 C492,30 508,30 520,55 C532,80 548,80 560,55 C572,30 588,30 600,55" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <text x="320" y="95" font-family="monospace" font-size="9" fill="#7ee8a2">데이터 전송↑</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 아날로그 vs 디지털 -->
+    <div class="section">
+      <div class="section-title amber">아날로그 vs 디지털 · 전압 준위</div>
+      <table>
+        <thead><tr><th></th><th>아날로그</th><th>디지털</th></tr></thead>
+        <tbody>
+          <tr><td>장점</td><td>자연 신호 그대로, 변환손실 없음</td><td>잡음에 강함, 암호화 용이, 복사 품질 유지</td></tr>
+          <tr><td>단점</td><td>잡음 취약, 복사 품질 저하, 암호화 어려움</td><td>변환 시 정보 손실, <strong>대역폭 많이 필요</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">단극형 (Unipolar)</div>
+          +V / 0V · 직류 성분 심함
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">극형 (Polar)</div>
+          +V / -V · 양음 균형 → 직류 성분 적음
+        </div>
+      </div>
+      <div class="note">디지털 신호 = 이론상 무한 대역폭 (수직 전환 → 무한 고주파 필요)</div>
+    </div>
+
+    <!-- 전송률 공식 -->
+    <div class="section">
+      <div class="section-title cyan">전송률 한계 공식</div>
+      <div class="two-col">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">나이퀴스트 — 잡음 없는 채널</div>
+          <div class="formula cyan">Bit Rate = 2 × BW × log₂L</div>
+          <div class="var-list">
+            <span class="var-key">BW</span><span class="var-val">대역폭 (Hz)</span>
+            <span class="var-key">L</span><span class="var-val">신호 준위 수</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">섀논 — 잡음 있는 채널</div>
+          <div class="formula">C = BW × log₂(1 + SNR)</div>
+          <div class="var-list">
+            <span class="var-key">SNR</span><span class="var-val">신호 대 잡음비</span>
+          </div>
+        </div>
+      </div>
+      <div class="formula" style="margin-top:10px;">SNR_dB = 10 × log₁₀(SNR)</div>
+      <div class="formula">감쇠 dB = 10 × log₁₀(P₂/P₁)</div>
+      <div class="note">1+SNR 이유: SNR=0이면 log₂(0)=음의 무한대 → C=0으로 자연스럽게 처리</div>
+      <div class="note">실제 설계: 섀논으로 이론 상한 → 나이퀴스트로 신호 준위 수 계산</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH04 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 04</span>
+    <span class="chapter-title" style="color:var(--accent4);">디지털 전송</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 회선 부호화 기본 -->
+    <div class="section">
+      <div class="section-title orange">회선 부호화 기본 개념 & 문제점</div>
+      <div class="formula" style="border-left-color:var(--accent4);color:var(--accent4);">S = N / r</div>
+      <div class="var-list">
+        <span class="var-key">S</span><span class="var-val">신호 전송률 (baud) — 1초당 신호 요소 수</span>
+        <span class="var-key">N</span><span class="var-val">데이터 전송률 (bps) — 1초당 비트 수</span>
+        <span class="var-key">r</span><span class="var-val">신호 요소당 데이터 요소 수</span>
+      </div>
+      <div style="margin-top:12px;">
+        <table>
+          <thead><tr><th>문제점</th><th>원인</th><th>해결</th></tr></thead>
+          <tbody>
+            <tr><td>기준선 표류</td><td>연속 0/1 → 수신측 기준선 이동</td><td>맨체스터</td></tr>
+            <tr><td>직류 성분</td><td>저주파 → 전선·변압기 통과 불가</td><td>극형 방식</td></tr>
+            <tr><td>자기 동기화</td><td>클럭 불일치 → 비트 오독</td><td>맨체스터</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 파형 비교 -->
+    <div class="section">
+      <div class="section-title amber">회선 부호화 파형 비교 (비트: 1 0 1 1 0)</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- 비트 구분선 & 레이블 -->
+          <text x="90" y="14" font-family="monospace" font-size="10" fill="#555">비트:</text>
+          <text x="152" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="218" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">0</text>
+          <text x="284" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="350" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="416" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">0</text>
+          <line x1="120" y1="20" x2="120" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="186" y1="20" x2="186" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="252" y1="20" x2="252" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="318" y1="20" x2="318" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="384" y1="20" x2="384" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="450" y1="20" x2="450" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+          <!-- NRZ -->
+          <text x="10" y="55" font-family="monospace" font-size="10" fill="#7ee8a2" font-weight="bold">NRZ</text>
+          <text x="10" y="67" font-family="monospace" font-size="8" fill="#555">전압유지</text>
+          <line x1="120" y1="58" x2="450" y2="58" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#7ee8a2" stroke-width="2" stroke-linecap="square"
+            points="120,42 186,42 186,74 252,74 252,42 318,42 318,42 384,42 384,74 450,74"/>
+          <text x="123" y="39" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="82" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- RZ -->
+          <text x="10" y="120" font-family="monospace" font-size="10" fill="#378ADD" font-weight="bold">RZ</text>
+          <text x="10" y="132" font-family="monospace" font-size="8" fill="#555">중간복귀</text>
+          <line x1="120" y1="122" x2="450" y2="122" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="120,106 153,106 153,122 186,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="186,138 219,138 219,122 252,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="252,106 285,106 285,122 318,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="318,106 351,106 351,122 384,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="384,138 417,138 417,122 450,122"/>
+          <text x="123" y="103" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="146" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- 맨체스터 -->
+          <text x="10" y="188" font-family="monospace" font-size="9" fill="#D85A30" font-weight="bold">맨체스터</text>
+          <text x="10" y="200" font-family="monospace" font-size="8" fill="#555">중간반전</text>
+          <line x1="120" y1="190" x2="450" y2="190" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="120,206 153,206 153,174 186,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="186,174 219,174 219,206 252,206"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="252,206 285,206 285,174 318,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="318,206 351,206 351,174 384,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="384,174 417,174 417,206 450,206"/>
+          <text x="157" y="170" font-family="monospace" font-size="8" fill="#D85A30">↑1</text>
+          <text x="223" y="170" font-family="monospace" font-size="8" fill="#D85A30">↓0</text>
+          <text x="123" y="171" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="213" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- 차분 맨체스터 -->
+          <text x="10" y="256" font-family="monospace" font-size="9" fill="#7F77DD" font-weight="bold">차분맨체스터</text>
+          <text x="10" y="268" font-family="monospace" font-size="8" fill="#555">전이유무</text>
+          <line x1="120" y1="258" x2="450" y2="258" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="120,274 153,274 153,242 186,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="186,274 219,274 219,242 252,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="252,242 285,242 285,274 318,274"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="318,274 351,274 351,242 384,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="384,274 417,274 417,242 450,242"/>
+          <circle cx="186" cy="274" r="4" fill="#7F77DD"/>
+          <circle cx="384" cy="274" r="4" fill="#7F77DD"/>
+          <text x="123" y="239" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="281" font-family="monospace" font-size="8" fill="#555">-V</text>
+          <text x="180" y="292" font-family="monospace" font-size="8" fill="#7F77DD">전이=0</text>
+          <text x="378" y="292" font-family="monospace" font-size="8" fill="#7F77DD">전이=0</text>
+        </svg>
+      </div>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">맨체스터 (절대적)</div>
+          반전 방향 자체가 비트<br>극성 뒤집히면 → 오독
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent5)">차분 맨체스터 (상대적)</div>
+          전이 유무만 봄<br>극성 뒤집혀도 → 정확히 읽음
+        </div>
+      </div>
+    </div>
+
+    <!-- 부호화 방식 표 -->
+    <div class="section">
+      <div class="section-title orange">부호화 방식 비교</div>
+      <table>
+        <thead><tr><th>방식</th><th>대역폭</th><th>동기화</th><th>잡음</th><th>사용</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">NRZ</span></td><td>1배</td><td>약함</td><td>보통</td><td>USB, 시리얼</td></tr>
+          <tr><td><span class="tag a">RZ</span></td><td>2배</td><td>좋음</td><td>보통</td><td>광섬유 일부</td></tr>
+          <tr><td><span class="tag g">맨체스터</span></td><td>2배</td><td>좋음</td><td>보통</td><td>이더넷, RFID</td></tr>
+          <tr><td><span class="tag p">차분맨체스터</span></td><td>2배</td><td>좋음</td><td><span class="highlight">강함</span></td><td>토큰링</td></tr>
+        </tbody>
+      </table>
+      <div class="note">RZ 대역폭 2배 이유: 비트당 변화가 NRZ 1번 → RZ 2번 → 2배 빠른 주파수 필요</div>
+
+      <!-- 4D-PAM5 -->
+      <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border);">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent3);margin-bottom:8px;">다준위 방식 — 4D-PAM5</div>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 500 60" xmlns="http://www.w3.org/2000/svg">
+            <!-- 4개 선 시각화 -->
+            <text x="10" y="14" font-family="monospace" font-size="9" fill="#555">선 4개 × 5준위(-2,-1,0,+1,+2)</text>
+            <rect x="10" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="115" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="220" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="325" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <text x="55" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 1</text>
+            <text x="160" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 2</text>
+            <text x="265" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 3</text>
+            <text x="370" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 4</text>
+            <text x="440" y="33" font-family="monospace" font-size="9" fill="#f9c74f">× log₂5</text>
+            <text x="10" y="56" font-family="monospace" font-size="9" fill="#7ee8a2">4 × 2.32비트 ≈ 9비트/신호 → 1Gbps LAN 달성</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PCM -->
+    <div class="section">
+      <div class="section-title purple">PCM (아날로그→디지털) — 표양부</div>
+      <ul class="steps">
+        <li><div><strong>표본화 (Sampling)</strong> — 일정 간격으로 진폭 측정<br><span class="dim">표본화율 ≥ 최대주파수 × 2 · 예) 음성 4kHz → 8,000 samples/s</span></div></li>
+        <li><div><strong>양자화 (Quantizing)</strong> — 실수값을 정수로 근사<br><span class="dim">양자화 잡음 발생 (근사 오차)</span></div></li>
+        <li><div><strong>부호화 (Encoding)</strong> — n비트 코드로 변환</div></li>
+      </ul>
+      <div class="formula purple" style="margin-top:12px;">Δ = (V_max − V_min) / L</div>
+      <div class="var-list">
+        <span class="var-key">Δ</span><span class="var-val">양자화 간격 (구간 크기) — L↑ → Δ↓ → 잡음 감소</span>
+        <span class="var-key">V_max</span><span class="var-val">신호 최대 전압 (maximum voltage)</span>
+        <span class="var-key">V_min</span><span class="var-val">신호 최소 전압 (minimum voltage)</span>
+        <span class="var-key">L</span><span class="var-val">양자화 준위 수 (levels)</span>
+      </div>
+      <div class="formula purple" style="margin-top:8px;">Bit rate = f_s × n_b</div>
+      <div class="var-list">
+        <span class="var-key">f_s</span><span class="var-val">1초당 표본화 횟수 (sampling frequency)</span>
+        <span class="var-key">n_b</span><span class="var-val">표본당 비트 수 (number of bits per sample)</span>
+      </div>
+      <div class="note">예) 음성: 8,000 × 8bit = 64,000 bps</div>
+      <div class="note">PCM + 광대역: 아날로그→[PCM]→디지털→[광대역 변조]→전송 · 예) VoIP</div>
+    </div>
+
+    <!-- 전송 방식 -->
+    <div class="section">
+      <div class="section-title green">전송 방식 — 병렬 vs 직렬</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">병렬 전송</div>
+          n비트 동시 · n배 빠름<br>비용 높음 · 단거리
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">직렬 전송</div>
+          1비트씩 순차 · 저렴<br>장거리 가능
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:8px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">비동기식</div>
+          시작비트(0)+데이터+정지비트(1)<br>바이트마다 재동기화
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">동기식</div>
+          프레임 단위 전송<br>간격 없음 · 고속 유리
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH05 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 05</span>
+    <span class="chapter-title" style="color:var(--accent5);">아날로그 전송 (변복조)</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 변조 방식 -->
+    <div class="section">
+      <div class="section-title purple">변조 방식 & 신호율 공식</div>
+      <div class="formula purple">S = N / r &nbsp;&nbsp; (신호율 = 비트율 / 신호당 비트수)</div>
+      <table style="margin-top:10px;">
+        <thead><tr><th>방식</th><th>변조 요소</th><th>특징</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">ASK</span></td><td>진폭</td><td>진폭만 변화 · 주파수·위상 유지</td></tr>
+          <tr><td><span class="tag g">FSK</span></td><td>주파수</td><td>주파수만 변화 (0→f₁, 1→f₂)</td></tr>
+          <tr><td><span class="tag a">PSK</span></td><td>위상</td><td>BPSK: 0°/180° · QPSK: 4위상→2bit/신호</td></tr>
+          <tr><td><span class="tag p">QAM</span></td><td>진폭+위상</td><td>ASK+PSK 조합 · 고속 통신에 유리</td></tr>
+        </tbody>
+      </table>
+      <div class="note">광대역 쓰는 이유: 전화선·무선은 0Hz 저대역 통과 불가 → 특정 주파수에 실어 전송</div>
+
+      <!-- 변조 파형 시각화 -->
+      <div class="svg-wrap" style="margin-top:12px;">
+        <svg viewBox="0 0 580 170" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="14" font-family="monospace" font-size="9" fill="#888">원본 디지털: 1 1 0 0 1</text>
+          <polyline fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="square"
+            points="10,28 50,28 50,38 90,38 90,28 130,28 130,38 170,38 170,28 210,28"/>
+
+          <!-- ASK -->
+          <text x="10" y="62" font-family="monospace" font-size="9" fill="#90e0ef">ASK (진폭)</text>
+          <path d="M10,75 C15,65 25,65 30,75 C35,85 45,85 50,75 C55,65 65,65 70,75 C75,85 85,85 90,75 L90,82 L130,82 L130,82 L90,82 L90,75 C95,65 105,65 110,75 C115,85 125,85 130,75 L130,82 L170,82 L170,75 C175,65 185,65 190,75 C195,85 205,85 210,75" fill="none" stroke="#90e0ef" stroke-width="1.5"/>
+
+          <!-- FSK -->
+          <text x="10" y="116" font-family="monospace" font-size="9" fill="#7ee8a2">FSK (주파수)</text>
+          <path d="M10,130 C13,122 17,122 20,130 C23,138 27,138 30,130 C33,122 37,122 40,130 C43,138 47,138 50,130 C54,124 58,124 62,130 C66,136 70,136 74,130 C78,124 82,124 86,130 C90,136 94,136 98,130 C100,122 104,122 108,130 C112,138 116,138 120,130 C124,122 128,122 132,130 C136,138 140,138 144,130 C148,122 152,122 156,130 C160,138 164,138 168,130 C170,122 174,122 178,130 C182,138 186,138 190,130 C194,122 198,122 202,130 C206,138 210,138 212,130" fill="none" stroke="#7ee8a2" stroke-width="1.5"/>
+
+          <text x="10" y="160" font-family="monospace" font-size="8" fill="#555">1=고주파, 0=저주파 · PSK/QAM도 유사하게 위상/진폭+위상 변화</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 성운도 -->
+    <div class="section">
+      <div class="section-title cyan">성운도 (Constellation Diagram)</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">X축=동위상 · Y축=구상 · 점 위치=진폭+위상 · 점↑=효율↑=잡음 취약↑</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- BPSK -->
+          <text x="70" y="14" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">BPSK (2점)</text>
+          <line x1="10" y1="80" x2="130" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="70" y1="30" x2="70" y2="130" stroke="#333" stroke-width="0.5"/>
+          <circle cx="35" cy="80" r="7" fill="#185FA5" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="105" cy="80" r="7" fill="#185FA5" stroke="#90e0ef" stroke-width="1.5"/>
+          <text x="35" y="84" font-family="monospace" font-size="8" fill="#fff" text-anchor="middle">0</text>
+          <text x="105" y="84" font-family="monospace" font-size="8" fill="#fff" text-anchor="middle">1</text>
+          <text x="70" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">1bit/신호</text>
+
+          <!-- QPSK -->
+          <text x="280" y="14" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">QPSK (4점)</text>
+          <line x1="200" y1="80" x2="360" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="280" y1="25" x2="280" y2="135" stroke="#333" stroke-width="0.5"/>
+          <circle cx="245" cy="47" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="315" cy="47" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="245" cy="113" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="315" cy="113" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="245" y="51" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">00</text>
+          <text x="315" y="51" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">01</text>
+          <text x="245" y="117" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">10</text>
+          <text x="315" y="117" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">11</text>
+          <text x="280" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">2bit/신호</text>
+
+          <!-- 16-QAM 개념도 -->
+          <text x="480" y="14" font-family="monospace" font-size="10" fill="#f9c74f" text-anchor="middle">16-QAM (16점)</text>
+          <line x1="420" y1="80" x2="540" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="480" y1="25" x2="480" y2="135" stroke="#333" stroke-width="0.5"/>
+          <!-- 16개 점 4x4 -->
+          <circle cx="445" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <text x="480" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">4bit/신호</text>
+        </svg>
+      </div>
+      <table style="margin-top:8px;">
+        <thead><tr><th>방식</th><th>점 수</th><th>비트/신호</th></tr></thead>
+        <tbody>
+          <tr><td>BPSK</td><td>2</td><td>1</td></tr>
+          <tr><td>QPSK</td><td>4</td><td>2</td></tr>
+          <tr><td>16-QAM</td><td>16</td><td>4</td></tr>
+          <tr><td>64-QAM</td><td>64</td><td>6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ 핵심 암기 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">암기</span>
+    <span class="chapter-title" style="color:var(--accent2);">핵심 암기 모음</span>
+  </div>
+  <div class="chapter-body">
+    <div class="section">
+      <div class="memory-grid">
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">OSI 7계층</div>물데네전세표응</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">PCM 3단계</div>표양부 (표본화→양자화→부호화)</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">IP vs MAC</div>IP = 집주소 유지 / MAC = 정거장 교체</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">교환방식</div>회선 = 트럭 전세 / 패킷 = 합송 택배</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">나이퀴스트 vs 섀논</div>잡음 없음 vs 잡음 있음</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">디지털 단점</div>변환 손실 + 대역폭 많이 필요</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">맨체스터 vs 차분</div>방향(절대) vs 전이유무(상대) → 차분이 잡음에 강함</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">RZ 대역폭 2배</div>비트당 2번 변화 → 2배 빠른 주파수 필요</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">양자화 잡음 줄이기</div>L↑ → Δ↓ → 더 세밀하게 근사</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">광대역 쓰는 이유</div>전화선·무선이 저대역(0Hz) 통과 불가</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">스타 토폴로지 단점</div>허브 고장 → 전체 마비</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">섀논 1+SNR</div>SNR=0일 때 log₂(0)=∞ 방지 → C=0 처리</div>
       </div>
     </div>
   </div>
-
-  <!-- CH05: 변조 방식 -->
-  <div class="card">
-    <div class="card-title amber">CH05 · 아날로그 전송 — 변조 방식</div>
-    <div class="formula">S = N / r &nbsp;&nbsp; (신호율 = 비트율 / 신호당 비트수)</div>
-    <table style="margin-top:8px;">
-      <thead><tr><th>방식</th><th>변조 요소</th><th>특징</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag c">ASK</span></td><td>진폭</td><td>진폭만 변화, 주파수·위상 유지</td></tr>
-        <tr><td><span class="tag g">FSK</span></td><td>주파수</td><td>주파수만 변화 (0→f₁, 1→f₂)</td></tr>
-        <tr><td><span class="tag a">PSK</span></td><td>위상</td><td>BPSK: 0°/180° · QPSK: 4위상→2비트/신호</td></tr>
-        <tr><td><span class="tag p">QAM</span></td><td>진폭+위상</td><td>ASK+PSK 조합 · 고속 통신에 유리</td></tr>
-      </tbody>
-    </table>
-    <p class="note">광대역 쓰는 이유: 전화선·무선은 0Hz 저대역 통과 불가 → 특정 주파수에 실어 전송 필요</p>
-  </div>
-
-  <!-- CH05: 성운도 -->
-  <div class="card">
-    <div class="card-title cyan">CH05 · 성운도 (Constellation Diagram)</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">X축=동위상 · Y축=구상 · 점 위치=진폭+위상</div>
-    <!-- 성운도 SVG -->
-    <svg viewBox="0 0 280 200" style="width:100%;margin:4px 0;">
-      <!-- BPSK -->
-      <text x="30" y="14" font-family="monospace" font-size="9" fill="#90e0ef">BPSK (2점)</text>
-      <line x1="10" y1="90" x2="130" y2="90" stroke="#333" stroke-width="0.5"/>
-      <line x1="70" y1="30" x2="70" y2="110" stroke="#333" stroke-width="0.5"/>
-      <circle cx="40" cy="90" r="5" fill="#378ADD"/>
-      <circle cx="100" cy="90" r="5" fill="#378ADD"/>
-      <text x="35" y="108" font-family="monospace" font-size="8" fill="#666">0</text>
-      <text x="95" y="108" font-family="monospace" font-size="8" fill="#666">1</text>
-      <!-- QPSK -->
-      <text x="155" y="14" font-family="monospace" font-size="9" fill="#7ee8a2">QPSK (4점)</text>
-      <line x1="140" y1="90" x2="275" y2="90" stroke="#333" stroke-width="0.5"/>
-      <line x1="207" y1="30" x2="207" y2="145" stroke="#333" stroke-width="0.5"/>
-      <circle cx="175" cy="60" r="5" fill="#1D9E75"/>
-      <circle cx="237" cy="60" r="5" fill="#1D9E75"/>
-      <circle cx="175" cy="118" r="5" fill="#1D9E75"/>
-      <circle cx="237" cy="118" r="5" fill="#1D9E75"/>
-      <text x="162" y="56" font-family="monospace" font-size="7" fill="#666">00</text>
-      <text x="240" y="56" font-family="monospace" font-size="7" fill="#666">01</text>
-      <text x="162" y="130" font-family="monospace" font-size="7" fill="#666">10</text>
-      <text x="240" y="130" font-family="monospace" font-size="7" fill="#666">11</text>
-      <!-- 16-QAM 표시 -->
-      <text x="60" y="155" font-family="monospace" font-size="8" fill="#f9c74f">16-QAM: 16점 → 4bit/신호</text>
-      <text x="60" y="168" font-family="monospace" font-size="8" fill="#f9c74f">64-QAM: 64점 → 6bit/신호</text>
-      <text x="60" y="181" font-family="monospace" font-size="8" fill="#888">점↑ = 효율↑ = 잡음 취약↑</text>
-    </svg>
-    <table>
-      <thead><tr><th>방식</th><th>점 수</th><th>비트/신호</th></tr></thead>
-      <tbody>
-        <tr><td>BPSK</td><td>2</td><td>1</td></tr>
-        <tr><td>QPSK</td><td>4</td><td>2</td></tr>
-        <tr><td>16-QAM</td><td>16</td><td>4</td></tr>
-        <tr><td>64-QAM</td><td>64</td><td>6</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 핵심 암기 모음 -->
-  <div class="card wide">
-    <div class="card-title green">핵심 암기 모음</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">OSI 7계층</div>물데네전세표응</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">PCM 3단계</div>표양부 (표본화→양자화→부호화)</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">IP vs MAC</div>IP = 집주소 유지 / MAC = 정거장 교체</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">교환방식</div>회선 = 트럭 전세 / 패킷 = 합송 택배</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">나이퀴스트 vs 섀논</div>잡음 없음 vs 잡음 있음</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">디지털 단점</div>변환 손실 + 대역폭 많이 필요</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">맨체스터 vs 차분</div>방향(절대) vs 전이유무(상대) → 차분이 잡음에 강함</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">RZ 대역폭 2배</div>비트당 2번 변화 → 2배 빠른 주파수 필요</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">양자화 잡음 줄이기</div>L↑ → Δ↓ → 더 세밀하게 근사</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">광대역 쓰는 이유</div>전화선·무선이 저대역(0Hz) 통과 불가 → 특정 주파수에 변조</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">스타 토폴로지 단점</div>허브 고장 → 전체 마비</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">섀논 1+SNR</div>SNR=0일 때 log₂(0)=∞ 방지 → C=0 처리</div>
-    </div>
-  </div>
-
 </div>
 
 <footer>Data Communications Cheat Sheet · CH01–CH05 · DC_01–DC_06</footer>
 
-<div style="text-align:center;margin-top:20px;">
+<div style="text-align:center;margin-top:24px;margin-bottom:8px;">
   <a href="../notes.html?repo=Data-Communications"
-     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7ee8a2;border:0.5px solid #1a3a25;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;transition:border-color 0.2s,background 0.2s;">
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7ee8a2;border:0.5px solid #1a3a25;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
     자세히 보기 →
   </a>
 </div>
