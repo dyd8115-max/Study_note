@@ -657,20 +657,41 @@
 
       <!-- 변조 파형 시각화 -->
       <div class="svg-wrap" style="margin-top:12px;">
-        <svg viewBox="0 0 580 170" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="14" font-family="monospace" font-size="9" fill="#888">원본 디지털: 1 1 0 0 1</text>
+        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- 원본 디지털 -->
+          <text x="10" y="14" font-family="monospace" font-size="9" fill="#888">원본 디지털: 1  1  0  0  1</text>
           <polyline fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="square"
-            points="10,28 50,28 50,38 90,38 90,28 130,28 130,38 170,38 170,28 210,28"/>
+            points="10,26 90,26 90,36 170,36 170,26 250,26 250,36 330,36 330,26 410,26"/>
 
-          <!-- ASK -->
+          <!-- ASK: 1=큰 진폭, 0=진폭 없음 -->
           <text x="10" y="62" font-family="monospace" font-size="9" fill="#90e0ef">ASK (진폭)</text>
-          <path d="M10,75 C15,65 25,65 30,75 C35,85 45,85 50,75 C55,65 65,65 70,75 C75,85 85,85 90,75 L90,82 L130,82 L130,82 L90,82 L90,75 C95,65 105,65 110,75 C115,85 125,85 130,75 L130,82 L170,82 L170,75 C175,65 185,65 190,75 C195,85 205,85 210,75" fill="none" stroke="#90e0ef" stroke-width="1.5"/>
+          <!-- 1: 큰 파형 (10~90) -->
+          <path d="M10,75 C20,52 40,52 50,75 C60,98 80,98 90,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
+          <!-- 1: 큰 파형 (90~170) -->
+          <path d="M90,75 C100,52 120,52 130,75 C140,98 160,98 170,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
+          <!-- 0: 진폭 없음 (평평, 170~250) -->
+          <line x1="170" y1="75" x2="250" y2="75" stroke="#90e0ef" stroke-width="1.8"/>
+          <!-- 0: 진폭 없음 (평평, 250~330) -->
+          <line x1="250" y1="75" x2="330" y2="75" stroke="#90e0ef" stroke-width="1.8"/>
+          <!-- 1: 큰 파형 (330~410) -->
+          <path d="M330,75 C340,52 360,52 370,75 C380,98 400,98 410,75" fill="none" stroke="#90e0ef" stroke-width="1.8"/>
+          <text x="420" y="79" font-family="monospace" font-size="8" fill="#90e0ef">1=큰진폭, 0=없음</text>
 
-          <!-- FSK -->
-          <text x="10" y="116" font-family="monospace" font-size="9" fill="#7ee8a2">FSK (주파수)</text>
-          <path d="M10,130 C13,122 17,122 20,130 C23,138 27,138 30,130 C33,122 37,122 40,130 C43,138 47,138 50,130 C54,124 58,124 62,130 C66,136 70,136 74,130 C78,124 82,124 86,130 C90,136 94,136 98,130 C100,122 104,122 108,130 C112,138 116,138 120,130 C124,122 128,122 132,130 C136,138 140,138 144,130 C148,122 152,122 156,130 C160,138 164,138 168,130 C170,122 174,122 178,130 C182,138 186,138 190,130 C194,122 198,122 202,130 C206,138 210,138 212,130" fill="none" stroke="#7ee8a2" stroke-width="1.5"/>
+          <!-- FSK: 1=고주파, 0=저주파 -->
+          <text x="10" y="126" font-family="monospace" font-size="9" fill="#7ee8a2">FSK (주파수)</text>
+          <!-- 1: 고주파 (촘촘, 10~90) -->
+          <path d="M10,138 C15,128 25,128 30,138 C35,148 45,148 50,138 C55,128 65,128 70,138 C75,148 85,148 90,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
+          <!-- 1: 고주파 (촘촘, 90~170) -->
+          <path d="M90,138 C95,128 105,128 110,138 C115,148 125,148 130,138 C135,128 145,128 150,138 C155,148 165,148 170,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
+          <!-- 0: 저주파 (느슨, 170~250) -->
+          <path d="M170,138 C190,118 210,118 230,138 C250,158 250,158 250,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
+          <!-- 0: 저주파 (느슨, 250~330) -->
+          <path d="M250,138 C270,118 290,118 310,138 C330,158 330,158 330,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
+          <!-- 1: 고주파 (촘촘, 330~410) -->
+          <path d="M330,138 C335,128 345,128 350,138 C355,148 365,148 370,138 C375,128 385,128 390,138 C395,148 405,148 410,138" fill="none" stroke="#7ee8a2" stroke-width="1.8"/>
+          <text x="420" y="142" font-family="monospace" font-size="8" fill="#7ee8a2">1=고주파, 0=저주파</text>
 
-          <text x="10" y="160" font-family="monospace" font-size="8" fill="#555">1=고주파, 0=저주파 · PSK/QAM도 유사하게 위상/진폭+위상 변화</text>
+          <text x="10" y="192" font-family="monospace" font-size="8" fill="#555">PSK: 위상(시작위치) 변화 · QAM: 진폭+위상 동시 변화</text>
         </svg>
       </div>
     </div>
