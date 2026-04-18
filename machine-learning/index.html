@@ -10,12 +10,12 @@
 
 <header>
   <h1>Machine Learning — 치트시트</h1>
-  <p>CH00–CH03 · 선형대수 / 확률 / 기초통계 및 확률이론</p>
+  <p>CH01–CH07 · 선형대수 / 확률 / 통계 / MLE / 분류 / 군집화</p>
 </header>
 
 <div class="grid">
 
-  <!-- 1장: 벡터 기초 -->
+  <!-- CH01: 벡터 기초 -->
   <div class="card">
     <div class="card-title green">CH01 · 벡터 기초</div>
     <div class="formula green">크기 (Norm)  ‖v‖ = √(x₁²+x₂²+…+xₙ²)</div>
@@ -26,49 +26,65 @@
       <thead><tr><th>내적값</th><th>의미</th></tr></thead>
       <tbody>
         <tr><td><span class="tag g">양수</span></td><td>같은 방향</td></tr>
-        <tr><td><span class="tag a">0</span></td><td>직교 (90°)</td></tr>
+        <tr><td><span class="tag a">0</span></td><td>직교 (90°) — a⊥b</td></tr>
         <tr><td><span class="tag o">음수</span></td><td>반대 방향</td></tr>
       </tbody>
     </table>
+    <p class="note">직교 조건: a·b = 0 ↔ cosθ = 0</p>
   </div>
 
-  <!-- 1장: 외적 계산 -->
+  <!-- CH01: 평면 & 법선 벡터 -->
   <div class="card">
-    <div class="card-title amber">CH01 · 외적 계산</div>
+    <div class="card-title amber">CH01 · 평면 & 법선 벡터</div>
+    <div class="formula">평면  P = {αu₁ + βu₂ | α,β ∈ ℝ}</div>
+    <table style="margin-top:8px;">
+      <thead><tr><th>조건</th><th>의미</th></tr></thead>
+      <tbody>
+        <tr><td>a·u₁ = 0 이고 a·u₂ = 0</td><td><span class="tag a">법선 벡터</span> — P에 수직</td></tr>
+        <tr><td>b = αu₁ + βu₂</td><td><span class="tag g">평면 위</span> — 선형결합</td></tr>
+        <tr><td>법선 ⊥ 평면 위 벡터</td><td>a·b = 0 반드시 성립</td></tr>
+      </tbody>
+    </table>
+    <p class="note">법선 벡터는 평면 위의 모든 벡터와 수직이므로 내적=0</p>
+  </div>
+
+  <!-- CH01: 외적 계산 -->
+  <div class="card">
+    <div class="card-title cyan">CH01 · 외적 계산</div>
     <div class="formula">A×B = | i  j  k  |
         | A₁ A₂ A₃ |
         | B₁ B₂ B₃ |</div>
     <div class="row"><span class="key">i 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">A₂B₃ − A₃B₂</span></div>
     <div class="row"><span class="key">j 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">−(A₁B₃ − A₃B₁)</span></div>
     <div class="row"><span class="key">k 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">A₁B₂ − A₂B₁</span></div>
-    <p class="note" style="margin-top:8px;">예) [2,3,4]×[5,6,7] = [-3, 6, -3]</p>
+    <p class="note">예) [2,3,4]×[5,6,7] = [-3, 6, -3]</p>
   </div>
 
-  <!-- 1장: 행렬 연산 -->
+  <!-- CH01: 행렬 연산 -->
   <div class="card">
-    <div class="card-title cyan">CH01 · 행렬 연산</div>
-    <div class="formula cyan">행렬곱  Cᵢⱼ = Σₗ AᵢₗBₗⱼ</div>
-    <div class="formula cyan">역행렬  A⁻¹ = 1/det(A) · [d -b; -c a]</div>
-    <div class="formula cyan">det(A) = ad − bc</div>
+    <div class="card-title purple">CH01 · 행렬 연산</div>
+    <div class="formula purple">행렬곱  Cᵢⱼ = Σₗ AᵢₗBₗⱼ</div>
+    <div class="formula purple">역행렬  A⁻¹ = 1/det(A) · [d -b; -c a]</div>
+    <div class="formula purple">det(A) = ad − bc</div>
     <div class="row" style="margin-top:8px;"><span class="key">rank = n</span><span class="val highlight">역행렬 존재</span></div>
     <div class="row"><span class="key">rank &lt; n</span><span class="val" style="color:var(--accent4)">역행렬 없음</span></div>
     <p class="note">rank = 행 축소 후 0이 아닌 행의 수</p>
   </div>
 
-  <!-- 1장: 투영 & 선형변환 -->
+  <!-- CH01: 투영 & 선형변환 -->
   <div class="card">
-    <div class="card-title purple">CH01 · 투영 & 선형변환</div>
-    <div class="formula purple">투영   proj(x) = (x·u)·u</div>
-    <div class="formula purple">잔차   r = x − proj(x)</div>
-    <div class="formula purple">선형변환  y = Wx</div>
+    <div class="card-title green">CH01 · 투영 & 선형변환</div>
+    <div class="formula green">투영   proj(x) = (x·u)·u</div>
+    <div class="formula green">잔차   r = x − proj(x)</div>
+    <div class="formula green">선형변환  y = Wx</div>
     <div class="row" style="margin-top:8px;"><span class="key">M &lt; N</span><span class="val">차원 축소</span></div>
     <div class="row"><span class="key">M &gt; N</span><span class="val">차원 확대</span></div>
     <p class="note">기저 조건: 선형 독립 + 벡터 수 = 공간의 차원</p>
   </div>
 
-  <!-- 2장: 확률 공간 -->
+  <!-- CH02: 확률 공간 -->
   <div class="card">
-    <div class="card-title green">CH02 · 확률 공간</div>
+    <div class="card-title amber">CH02 · 확률 공간</div>
     <table>
       <thead><tr><th>기호</th><th>이름</th><th>설명</th></tr></thead>
       <tbody>
@@ -81,9 +97,9 @@
     <div class="formula" style="margin-top:10px;">Kolmogorov: P(A)≥0, P(Ω)=1, P(A∪B)=P(A)+P(B) if 배반</div>
   </div>
 
-  <!-- 2장: CDF/PMF/PDF -->
+  <!-- CH02: CDF/PMF/PDF -->
   <div class="card">
-    <div class="card-title amber">CH02 · CDF / PMF / PDF</div>
+    <div class="card-title cyan">CH02 · CDF / PMF / PDF</div>
     <div class="formula">CDF  F(x) = P(X ≤ x)</div>
     <div class="formula">PMF  p(x) = P(X=x),  Σp(x) = 1  [이산]</div>
     <div class="formula">PDF  P(a≤X≤b) = ∫f(x)dx,  ∫f(x)dx = 1  [연속]</div>
@@ -91,69 +107,164 @@
     <p class="note">연속: P(X=x) = 0 → 반드시 구간으로 계산</p>
   </div>
 
-  <!-- 2장: 조건부/독립/베이즈 -->
+  <!-- CH02: 조건부/독립/베이즈 -->
   <div class="card">
-    <div class="card-title cyan">CH02 · 조건부 / 독립 / 베이즈</div>
-    <div class="formula cyan">조건부  P(A|B) = P(A∩B) / P(B)</div>
-    <div class="formula cyan">독립    P(A∩B) = P(A)·P(B)</div>
-    <div class="formula cyan">베이즈  P(θ|X) = P(X|θ)·P(θ) / P(X)</div>
+    <div class="card-title purple">CH02 · 조건부 / 독립 / 베이즈</div>
+    <div class="formula purple">조건부  P(A|B) = P(A∩B) / P(B)</div>
+    <div class="formula purple">독립    P(A∩B) = P(A)·P(B)</div>
+    <div class="formula purple">베이즈  P(θ|X) = P(X|θ)·P(θ) / P(X)</div>
     <div class="row" style="margin-top:8px;"><span class="key">연쇄 법칙</span><span class="val" style="font-family:var(--mono);font-size:11px;">P(A∩B) = P(A|B)·P(B)</span></div>
     <p class="note">Prior + 데이터 → 사후 확률 업데이트</p>
   </div>
 
-  <!-- 2장: 기댓값/분산 -->
+  <!-- CH02: 기댓값/분산 -->
   <div class="card">
-    <div class="card-title purple">CH02 · 기댓값 / 분산</div>
-    <div class="formula purple">E[X] = Σ x·p(x)  [이산]</div>
-    <div class="formula purple">E[X] = ∫ x·f(x)dx  [연속]</div>
-    <div class="formula purple">Var[X] = E[X²] − (E[X])²</div>
-    <div class="formula purple">SD[X] = √Var[X]</div>
+    <div class="card-title green">CH02 · 기댓값 / 분산</div>
+    <div class="formula green">E[X] = Σ x·p(x)  [이산]</div>
+    <div class="formula green">E[X] = ∫ x·f(x)dx  [연속]</div>
+    <div class="formula green">Var[X] = E[X²] − (E[X])²</div>
+    <div class="formula green">SD[X] = √Var[X]</div>
     <div class="row" style="margin-top:8px;"><span class="key">선형성</span><span class="val" style="font-family:var(--mono);font-size:11px;">E[aX+b] = aE[X]+b</span></div>
     <div class="row"><span class="key">스케일</span><span class="val" style="font-family:var(--mono);font-size:11px;">Var[aX+b] = a²Var[X]</span></div>
   </div>
 
-  <!-- 3장: 통계 파라미터 -->
+  <!-- CH03: 통계 파라미터 & 공분산 -->
   <div class="card">
-    <div class="card-title green">CH03 · 통계 파라미터</div>
-    <div class="formula green">평균  x̄ = (1/n) Σxᵢ</div>
-    <div class="formula green">분산  s² = 1/(n-1) Σ(xᵢ−x̄)²</div>
-    <div class="formula green">표준편차  s = √s²</div>
-    <div class="formula green">공분산  C(x,y) = 1/(n-1) Σ(xᵢ−x̄)(yᵢ−ȳ)</div>
-    <div class="formula green">상관계수  ρ = C(x,y) / (σₓσᵧ),  |ρ| ≤ 1</div>
+    <div class="card-title amber">CH03 · 통계 파라미터</div>
+    <div class="formula amber">평균    x̄ = (1/N) Σxᵢ</div>
+    <div class="formula amber">분산    σ² = (1/N) Σ(xᵢ−x̄)²  [MLE, 편향]</div>
+    <div class="formula amber">불편    s² = 1/(N-1) Σ(xᵢ−x̄)²</div>
+    <div class="formula amber">공분산  Cov = (1/N) Σ(xᵢ−x̄)(yᵢ−ȳ)</div>
+    <div class="formula amber">상관계수 r = Cov(X,Y) / (σₓσᵧ),  |r|≤1</div>
+    <p class="note">MLE σ²은 편향 → μ̂ 추정으로 자유도 1 감소 → N-1 사용해야 불편</p>
   </div>
 
-  <!-- 3장: 왜도/첨도/Bias-Variance -->
+  <!-- CH03: 이항 분포 & 정규 근사 -->
   <div class="card">
-    <div class="card-title amber">CH03 · 왜도 / 첨도 / Bias-Variance</div>
+    <div class="card-title cyan">CH03 · 이항 분포 & 정규 근사</div>
+    <div class="formula cyan">X ~ B(n,p)  →  E[X]=np, Var(X)=np(1-p)</div>
+    <div class="formula cyan">CLT 근사:  Z = (X−np) / √(np(1−p)) ≈ N(0,1)</div>
+    <div class="row" style="margin-top:8px;"><span class="key">이항 MLE</span><span class="val" style="font-family:var(--mono);font-size:11px;">p̂ = k/n  (관측 빈도)</span></div>
+    <div class="row"><span class="key">CLT 조건</span><span class="val">n ≥ 30 (충분히 클 때)</span></div>
+    <p class="note">68-95-99.7 규칙: P(μ±σ)≈68%, P(μ±2σ)≈95%</p>
+  </div>
+
+  <!-- CH03: 왜도/첨도/Bias-Variance -->
+  <div class="card">
+    <div class="card-title purple">CH03 · 왜도 / 첨도 / Bias-Variance</div>
     <div class="formula">왜도  = Σ(xᵢ−x̄)³ / [Σ(xᵢ−x̄)²]^(3/2)</div>
     <div class="formula">첨도  = Σ(xᵢ−x̄)⁴ / [Σ(xᵢ−x̄)²]²</div>
     <div class="row" style="margin-top:8px;"><span class="key">왜도 0</span><span class="val">좌우 대칭</span></div>
     <div class="row"><span class="key">첨도 3</span><span class="val">정규분포</span></div>
     <div class="formula" style="margin-top:8px;">E[(y−ŷ)²] = Bias² + Variance + Noise</div>
-    <p class="note">모델 복잡도 ↑ → Bias ↓, Variance ↑ (Trade-off)</p>
+    <p class="note">복잡도↑ → Bias↓, Variance↑ (Trade-off)</p>
   </div>
 
-  <!-- 3장: 정규분포/CLT/회귀 -->
+  <!-- CH03: MLE / MAP -->
   <div class="card">
-    <div class="card-title cyan">CH03 · 정규분포 / CLT / 회귀</div>
-    <div class="formula cyan">정규분포  N(x;μ,σ²) = 1/√(2πσ²) · e^(-(x-μ)²/2σ²)</div>
-    <div class="formula cyan">CLT  X̄ₙ → N(μ, σ²/n)  as  n→∞</div>
-    <div class="formula cyan">회귀  ŷ = θ₀ + θ₁x</div>
-    <div class="formula cyan">MSE  J(θ) = (1/N) Σ(ŷᵢ−yᵢ)²</div>
-    <div class="formula cyan">정규방정식  θ = (XᵀX)⁻¹Xᵀy</div>
-    <p class="note">68-95-99.7 규칙: P(μ±σ)≈68%, P(μ±2σ)≈95%</p>
-  </div>
-
-  <!-- 3장: MLE/MAP -->
-  <div class="card">
-    <div class="card-title purple">CH03 · MLE / MAP</div>
-    <div class="formula purple">우도  L(θ;X) = Πᵢ p(xᵢ|θ)  [i.i.d.]</div>
-    <div class="formula purple">로그우도  ℓ(θ) = Σᵢ log p(xᵢ|θ)</div>
-    <div class="formula purple">MLE  θ̂ = argmax ℓ(θ)</div>
-    <div class="formula purple">MAP  θ̂ = argmax [ℓ(θ) + log P(θ)]</div>
+    <div class="card-title green">CH03 · MLE / MAP</div>
+    <div class="formula green">우도    L(θ;X) = Πᵢ p(xᵢ|θ)  [i.i.d.]</div>
+    <div class="formula green">로그우도 ℓ(θ) = Σᵢ log p(xᵢ|θ)</div>
+    <div class="formula green">MLE  θ̂ = argmax ℓ(θ)</div>
+    <div class="formula green">MAP  θ̂ = argmax [ℓ(θ) + log P(θ)]</div>
     <div class="row" style="margin-top:8px;"><span class="key">Gaussian Prior</span><span class="val">L2 정규화 (Ridge)</span></div>
     <div class="row"><span class="key">Laplace Prior</span><span class="val">L1 정규화 (Lasso)</span></div>
-    <p class="note">Gaussian MLE: μ̄ = (1/n)Σxᵢ,  σ̄² = (1/n)Σ(xᵢ−μ̄)²</p>
+    <p class="note">가우시안 MLE: μ̂ = x̄,  σ̂² = (1/N)Σ(xᵢ−μ̂)²  [편향됨]</p>
+  </div>
+
+  <!-- CH03: 가우시안 분류 (LDA) -->
+  <div class="card">
+    <div class="card-title amber">CH03 · 가우시안 분류 / LDA</div>
+    <div class="formula">P(x|Cₖ) = 1/√(2πσ²) · exp(−(x−μₖ)²/2σ²)</div>
+    <div class="formula">로그우도비 = 1/(2σ²) · [−(x−μ₁)² + (x−μ₂)²]</div>
+    <div class="row" style="margin-top:8px;"><span class="key">결정 경계</span><span class="val" style="font-family:var(--mono);font-size:11px;">x* = (μ₁+μ₂)/2</span></div>
+    <div class="row"><span class="key">x² 소거</span><span class="val">→ 선형 결정 경계</span></div>
+    <div class="row"><span class="key">공통 분산</span><span class="val" style="font-family:var(--mono);font-size:11px;">σ̂² = (Σ편차²₁ + Σ편차²₂) / (n₁+n₂)</span></div>
+    <p class="note">등 사전 확률 + 공통 분산 조건에서만 중점이 결정 경계</p>
+  </div>
+
+  <!-- CH03: 라그랑주 승수법 -->
+  <div class="card">
+    <div class="card-title cyan">CH03 · 라그랑주 승수법 (Categorical MLE)</div>
+    <div class="formula cyan">ℓ = Σ nₖ log πₖ,  제약: Σπₖ = 1</div>
+    <div class="formula cyan">L(π,λ) = ℓ − λ(Σπₖ − 1)</div>
+    <ul class="steps">
+      <li><div>∂L/∂πₖ = 0 → πₖ = nₖ/λ</div></li>
+      <li><div>제약 대입 → λ = n (전체 샘플 수)</div></li>
+      <li><div>π̂ₖ = nₖ/n  (경험적 확률)</div></li>
+    </ul>
+    <p class="note">결과 = Softmax + Cross-Entropy로 학습한 딥러닝의 수렴값과 동일</p>
+  </div>
+
+  <!-- CH04: 선형 회귀 -->
+  <div class="card">
+    <div class="card-title purple">CH04 · 선형 회귀 (MSE 최소화)</div>
+    <div class="formula purple">ŷ = θ₁x + θ₀</div>
+    <div class="formula purple">J(θ) = (1/N) Σ(θ₁xᵢ+θ₀−yᵢ)²</div>
+    <div class="row" style="margin-top:8px;"><span class="key">∂J/∂θ₀=0</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ₁Σxᵢ + Nθ₀ = Σyᵢ</span></div>
+    <div class="row"><span class="key">∂J/∂θ₁=0</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ₁Σxᵢ² + θ₀Σxᵢ = Σxᵢyᵢ</span></div>
+    <div class="formula purple">정규방정식  θ = (XᵀX)⁻¹Xᵀy</div>
+    <p class="note">볼록 함수 → 편미분=0이 전역 최솟값 / 직선은 항상 (x̄, ȳ) 통과</p>
+  </div>
+
+  <!-- CH05: 로지스틱 회귀 -->
+  <div class="card">
+    <div class="card-title green">CH05 · 로지스틱 회귀</div>
+    <div class="formula green">σ(z) = 1/(1+e⁻ᶻ),  σ'(z) = σ(z)(1−σ(z))</div>
+    <div class="formula green">BCE  L = −[y log ŷ + (1−y) log(1−ŷ)]</div>
+    <div class="formula green">∂L/∂z = ŷ − y  (시그모이드+로그 상쇄)</div>
+    <div class="row" style="margin-top:8px;"><span class="key">∂J/∂θ₀</span><span class="val" style="font-family:var(--mono);font-size:11px;">(1/N) Σ(ŷᵢ−yᵢ)</span></div>
+    <div class="row"><span class="key">∂J/∂θ₁</span><span class="val" style="font-family:var(--mono);font-size:11px;">(1/N) Σ xᵢ(ŷᵢ−yᵢ)</span></div>
+    <div class="row"><span class="key">경사하강법</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ ← θ − α·∂J/∂θ</span></div>
+    <p class="note">초기 θ=0 → 모든 ŷ=0.5 → J = log2 ≈ 0.693 (최대 불확실성)</p>
+  </div>
+
+  <!-- CH07: KNN -->
+  <div class="card">
+    <div class="card-title amber">CH07 · KNN (K-Nearest Neighbors)</div>
+    <div class="formula">유클리드  d = √(Σ(xᵢ−zᵢ)²)</div>
+    <div class="formula">맨해튼   d = Σ|xᵢ−zᵢ|</div>
+    <ul class="steps">
+      <li><div>훈련 데이터 메모리 저장 (Lazy Learning)</div></li>
+      <li><div>쿼리와 모든 점 거리 계산 — O(n·d)</div></li>
+      <li><div>가장 가까운 K개 선택</div></li>
+      <li><div>다수결(분류) / 평균(회귀)</div></li>
+    </ul>
+    <div class="row" style="margin-top:4px;"><span class="key">K=1</span><span class="val" style="color:var(--accent4)">과적합 (낮은 편향, 높은 분산)</span></div>
+    <div class="row"><span class="key">K=n</span><span class="val" style="color:var(--accent4)">과소적합 (높은 편향, 낮은 분산)</span></div>
+    <p class="note">차원의 저주: 고차원 → 거리 집중 → PCA로 선처리 필요 / 스케일 정규화 필수</p>
+  </div>
+
+  <!-- CH07: K-means -->
+  <div class="card">
+    <div class="card-title cyan">CH07 · K-means 클러스터링</div>
+    <div class="formula cyan">J = Σₖ Σ_{xᵢ∈Cₖ} ‖xᵢ−μₖ‖²  →  min</div>
+    <ul class="steps">
+      <li><div>K개 초기 중심 선택 (K-means++권장)</div></li>
+      <li><div>할당: cᵢ = argminₖ ‖xᵢ−μₖ‖²</div></li>
+      <li><div>갱신: μₖ = 평균(Cₖ)</div></li>
+      <li><div>할당 변화 없을 때까지 2~3 반복</div></li>
+    </ul>
+    <div class="row" style="margin-top:4px;"><span class="key">K 선택</span><span class="val">Elbow Method / Silhouette Score</span></div>
+    <div class="row"><span class="key">수렴 보장</span><span class="val">J 단조 감소 + 유한 경우의 수</span></div>
+    <p class="note">전역 최솟값 비보장 → n_init으로 여러 번 실행 후 최소 J 선택</p>
+  </div>
+
+  <!-- CH07: KNN vs K-means -->
+  <div class="card">
+    <div class="card-title purple">CH07 · KNN vs K-means</div>
+    <table>
+      <thead><tr><th>항목</th><th>KNN</th><th>K-means</th></tr></thead>
+      <tbody>
+        <tr><td>학습 유형</td><td><span class="tag g">지도학습</span></td><td><span class="tag p">비지도학습</span></td></tr>
+        <tr><td>레이블</td><td>필요</td><td>불필요</td></tr>
+        <tr><td>K의 의미</td><td>이웃 개수</td><td>클러스터 수</td></tr>
+        <tr><td>훈련</td><td>없음 (Lazy)</td><td>반복 최적화</td></tr>
+        <tr><td>예측 방식</td><td>다수결 / 평균</td><td>centroid 배정</td></tr>
+        <tr><td>복잡도</td><td>O(n·d)</td><td>O(K·n·d·t)</td></tr>
+        <tr><td>스케일</td><td colspan="2" style="text-align:center;">둘 다 정규화 필수</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 주요 분포 요약 -->
@@ -163,10 +274,25 @@
       <thead><tr><th>분포</th><th>PMF/PDF</th><th>E[X]</th><th>Var[X]</th><th>ML 활용</th></tr></thead>
       <tbody>
         <tr><td><span class="tag g">베르누이 Ber(p)</span></td><td style="font-family:var(--mono);font-size:11px;">P(X=1)=p</td><td>p</td><td>p(1−p)</td><td>이진 분류, Sigmoid</td></tr>
-        <tr><td><span class="tag a">이항 Bin(n,p)</span></td><td style="font-family:var(--mono);font-size:11px;">C(n,k)pᵏ(1−p)ⁿ⁻ᵏ</td><td>np</td><td>np(1−p)</td><td>n회 성공 횟수</td></tr>
+        <tr><td><span class="tag a">이항 Bin(n,p)</span></td><td style="font-family:var(--mono);font-size:11px;">C(n,k)pᵏ(1−p)ⁿ⁻ᵏ</td><td>np</td><td>np(1−p)</td><td>n회 성공 횟수, CLT</td></tr>
         <tr><td><span class="tag p">카테고리 Cat(π)</span></td><td style="font-family:var(--mono);font-size:11px;">P(X=k)=πₖ</td><td>πₖ</td><td>—</td><td>다중 분류, Softmax</td></tr>
         <tr><td><span class="tag o">포아송 Poi(λ)</span></td><td style="font-family:var(--mono);font-size:11px;">λᵏe⁻λ/k!</td><td>λ</td><td>λ</td><td>이벤트 발생 횟수</td></tr>
-        <tr><td><span class="tag c">정규 N(μ,σ²)</span></td><td style="font-family:var(--mono);font-size:11px;">1/√(2πσ²)·e^(…)</td><td>μ</td><td>σ²</td><td>오차 모델링, CLT</td></tr>
+        <tr><td><span class="tag c">정규 N(μ,σ²)</span></td><td style="font-family:var(--mono);font-size:11px;">1/√(2πσ²)·e^(…)</td><td>μ</td><td>σ²</td><td>오차 모델링, LDA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MLE 추정량 한눈에 -->
+  <div class="card wide">
+    <div class="card-title cyan">MLE 추정량 한눈에</div>
+    <table>
+      <thead><tr><th>모델</th><th>파라미터</th><th>MLE 결과</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>가우시안</td><td>μ̂</td><td>x̄  (표본 평균)</td><td>불편 추정량</td></tr>
+        <tr><td>가우시안</td><td>σ̂²</td><td>(1/N)Σ(xᵢ−μ̂)²</td><td><span class="tag o">편향됨</span> → s² 사용 권장</td></tr>
+        <tr><td>이항</td><td>p̂</td><td>k/n  (관측 빈도)</td><td>불편 추정량</td></tr>
+        <tr><td>Categorical</td><td>π̂ₖ</td><td>nₖ/n  (경험적 확률)</td><td>라그랑주 승수법</td></tr>
+        <tr><td>가우시안 LDA</td><td>x*</td><td>(μ₁+μ₂)/2  (결정 경계)</td><td>등 사전 확률 + 공통 σ²</td></tr>
       </tbody>
     </table>
   </div>
@@ -176,17 +302,23 @@
     <div class="card-title green">핵심 암기 모음</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
       <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">기저 조건</div>선형 독립 + 벡터 수 = 차원</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">역행렬 존재</div>det(A) ≠ 0 ↔ rank = n</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">베이즈</div>Prior + 데이터 → 사후 확률</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">MLE 편향</div>σ̂² = (1/N)Σ편차² 편향 → s² = (1/N-1) 불편</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">베이즈</div>Prior + 데이터 → 사후 확률 업데이트</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">Chain Rule 핵심</div>∂L/∂z = ŷ−y (시그모이드+로그 상쇄)</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">KNN 차원의 저주</div>고차원 → 거리 무의미 → PCA 선처리</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">K-means 수렴</div>J 단조 감소 보장 / 전역 최솟값은 비보장</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">LDA 결정 경계</div>로그우도비에서 x² 소거 → 선형 경계 x*=(μ₁+μ₂)/2</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">Categorical MLE</div>π̂ₖ = nₖ/n = Softmax 수렴값</div>
       <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">Bias-Variance</div>복잡도↑ → Bias↓, Variance↑</div>
       <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">MLE vs MAP</div>MLE = Prior 무시 / MAP = Prior 반영</div>
       <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">CLT</div>n≥30이면 표본평균 → 정규분포</div>
+      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">회귀 직선 성질</div>항상 (x̄, ȳ) 평균점 통과</div>
     </div>
   </div>
 
 </div>
 
-<footer>Machine Learning Cheat Sheet · CH00–CH03</footer>
+<footer>Machine Learning Cheat Sheet · CH01–CH07</footer>
 
 <div style="text-align:center;margin-top:20px;">
   <a href="../notes.html?repo=Machine-Learning"
