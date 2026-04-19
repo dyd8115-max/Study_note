@@ -5,6 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Machine Learning 치트시트</title>
 <link rel="stylesheet" href="../assets/common.css">
+<style>
+  body { padding: 0 16px 40px; max-width: 680px; margin: 0 auto; }
+
+  header { border-left: 3px solid var(--accent5); padding: 20px 0 20px 16px; margin: 24px 0 8px; }
+  header h1 { font-family: var(--mono); font-size: 18px; color: var(--accent5); }
+  header p  { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
+
+  .chapter { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+  .chapter-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid var(--border); }
+  .chapter-num { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; letter-spacing: 1px; flex-shrink: 0; }
+  .chapter-title { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: -0.3px; }
+  .chapter-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+  .panel { background: var(--surface2); border-radius: 8px; padding: 12px 14px; border: 0.5px solid #2a2a2a; }
+  .panel-title { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 7px; border-bottom: 0.5px solid var(--border); }
+
+  .eq { background: #111; border-left: 2px solid var(--accent2); border-radius: 0 5px 5px 0; padding: 7px 11px; font-family: var(--mono); font-size: 12px; color: var(--accent2); margin: 5px 0; white-space: pre; }
+  .eq.sm { font-size: 11px; }
+  .eq.g  { border-color: var(--accent1); color: var(--accent1); }
+  .eq.c  { border-color: var(--accent3); color: var(--accent3); }
+  .eq.p  { border-color: var(--accent5); color: var(--accent5); }
+  .eq.o  { border-color: var(--accent4); color: var(--accent4); }
+
+  .quiz-panel { background: #0d1a12; border: 0.5px solid #1a3a25; border-radius: 8px; padding: 12px 14px; }
+  .quiz-title { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent1); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .quiz-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 0.5px solid #1a3a25; font-size: 12px; align-items: flex-start; }
+  .quiz-item:last-child { border-bottom: none; }
+  .quiz-num { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent1); background: #1a3a25; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+  .quiz-ans { margin-top: 5px; font-family: var(--mono); font-size: 11px; color: var(--accent2); background: #111; padding: 5px 9px; border-radius: 4px; border-left: 2px solid var(--accent2); }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mb { background: #111; border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .mb .mt { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+
+  .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .panel th { color: var(--muted); font-size: 10px; padding: 4px 7px; border-bottom: 0.5px solid var(--border); text-align: left; }
+  .panel td { padding: 5px 7px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; font-size: 11px; }
+  .panel tr:last-child td { border-bottom: none; }
+
+  .kv { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 0.5px solid #1e1e1e; font-size: 12px; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--muted); font-size: 11px; }
+  .kv .v { font-family: var(--mono); font-size: 11px; text-align: right; }
+
+  .diagram { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 0; flex-wrap: wrap; }
+  .d-box { background: #111; border: 0.5px solid var(--border); border-radius: 6px; padding: 6px 10px; font-family: var(--mono); font-size: 10px; text-align: center; }
+  .d-arrow { color: var(--muted); font-size: 14px; }
+
+  .tag { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+  .tag.g { background: #1a3a25; color: var(--accent1); }
+  .tag.a { background: #3a2e10; color: var(--accent2); }
+  .tag.c { background: #0e2e38; color: var(--accent3); }
+  .tag.o { background: #3a2010; color: var(--accent4); }
+  .tag.p { background: #2a1a40; color: var(--accent5); }
+
+  .note { font-size: 11px; color: var(--muted); margin-top: 7px; padding-left: 8px; border-left: 2px solid var(--border); }
+  .hi  { color: var(--accent1); font-weight: 600; }
+  .dim { color: var(--muted); }
+  svg text { font-family: 'IBM Plex Mono', monospace; }
+  footer { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--border); margin-top: 32px; }
+  .detail-btn { display: block; text-align: center; margin: 16px auto 0; font-family: var(--mono); font-size: 11px; color: var(--accent5); border: 0.5px solid #2a1a40; background: var(--surface); padding: 10px 20px; border-radius: 8px; text-decoration: none; width: fit-content; }
+</style>
 </head>
 <body>
 
@@ -13,319 +75,459 @@
   <p>CH01–CH07 · 선형대수 / 확률 / 통계 / MLE / 분류 / 군집화</p>
 </header>
 
-<div class="grid">
-
-  <!-- CH01: 벡터 기초 -->
-  <div class="card">
-    <div class="card-title green">CH01 · 벡터 기초</div>
-    <div class="formula green">크기 (Norm)  ‖v‖ = √(x₁²+x₂²+…+xₙ²)</div>
-    <div class="formula green">단위벡터      u = v / ‖v‖</div>
-    <div class="formula green">내적          A·B = ΣAᵢBᵢ = ‖A‖‖B‖cosθ</div>
-    <div class="formula green">외적 크기     ‖A×B‖ = ‖A‖‖B‖sinθ</div>
-    <table style="margin-top:10px;">
-      <thead><tr><th>내적값</th><th>의미</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">양수</span></td><td>같은 방향</td></tr>
-        <tr><td><span class="tag a">0</span></td><td>직교 (90°) — a⊥b</td></tr>
-        <tr><td><span class="tag o">음수</span></td><td>반대 방향</td></tr>
-      </tbody>
-    </table>
-    <p class="note">직교 조건: a·b = 0 ↔ cosθ = 0</p>
+<!-- CH01 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#0d1a0d;">
+    <span class="chapter-num" style="background:#1a3a25;color:var(--accent1);">CH 01</span>
+    <span class="chapter-title" style="color:var(--accent1);">선형대수 — 벡터 · 행렬 · 변환</span>
   </div>
+  <div class="chapter-body">
 
-  <!-- CH01: 평면 & 법선 벡터 -->
-  <div class="card">
-    <div class="card-title amber">CH01 · 평면 & 법선 벡터</div>
-    <div class="formula">평면  P = {αu₁ + βu₂ | α,β ∈ ℝ}</div>
-    <table style="margin-top:8px;">
-      <thead><tr><th>조건</th><th>의미</th></tr></thead>
-      <tbody>
-        <tr><td>a·u₁ = 0 이고 a·u₂ = 0</td><td><span class="tag a">법선 벡터</span> — P에 수직</td></tr>
-        <tr><td>b = αu₁ + βu₂</td><td><span class="tag g">평면 위</span> — 선형결합</td></tr>
-        <tr><td>법선 ⊥ 평면 위 벡터</td><td>a·b = 0 반드시 성립</td></tr>
-      </tbody>
-    </table>
-    <p class="note">법선 벡터는 평면 위의 모든 벡터와 수직이므로 내적=0</p>
-  </div>
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent1);">벡터 기초 공식</div>
+      <div class="eq g">크기 (Norm)   ‖v‖ = √(v₁²+v₂²+…+vₙ²)</div>
+      <div class="eq g">단위벡터      û = v / ‖v‖</div>
+      <div class="eq g">내적          A·B = ΣAᵢBᵢ = ‖A‖‖B‖cosθ</div>
+      <div class="eq g">외적 크기     ‖A×B‖ = ‖A‖‖B‖sinθ</div>
+      <div class="cols" style="margin-top:8px;">
+        <div class="mb"><div class="mt" style="color:var(--accent1);">내적 부호</div>
+          <span class="tag g">양수</span> 같은 방향<br>
+          <span class="tag a">0</span> 직교 (90°)<br>
+          <span class="tag o">음수</span> 반대 방향
+        </div>
+        <div class="mb"><div class="mt" style="color:var(--accent3);">직교 조건</div>
+          a·b = 0<br>↔ cosθ = 0<br>↔ θ = 90°
+        </div>
+      </div>
+    </div>
 
-  <!-- CH01: 외적 계산 -->
-  <div class="card">
-    <div class="card-title cyan">CH01 · 외적 계산</div>
-    <div class="formula">A×B = | i  j  k  |
-        | A₁ A₂ A₃ |
-        | B₁ B₂ B₃ |</div>
-    <div class="row"><span class="key">i 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">A₂B₃ − A₃B₂</span></div>
-    <div class="row"><span class="key">j 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">−(A₁B₃ − A₃B₁)</span></div>
-    <div class="row"><span class="key">k 성분</span><span class="val" style="font-family:var(--mono);font-size:11px;">A₁B₂ − A₂B₁</span></div>
-    <p class="note">예) [2,3,4]×[5,6,7] = [-3, 6, -3]</p>
-  </div>
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent3);">외적 (Cross Product) 계산</div>
+      <div class="eq c sm">A×B = | i   j   k  |
+        | A₁  A₂  A₃ |
+        | B₁  B₂  B₃ |</div>
+      <div class="kv"><span class="k">i 성분</span><span class="v">A₂B₃ − A₃B₂</span></div>
+      <div class="kv"><span class="k">j 성분</span><span class="v">−(A₁B₃ − A₃B₁)</span></div>
+      <div class="kv"><span class="k">k 성분</span><span class="v">A₁B₂ − A₂B₁</span></div>
+      <p class="note">예) [2,3,4]×[5,6,7] = [-3, 6, -3]</p>
+    </div>
 
-  <!-- CH01: 행렬 연산 -->
-  <div class="card">
-    <div class="card-title purple">CH01 · 행렬 연산</div>
-    <div class="formula purple">행렬곱  Cᵢⱼ = Σₗ AᵢₗBₗⱼ</div>
-    <div class="formula purple">역행렬  A⁻¹ = 1/det(A) · [d -b; -c a]</div>
-    <div class="formula purple">det(A) = ad − bc</div>
-    <div class="row" style="margin-top:8px;"><span class="key">rank = n</span><span class="val highlight">역행렬 존재</span></div>
-    <div class="row"><span class="key">rank &lt; n</span><span class="val" style="color:var(--accent4)">역행렬 없음</span></div>
-    <p class="note">rank = 행 축소 후 0이 아닌 행의 수</p>
-  </div>
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent5);">행렬 연산 & 역행렬</div>
+      <div class="eq p">행렬곱  Cᵢⱼ = Σₗ AᵢₗBₗⱼ</div>
+      <div class="eq p">det(A) = ad − bc  (2×2)</div>
+      <div class="eq p">A⁻¹ = 1/det(A) · [ d  -b ]
+                              [-c   a ]</div>
+      <div class="kv"><span class="k">rank = n</span><span class="v hi">역행렬 존재</span></div>
+      <div class="kv"><span class="k">rank &lt; n</span><span class="v" style="color:var(--accent4);">역행렬 없음</span></div>
+      <div class="kv"><span class="k">rank 계산</span><span class="v">행 축소 후 0이 아닌 행 수</span></div>
+    </div>
 
-  <!-- CH01: 투영 & 선형변환 -->
-  <div class="card">
-    <div class="card-title green">CH01 · 투영 & 선형변환</div>
-    <div class="formula green">투영   proj(x) = (x·u)·u</div>
-    <div class="formula green">잔차   r = x − proj(x)</div>
-    <div class="formula green">선형변환  y = Wx</div>
-    <div class="row" style="margin-top:8px;"><span class="key">M &lt; N</span><span class="val">차원 축소</span></div>
-    <div class="row"><span class="key">M &gt; N</span><span class="val">차원 확대</span></div>
-    <p class="note">기저 조건: 선형 독립 + 벡터 수 = 공간의 차원</p>
-  </div>
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent4);">투영 & 선형변환</div>
+      <div class="eq o">proj(x) = (x·û)·û   [단위벡터 û에 투영]</div>
+      <div class="eq o">잔차  r = x − proj(x)  [투영 후 남은 성분]</div>
+      <div class="eq o">선형변환  y = Wx   [W: M×N 행렬]</div>
+      <div class="cols" style="margin-top:6px;">
+        <div class="mb"><div class="mt" style="color:var(--accent4);">차원 변환</div>M &lt; N → 축소<br>M &gt; N → 확대</div>
+        <div class="mb"><div class="mt" style="color:var(--accent1);">기저 조건</div>선형 독립<br>+ 벡터 수 = 차원</div>
+      </div>
+    </div>
 
-  <!-- CH02: 확률 공간 -->
-  <div class="card">
-    <div class="card-title amber">CH02 · 확률 공간</div>
-    <table>
-      <thead><tr><th>기호</th><th>이름</th><th>설명</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">ω</span></td><td>근원 사건</td><td>실험 결과 하나</td></tr>
-        <tr><td><span class="tag c">Ω</span></td><td>표본 공간</td><td>모든 ω의 집합</td></tr>
-        <tr><td><span class="tag a">A</span></td><td>사건</td><td>Ω의 부분집합</td></tr>
-        <tr><td><span class="tag p">F</span></td><td>σ-대수</td><td>확률 계산 가능한 사건 모음</td></tr>
-      </tbody>
-    </table>
-    <div class="formula" style="margin-top:10px;">Kolmogorov: P(A)≥0, P(Ω)=1, P(A∪B)=P(A)+P(B) if 배반</div>
-  </div>
-
-  <!-- CH02: CDF/PMF/PDF -->
-  <div class="card">
-    <div class="card-title cyan">CH02 · CDF / PMF / PDF</div>
-    <div class="formula">CDF  F(x) = P(X ≤ x)</div>
-    <div class="formula">PMF  p(x) = P(X=x),  Σp(x) = 1  [이산]</div>
-    <div class="formula">PDF  P(a≤X≤b) = ∫f(x)dx,  ∫f(x)dx = 1  [연속]</div>
-    <div class="row" style="margin-top:8px;"><span class="key">구간 확률</span><span class="val" style="font-family:var(--mono);font-size:11px;">P(a&lt;X≤b) = F(b)−F(a)</span></div>
-    <p class="note">연속: P(X=x) = 0 → 반드시 구간으로 계산</p>
-  </div>
-
-  <!-- CH02: 조건부/독립/베이즈 -->
-  <div class="card">
-    <div class="card-title purple">CH02 · 조건부 / 독립 / 베이즈</div>
-    <div class="formula purple">조건부  P(A|B) = P(A∩B) / P(B)</div>
-    <div class="formula purple">독립    P(A∩B) = P(A)·P(B)</div>
-    <div class="formula purple">베이즈  P(θ|X) = P(X|θ)·P(θ) / P(X)</div>
-    <div class="row" style="margin-top:8px;"><span class="key">연쇄 법칙</span><span class="val" style="font-family:var(--mono);font-size:11px;">P(A∩B) = P(A|B)·P(B)</span></div>
-    <p class="note">Prior + 데이터 → 사후 확률 업데이트</p>
-  </div>
-
-  <!-- CH02: 기댓값/분산 -->
-  <div class="card">
-    <div class="card-title green">CH02 · 기댓값 / 분산</div>
-    <div class="formula green">E[X] = Σ x·p(x)  [이산]</div>
-    <div class="formula green">E[X] = ∫ x·f(x)dx  [연속]</div>
-    <div class="formula green">Var[X] = E[X²] − (E[X])²</div>
-    <div class="formula green">SD[X] = √Var[X]</div>
-    <div class="row" style="margin-top:8px;"><span class="key">선형성</span><span class="val" style="font-family:var(--mono);font-size:11px;">E[aX+b] = aE[X]+b</span></div>
-    <div class="row"><span class="key">스케일</span><span class="val" style="font-family:var(--mono);font-size:11px;">Var[aX+b] = a²Var[X]</span></div>
-  </div>
-
-  <!-- CH03: 통계 파라미터 & 공분산 -->
-  <div class="card">
-    <div class="card-title amber">CH03 · 통계 파라미터</div>
-    <div class="formula amber">평균    x̄ = (1/N) Σxᵢ</div>
-    <div class="formula amber">분산    σ² = (1/N) Σ(xᵢ−x̄)²  [MLE, 편향]</div>
-    <div class="formula amber">불편    s² = 1/(N-1) Σ(xᵢ−x̄)²</div>
-    <div class="formula amber">공분산  Cov = (1/N) Σ(xᵢ−x̄)(yᵢ−ȳ)</div>
-    <div class="formula amber">상관계수 r = Cov(X,Y) / (σₓσᵧ),  |r|≤1</div>
-    <p class="note">MLE σ²은 편향 → μ̂ 추정으로 자유도 1 감소 → N-1 사용해야 불편</p>
-  </div>
-
-  <!-- CH03: 이항 분포 & 정규 근사 -->
-  <div class="card">
-    <div class="card-title cyan">CH03 · 이항 분포 & 정규 근사</div>
-    <div class="formula cyan">X ~ B(n,p)  →  E[X]=np, Var(X)=np(1-p)</div>
-    <div class="formula cyan">CLT 근사:  Z = (X−np) / √(np(1−p)) ≈ N(0,1)</div>
-    <div class="row" style="margin-top:8px;"><span class="key">이항 MLE</span><span class="val" style="font-family:var(--mono);font-size:11px;">p̂ = k/n  (관측 빈도)</span></div>
-    <div class="row"><span class="key">CLT 조건</span><span class="val">n ≥ 30 (충분히 클 때)</span></div>
-    <p class="note">68-95-99.7 규칙: P(μ±σ)≈68%, P(μ±2σ)≈95%</p>
-  </div>
-
-  <!-- CH03: 왜도/첨도/Bias-Variance -->
-  <div class="card">
-    <div class="card-title purple">CH03 · 왜도 / 첨도 / Bias-Variance</div>
-    <div class="formula">왜도  = Σ(xᵢ−x̄)³ / [Σ(xᵢ−x̄)²]^(3/2)</div>
-    <div class="formula">첨도  = Σ(xᵢ−x̄)⁴ / [Σ(xᵢ−x̄)²]²</div>
-    <div class="row" style="margin-top:8px;"><span class="key">왜도 0</span><span class="val">좌우 대칭</span></div>
-    <div class="row"><span class="key">첨도 3</span><span class="val">정규분포</span></div>
-    <div class="formula" style="margin-top:8px;">E[(y−ŷ)²] = Bias² + Variance + Noise</div>
-    <p class="note">복잡도↑ → Bias↓, Variance↑ (Trade-off)</p>
-  </div>
-
-  <!-- CH03: MLE / MAP -->
-  <div class="card">
-    <div class="card-title green">CH03 · MLE / MAP</div>
-    <div class="formula green">우도    L(θ;X) = Πᵢ p(xᵢ|θ)  [i.i.d.]</div>
-    <div class="formula green">로그우도 ℓ(θ) = Σᵢ log p(xᵢ|θ)</div>
-    <div class="formula green">MLE  θ̂ = argmax ℓ(θ)</div>
-    <div class="formula green">MAP  θ̂ = argmax [ℓ(θ) + log P(θ)]</div>
-    <div class="row" style="margin-top:8px;"><span class="key">Gaussian Prior</span><span class="val">L2 정규화 (Ridge)</span></div>
-    <div class="row"><span class="key">Laplace Prior</span><span class="val">L1 정규화 (Lasso)</span></div>
-    <p class="note">가우시안 MLE: μ̂ = x̄,  σ̂² = (1/N)Σ(xᵢ−μ̂)²  [편향됨]</p>
-  </div>
-
-  <!-- CH03: 가우시안 분류 (LDA) -->
-  <div class="card">
-    <div class="card-title amber">CH03 · 가우시안 분류 / LDA</div>
-    <div class="formula">P(x|Cₖ) = 1/√(2πσ²) · exp(−(x−μₖ)²/2σ²)</div>
-    <div class="formula">로그우도비 = 1/(2σ²) · [−(x−μ₁)² + (x−μ₂)²]</div>
-    <div class="row" style="margin-top:8px;"><span class="key">결정 경계</span><span class="val" style="font-family:var(--mono);font-size:11px;">x* = (μ₁+μ₂)/2</span></div>
-    <div class="row"><span class="key">x² 소거</span><span class="val">→ 선형 결정 경계</span></div>
-    <div class="row"><span class="key">공통 분산</span><span class="val" style="font-family:var(--mono);font-size:11px;">σ̂² = (Σ편차²₁ + Σ편차²₂) / (n₁+n₂)</span></div>
-    <p class="note">등 사전 확률 + 공통 분산 조건에서만 중점이 결정 경계</p>
-  </div>
-
-  <!-- CH03: 라그랑주 승수법 -->
-  <div class="card">
-    <div class="card-title cyan">CH03 · 라그랑주 승수법 (Categorical MLE)</div>
-    <div class="formula cyan">ℓ = Σ nₖ log πₖ,  제약: Σπₖ = 1</div>
-    <div class="formula cyan">L(π,λ) = ℓ − λ(Σπₖ − 1)</div>
-    <ul class="steps">
-      <li><div>∂L/∂πₖ = 0 → πₖ = nₖ/λ</div></li>
-      <li><div>제약 대입 → λ = n (전체 샘플 수)</div></li>
-      <li><div>π̂ₖ = nₖ/n  (경험적 확률)</div></li>
-    </ul>
-    <p class="note">결과 = Softmax + Cross-Entropy로 학습한 딥러닝의 수렴값과 동일</p>
-  </div>
-
-  <!-- CH04: 선형 회귀 -->
-  <div class="card">
-    <div class="card-title purple">CH04 · 선형 회귀 (MSE 최소화)</div>
-    <div class="formula purple">ŷ = θ₁x + θ₀</div>
-    <div class="formula purple">J(θ) = (1/N) Σ(θ₁xᵢ+θ₀−yᵢ)²</div>
-    <div class="row" style="margin-top:8px;"><span class="key">∂J/∂θ₀=0</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ₁Σxᵢ + Nθ₀ = Σyᵢ</span></div>
-    <div class="row"><span class="key">∂J/∂θ₁=0</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ₁Σxᵢ² + θ₀Σxᵢ = Σxᵢyᵢ</span></div>
-    <div class="formula purple">정규방정식  θ = (XᵀX)⁻¹Xᵀy</div>
-    <p class="note">볼록 함수 → 편미분=0이 전역 최솟값 / 직선은 항상 (x̄, ȳ) 통과</p>
-  </div>
-
-  <!-- CH05: 로지스틱 회귀 -->
-  <div class="card">
-    <div class="card-title green">CH05 · 로지스틱 회귀</div>
-    <div class="formula green">σ(z) = 1/(1+e⁻ᶻ),  σ'(z) = σ(z)(1−σ(z))</div>
-    <div class="formula green">BCE  L = −[y log ŷ + (1−y) log(1−ŷ)]</div>
-    <div class="formula green">∂L/∂z = ŷ − y  (시그모이드+로그 상쇄)</div>
-    <div class="row" style="margin-top:8px;"><span class="key">∂J/∂θ₀</span><span class="val" style="font-family:var(--mono);font-size:11px;">(1/N) Σ(ŷᵢ−yᵢ)</span></div>
-    <div class="row"><span class="key">∂J/∂θ₁</span><span class="val" style="font-family:var(--mono);font-size:11px;">(1/N) Σ xᵢ(ŷᵢ−yᵢ)</span></div>
-    <div class="row"><span class="key">경사하강법</span><span class="val" style="font-family:var(--mono);font-size:11px;">θ ← θ − α·∂J/∂θ</span></div>
-    <p class="note">초기 θ=0 → 모든 ŷ=0.5 → J = log2 ≈ 0.693 (최대 불확실성)</p>
-  </div>
-
-  <!-- CH07: KNN -->
-  <div class="card">
-    <div class="card-title amber">CH07 · KNN (K-Nearest Neighbors)</div>
-    <div class="formula">유클리드  d = √(Σ(xᵢ−zᵢ)²)</div>
-    <div class="formula">맨해튼   d = Σ|xᵢ−zᵢ|</div>
-    <ul class="steps">
-      <li><div>훈련 데이터 메모리 저장 (Lazy Learning)</div></li>
-      <li><div>쿼리와 모든 점 거리 계산 — O(n·d)</div></li>
-      <li><div>가장 가까운 K개 선택</div></li>
-      <li><div>다수결(분류) / 평균(회귀)</div></li>
-    </ul>
-    <div class="row" style="margin-top:4px;"><span class="key">K=1</span><span class="val" style="color:var(--accent4)">과적합 (낮은 편향, 높은 분산)</span></div>
-    <div class="row"><span class="key">K=n</span><span class="val" style="color:var(--accent4)">과소적합 (높은 편향, 낮은 분산)</span></div>
-    <p class="note">차원의 저주: 고차원 → 거리 집중 → PCA로 선처리 필요 / 스케일 정규화 필수</p>
-  </div>
-
-  <!-- CH07: K-means -->
-  <div class="card">
-    <div class="card-title cyan">CH07 · K-means 클러스터링</div>
-    <div class="formula cyan">J = Σₖ Σ_{xᵢ∈Cₖ} ‖xᵢ−μₖ‖²  →  min</div>
-    <ul class="steps">
-      <li><div>K개 초기 중심 선택 (K-means++권장)</div></li>
-      <li><div>할당: cᵢ = argminₖ ‖xᵢ−μₖ‖²</div></li>
-      <li><div>갱신: μₖ = 평균(Cₖ)</div></li>
-      <li><div>할당 변화 없을 때까지 2~3 반복</div></li>
-    </ul>
-    <div class="row" style="margin-top:4px;"><span class="key">K 선택</span><span class="val">Elbow Method / Silhouette Score</span></div>
-    <div class="row"><span class="key">수렴 보장</span><span class="val">J 단조 감소 + 유한 경우의 수</span></div>
-    <p class="note">전역 최솟값 비보장 → n_init으로 여러 번 실행 후 최소 J 선택</p>
-  </div>
-
-  <!-- CH07: KNN vs K-means -->
-  <div class="card">
-    <div class="card-title purple">CH07 · KNN vs K-means</div>
-    <table>
-      <thead><tr><th>항목</th><th>KNN</th><th>K-means</th></tr></thead>
-      <tbody>
-        <tr><td>학습 유형</td><td><span class="tag g">지도학습</span></td><td><span class="tag p">비지도학습</span></td></tr>
-        <tr><td>레이블</td><td>필요</td><td>불필요</td></tr>
-        <tr><td>K의 의미</td><td>이웃 개수</td><td>클러스터 수</td></tr>
-        <tr><td>훈련</td><td>없음 (Lazy)</td><td>반복 최적화</td></tr>
-        <tr><td>예측 방식</td><td>다수결 / 평균</td><td>centroid 배정</td></tr>
-        <tr><td>복잡도</td><td>O(n·d)</td><td>O(K·n·d·t)</td></tr>
-        <tr><td>스케일</td><td colspan="2" style="text-align:center;">둘 다 정규화 필수</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 주요 분포 요약 -->
-  <div class="card wide">
-    <div class="card-title orange">주요 확률 분포 요약</div>
-    <table>
-      <thead><tr><th>분포</th><th>PMF/PDF</th><th>E[X]</th><th>Var[X]</th><th>ML 활용</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">베르누이 Ber(p)</span></td><td style="font-family:var(--mono);font-size:11px;">P(X=1)=p</td><td>p</td><td>p(1−p)</td><td>이진 분류, Sigmoid</td></tr>
-        <tr><td><span class="tag a">이항 Bin(n,p)</span></td><td style="font-family:var(--mono);font-size:11px;">C(n,k)pᵏ(1−p)ⁿ⁻ᵏ</td><td>np</td><td>np(1−p)</td><td>n회 성공 횟수, CLT</td></tr>
-        <tr><td><span class="tag p">카테고리 Cat(π)</span></td><td style="font-family:var(--mono);font-size:11px;">P(X=k)=πₖ</td><td>πₖ</td><td>—</td><td>다중 분류, Softmax</td></tr>
-        <tr><td><span class="tag o">포아송 Poi(λ)</span></td><td style="font-family:var(--mono);font-size:11px;">λᵏe⁻λ/k!</td><td>λ</td><td>λ</td><td>이벤트 발생 횟수</td></tr>
-        <tr><td><span class="tag c">정규 N(μ,σ²)</span></td><td style="font-family:var(--mono);font-size:11px;">1/√(2πσ²)·e^(…)</td><td>μ</td><td>σ²</td><td>오차 모델링, LDA</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- MLE 추정량 한눈에 -->
-  <div class="card wide">
-    <div class="card-title cyan">MLE 추정량 한눈에</div>
-    <table>
-      <thead><tr><th>모델</th><th>파라미터</th><th>MLE 결과</th><th>비고</th></tr></thead>
-      <tbody>
-        <tr><td>가우시안</td><td>μ̂</td><td>x̄  (표본 평균)</td><td>불편 추정량</td></tr>
-        <tr><td>가우시안</td><td>σ̂²</td><td>(1/N)Σ(xᵢ−μ̂)²</td><td><span class="tag o">편향됨</span> → s² 사용 권장</td></tr>
-        <tr><td>이항</td><td>p̂</td><td>k/n  (관측 빈도)</td><td>불편 추정량</td></tr>
-        <tr><td>Categorical</td><td>π̂ₖ</td><td>nₖ/n  (경험적 확률)</td><td>라그랑주 승수법</td></tr>
-        <tr><td>가우시안 LDA</td><td>x*</td><td>(μ₁+μ₂)/2  (결정 경계)</td><td>등 사전 확률 + 공통 σ²</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 핵심 암기 -->
-  <div class="card wide">
-    <div class="card-title green">핵심 암기 모음</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">기저 조건</div>선형 독립 + 벡터 수 = 차원</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">MLE 편향</div>σ̂² = (1/N)Σ편차² 편향 → s² = (1/N-1) 불편</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">베이즈</div>Prior + 데이터 → 사후 확률 업데이트</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">Chain Rule 핵심</div>∂L/∂z = ŷ−y (시그모이드+로그 상쇄)</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">KNN 차원의 저주</div>고차원 → 거리 무의미 → PCA 선처리</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">K-means 수렴</div>J 단조 감소 보장 / 전역 최솟값은 비보장</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">LDA 결정 경계</div>로그우도비에서 x² 소거 → 선형 경계 x*=(μ₁+μ₂)/2</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">Categorical MLE</div>π̂ₖ = nₖ/n = Softmax 수렴값</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">Bias-Variance</div>복잡도↑ → Bias↓, Variance↑</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">MLE vs MAP</div>MLE = Prior 무시 / MAP = Prior 반영</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">CLT</div>n≥30이면 표본평균 → 정규분포</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">회귀 직선 성질</div>항상 (x̄, ȳ) 평균점 통과</div>
+    <div class="quiz-panel">
+      <div class="quiz-title">✦ 연습문제</div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q1</span>
+        <div>A=[1,2,3], B=[4,0,-2]일 때 내적 A·B와 두 벡터의 관계는?
+          <div class="quiz-ans">A·B = 4+0−6 = −2 → 음수 → 둔각(반대 방향 성분)</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q2</span>
+        <div>2×2 행렬 A=[[3,1],[5,2]]의 역행렬을 구하라.
+          <div class="quiz-ans">det=3·2−1·5=1 → A⁻¹=[[2,-1],[-5,3]]</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q3</span>
+        <div>x=[3,4], û=[1,0]일 때 투영과 잔차는?
+          <div class="quiz-ans">proj=(3·1)·[1,0]=[3,0], 잔차=[0,4]</div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
+<!-- CH02 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#0e1a2a;">
+    <span class="chapter-num" style="background:#0e2e38;color:var(--accent3);">CH 02</span>
+    <span class="chapter-title" style="color:var(--accent3);">확률 이론 — 공간 · 분포 · 베이즈</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent3);">확률 공간 (Ω, F, P)</div>
+      <table>
+        <thead><tr><th>기호</th><th>이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">Ω</span></td><td>표본 공간</td><td>모든 결과의 집합</td></tr>
+          <tr><td><span class="tag g">ω</span></td><td>근원 사건</td><td>실험 결과 하나</td></tr>
+          <tr><td><span class="tag a">A</span></td><td>사건</td><td>Ω의 부분집합</td></tr>
+          <tr><td><span class="tag p">F</span></td><td>σ-대수</td><td>확률 계산 가능한 사건 모음</td></tr>
+        </tbody>
+      </table>
+      <div class="eq c" style="margin-top:8px;">Kolmogorov: P(A)≥0,  P(Ω)=1
+P(A∪B)=P(A)+P(B)  [A,B 배반]</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent2);">CDF / PMF / PDF</div>
+      <div class="eq">CDF   F(x) = P(X ≤ x)          [이산·연속 공통]</div>
+      <div class="eq">PMF   p(x) = P(X=x),  Σp(x)=1   [이산]</div>
+      <div class="eq">PDF   P(a≤X≤b) = ∫ₐᵇ f(x)dx     [연속]</div>
+      <div class="eq">구간  P(a&lt;X≤b) = F(b) − F(a)</div>
+      <p class="note">연속: P(X=x)=0 → 반드시 구간으로 계산</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent5);">조건부 · 독립 · 베이즈</div>
+      <div class="eq p">조건부   P(A|B) = P(A∩B) / P(B)</div>
+      <div class="eq p">독립     P(A∩B) = P(A)·P(B)</div>
+      <div class="eq p">연쇄     P(A∩B) = P(A|B)·P(B)</div>
+      <div class="eq p">베이즈   P(θ|X) = P(X|θ)·P(θ) / P(X)</div>
+      <div class="cols" style="margin-top:8px;">
+        <div class="mb"><div class="mt" style="color:var(--accent5);">Prior</div>데이터 관측 전<br>θ에 대한 믿음</div>
+        <div class="mb"><div class="mt" style="color:var(--accent3);">Posterior</div>데이터 후<br>갱신된 믿음</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent1);">기댓값 · 분산</div>
+      <div class="eq g">E[X] = Σ x·p(x)          [이산]</div>
+      <div class="eq g">E[X] = ∫ x·f(x)dx        [연속]</div>
+      <div class="eq g">Var[X] = E[X²] − (E[X])²</div>
+      <div class="kv"><span class="k">선형성</span><span class="v">E[aX+b] = aE[X]+b</span></div>
+      <div class="kv"><span class="k">스케일</span><span class="v">Var[aX+b] = a²Var[X]</span></div>
+      <div class="kv"><span class="k">독립 합</span><span class="v">Var[X+Y] = Var[X]+Var[Y]</span></div>
+    </div>
+
+    <div class="quiz-panel">
+      <div class="quiz-title">✦ 연습문제</div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q1</span>
+        <div>X의 PMF: P(0)=0.5, P(1)=0.3, P(2)=0.15, P(3)=0.05일 때 E[X]와 Var[X]를 구하라.
+          <div class="quiz-ans">E[X]=0.75,  E[X²]=1.35,  Var[X]=1.35−0.5625=0.7875</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q2</span>
+        <div>P(비)=0.3, P(흐림|비)=0.9, P(흐림|맑음)=0.4일 때 P(비|흐림)은?
+          <div class="quiz-ans">P(흐림)=0.9×0.3+0.4×0.7=0.55,  P(비|흐림)=0.27/0.55≈0.49</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CH03 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#1a1a0d;">
+    <span class="chapter-num" style="background:#3a2e10;color:var(--accent2);">CH 03</span>
+    <span class="chapter-title" style="color:var(--accent2);">통계 & MLE / MAP — 추정 이론</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent2);">통계 파라미터</div>
+      <div class="eq">평균     x̄ = (1/N) Σxᵢ</div>
+      <div class="eq">분산(편향) σ² = (1/N) Σ(xᵢ−x̄)²   ← MLE</div>
+      <div class="eq">분산(불편) s² = 1/(N-1) Σ(xᵢ−x̄)²</div>
+      <div class="eq">공분산  Cov = (1/N) Σ(xᵢ−x̄)(yᵢ−ȳ)</div>
+      <div class="eq">상관계수 ρ = Cov(X,Y)/(σₓσᵧ),  |ρ|≤1</div>
+      <p class="note">MLE σ² 편향 이유: μ̂ 추정으로 자유도 1 감소 → N-1 사용해야 불편 추정량</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent5);">왜도 · 첨도 · Bias-Variance</div>
+      <div class="eq p">왜도 = Σ(xᵢ−x̄)³ / [Σ(xᵢ−x̄)²]^(3/2)</div>
+      <div class="eq p">첨도 = Σ(xᵢ−x̄)⁴ / [Σ(xᵢ−x̄)²]²</div>
+      <div class="cols" style="margin:8px 0;">
+        <div class="mb"><div class="mt" style="color:var(--accent5);">왜도</div>0 = 대칭<br>&gt;0 = 오른쪽 꼬리<br>&lt;0 = 왼쪽 꼬리</div>
+        <div class="mb"><div class="mt" style="color:var(--accent3);">첨도</div>3 = 정규분포<br>&gt;3 = 뾰족<br>&lt;3 = 평편</div>
+      </div>
+      <div class="eq p">E[(y−ŷ)²] = Bias² + Variance + Noise</div>
+      <p class="note">복잡도↑ → Bias↓, Variance↑ (Trade-off)</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent1);">MLE / MAP</div>
+      <div class="eq g">우도     L(θ;X) = Πᵢ p(xᵢ|θ)   [i.i.d.]</div>
+      <div class="eq g">로그우도 ℓ(θ) = Σᵢ log p(xᵢ|θ)</div>
+      <div class="eq g">MLE     θ̂ = argmax ℓ(θ)</div>
+      <div class="eq g">MAP     θ̂ = argmax [ℓ(θ) + log P(θ)]</div>
+      <div class="diagram">
+        <div class="d-box" style="border-color:var(--accent5);color:var(--accent5);">Prior<br>P(θ)</div>
+        <span class="d-arrow">+</span>
+        <div class="d-box" style="border-color:var(--accent3);color:var(--accent3);">데이터<br>P(X|θ)</div>
+        <span class="d-arrow">→</span>
+        <div class="d-box" style="border-color:var(--accent1);color:var(--accent1);">Posterior<br>P(θ|X)</div>
+      </div>
+      <table style="margin-top:8px;">
+        <thead><tr><th>Prior</th><th>로그 Prior</th><th>정규화</th></tr></thead>
+        <tbody>
+          <tr><td>Gaussian N(0,1/λ)</td><td>−λ/2·‖θ‖²</td><td><span class="tag c">L2 Ridge</span></td></tr>
+          <tr><td>Laplace L(0,1/λ)</td><td>−λ·‖θ‖₁</td><td><span class="tag a">L1 Lasso</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent4);">가우시안 MLE / LDA 결정 경계</div>
+      <div class="eq o">P(x|Cₖ) = 1/√(2πσ²) · exp(−(x−μₖ)²/2σ²)</div>
+      <div class="eq o">로그우도비 = 0  →  x*(μ₁−μ₂)/σ² = (μ₁²−μ₂²)/2σ²</div>
+      <div class="eq o">결정 경계  x* = (μ₁+μ₂)/2</div>
+      <p class="note">x² 항 상쇄 → 선형 경계 / 공통 σ²: (Σ편차²₁+Σ편차²₂)/(n₁+n₂)</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent3);">정규분포 & CLT</div>
+      <div class="eq c">N(x;μ,σ²) = 1/√(2πσ²) · e^(−(x−μ)²/2σ²)</div>
+      <div class="eq c">CLT: X̄ₙ → N(μ, σ²/n)  as n→∞  (n≥30)</div>
+      <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin:8px 0;">
+        <path d="M20,70 Q60,68 80,55 Q110,30 160,12 Q210,30 240,55 Q260,68 300,70" fill="none" stroke="#90e0ef" stroke-width="1.5"/>
+        <line x1="110" y1="10" x2="110" y2="68" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <line x1="210" y1="10" x2="210" y2="68" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <line x1="75"  y1="10" x2="75"  y2="68" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <line x1="245" y1="10" x2="245" y2="68" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="155" y="75" fill="#e8e8e0" font-size="8" text-anchor="middle" font-family="monospace">μ</text>
+        <text x="110" y="75" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">μ-σ</text>
+        <text x="210" y="75" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">μ+σ</text>
+        <text x="75"  y="75" fill="#666" font-size="7" text-anchor="middle" font-family="monospace">μ-2σ</text>
+        <text x="245" y="75" fill="#666" font-size="7" text-anchor="middle" font-family="monospace">μ+2σ</text>
+        <text x="160" y="42" fill="#7ee8a2" font-size="9" text-anchor="middle" font-family="monospace">68%</text>
+        <text x="160" y="54" fill="#f9c74f" font-size="8" text-anchor="middle" font-family="monospace">────── 95% ──────</text>
+      </svg>
+      <p class="note">68-95-99.7 규칙: P(μ±σ)≈68%, P(μ±2σ)≈95%</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent2);">Categorical MLE — 라그랑주 승수법</div>
+      <div class="eq">ℓ = Σ nₖ log πₖ,   제약: Σπₖ = 1</div>
+      <div class="eq">L(π,λ) = ℓ − λ(Σπₖ − 1)</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">1</span>
+          ∂L/∂πₖ = 0  →  πₖ = nₖ/λ
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">2</span>
+          제약 Σπₖ=1 대입  →  λ = n
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">3</span>
+          <span class="hi">π̂ₖ = nₖ/n</span>  (경험적 확률 = Softmax 수렴값)
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-panel">
+      <div class="quiz-title">✦ 연습문제</div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q1</span>
+        <div>X~N(70,100). P(60≤X≤80)과 P(X>85)를 구하라. (Φ(1.5)≈0.9332)
+          <div class="quiz-ans">P(60≤X≤80)≈68%  /  P(X>85)=1−0.9332≈6.7%</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q2</span>
+        <div>C₁ 40개, C₂ 60개. Categorical MLE로 π̂₁, π̂₂를 구하라.
+          <div class="quiz-ans">π̂₁=0.4,  π̂₂=0.6</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q3</span>
+        <div>μ₁=2, μ₂=6, σ²=4(공통)일 때 LDA 결정 경계 x*는?
+          <div class="quiz-ans">x* = (2+6)/2 = 4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CH04-05 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#1a0d1a;">
+    <span class="chapter-num" style="background:#2a1a40;color:var(--accent5);">CH 04-05</span>
+    <span class="chapter-title" style="color:var(--accent5);">선형 회귀 & 로지스틱 회귀</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent5);">선형 회귀 (MSE 최소화)</div>
+      <div class="eq p">모델   ŷ = θ₁x + θ₀</div>
+      <div class="eq p">MSE   J(θ) = (1/N) Σ(θ₁xᵢ+θ₀−yᵢ)²</div>
+      <div class="eq p">∂J/∂θ₀ = 0  →  θ₁Σxᵢ + Nθ₀ = Σyᵢ</div>
+      <div class="eq p">∂J/∂θ₁ = 0  →  θ₁Σxᵢ² + θ₀Σxᵢ = Σxᵢyᵢ</div>
+      <div class="eq p">정규방정식  θ = (XᵀX)⁻¹Xᵀy</div>
+      <div class="cols" style="margin-top:8px;">
+        <div class="mb"><div class="mt" style="color:var(--accent5);">볼록 함수</div>편미분=0이<br>전역 최솟값 보장</div>
+        <div class="mb"><div class="mt" style="color:var(--accent2);">성질</div>회귀 직선은<br>항상 (x̄, ȳ) 통과</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent4);">로지스틱 회귀</div>
+      <div class="eq o">σ(z) = 1/(1+e⁻ᶻ),   σ'(z) = σ(z)(1−σ(z))</div>
+      <div class="eq o">BCE  L = −[y log ŷ + (1−y) log(1−ŷ)]</div>
+      <div class="eq o">∂L/∂z = ŷ − y   ← 시그모이드+로그 상쇄</div>
+      <div class="eq o">∂J/∂θ₀ = (1/N) Σ(ŷᵢ−yᵢ)</div>
+      <div class="eq o">∂J/∂θ₁ = (1/N) Σ xᵢ(ŷᵢ−yᵢ)</div>
+      <div class="eq o">θ ← θ − α·∂J/∂θ   [경사하강법]</div>
+      <svg viewBox="0 0 260 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin:8px 0;">
+        <line x1="10" y1="50" x2="250" y2="50" stroke="#2e2e2e" stroke-width="0.5"/>
+        <line x1="130" y1="5" x2="130" y2="55" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <path d="M10,48 Q50,47 80,42 Q110,32 130,30 Q150,28 180,18 Q210,13 250,12" fill="none" stroke="#f4a261" stroke-width="1.5"/>
+        <text x="130" y="58" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">z=0, σ=0.5</text>
+        <text x="20"  y="14" fill="#666" font-size="7" font-family="monospace">σ→0</text>
+        <text x="220" y="14" fill="#666" font-size="7" font-family="monospace">σ→1</text>
+        <text x="5"   y="30" fill="#f4a261" font-size="8" font-family="monospace">σ(z)</text>
+      </svg>
+      <p class="note">초기 θ=0 → 모든 ŷ=0.5 → J=log2≈0.693 (최대 불확실성)</p>
+    </div>
+
+    <div class="quiz-panel">
+      <div class="quiz-title">✦ 연습문제</div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q1</span>
+        <div>θ₀=−3, θ₁=1일 때 x=3에서 로지스틱 예측값 ŷ는?
+          <div class="quiz-ans">z=1·3+(−3)=0,  ŷ=σ(0)=0.5</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q2</span>
+        <div>BCE 손실: y=1, ŷ=0.9일 때 손실 L은?
+          <div class="quiz-ans">L=−log(0.9)≈0.105  (예측이 좋으면 손실 작음)</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q3</span>
+        <div>θ₀=−6, θ₁=1, θ₂=1일 때 결정 경계 2D 직선은?
+          <div class="quiz-ans">x₁+x₂=6  (θᵀx=0 조건)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CH07 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#0d1a1a;">
+    <span class="chapter-num" style="background:#0e2e38;color:var(--accent3);">CH 07</span>
+    <span class="chapter-title" style="color:var(--accent3);">KNN & K-means — 분류 & 군집화</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent3);">KNN (K-Nearest Neighbors)</div>
+      <div class="eq c">유클리드  d = √(Σ(xᵢ−zᵢ)²)</div>
+      <div class="eq c">맨해튼   d = Σ|xᵢ−zᵢ|</div>
+      <div class="diagram" style="margin:8px 0;">
+        <div class="d-box" style="border-color:var(--accent3);color:var(--accent3);font-size:9px;">데이터<br>저장</div>
+        <span class="d-arrow">→</span>
+        <div class="d-box" style="font-size:9px;">거리<br>계산</div>
+        <span class="d-arrow">→</span>
+        <div class="d-box" style="font-size:9px;">K개<br>선택</div>
+        <span class="d-arrow">→</span>
+        <div class="d-box" style="border-color:var(--accent1);color:var(--accent1);font-size:9px;">다수결<br>/평균</div>
+      </div>
+      <div class="kv"><span class="k">K=1</span><span class="v" style="color:var(--accent4);">과적합 (낮은 편향, 높은 분산)</span></div>
+      <div class="kv"><span class="k">K=n</span><span class="v" style="color:var(--accent4);">과소적합 (높은 편향, 낮은 분산)</span></div>
+      <div class="kv"><span class="k">복잡도</span><span class="v">O(n·d)  Lazy Learning</span></div>
+      <p class="note">고차원 → 거리 집중 → PCA 선처리 / 스케일 정규화 필수</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent1);">K-means 클러스터링</div>
+      <div class="eq g">J = Σₖ Σ_{xᵢ∈Cₖ} ‖xᵢ−μₖ‖²  →  min</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">1</span>K개 초기 중심 선택 (K-means++ 권장)
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">2</span>할당: cᵢ = argminₖ ‖xᵢ−μₖ‖²
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">3</span>갱신: μₖ = 평균(Cₖ)
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;">
+          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">4</span>할당 변화 없을 때까지 2~3 반복
+        </div>
+      </div>
+      <div class="kv"><span class="k">K 선택</span><span class="v">Elbow Method / Silhouette Score</span></div>
+      <div class="kv"><span class="k">수렴 보장</span><span class="v">J 단조 감소 + 유한 경우의 수</span></div>
+      <p class="note">전역 최솟값 비보장 → n_init으로 여러 번 실행 후 최소 J 선택</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title" style="color:var(--accent5);">KNN vs K-means 비교</div>
+      <table>
+        <thead><tr><th>항목</th><th>KNN</th><th>K-means</th></tr></thead>
+        <tbody>
+          <tr><td>학습 유형</td><td><span class="tag g">지도학습</span></td><td><span class="tag p">비지도학습</span></td></tr>
+          <tr><td>레이블</td><td>필요</td><td>불필요</td></tr>
+          <tr><td>K 의미</td><td>이웃 개수</td><td>클러스터 수</td></tr>
+          <tr><td>훈련</td><td>없음 (Lazy)</td><td>반복 최적화</td></tr>
+          <tr><td>복잡도</td><td>O(n·d)</td><td>O(K·n·d·t)</td></tr>
+          <tr><td>스케일</td><td colspan="2" style="text-align:center;color:var(--accent4);">둘 다 정규화 필수</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quiz-panel">
+      <div class="quiz-title">✦ 연습문제</div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q1</span>
+        <div>A=[0,0], B=[3,4]의 유클리드 거리와 맨해튼 거리는?
+          <div class="quiz-ans">유클리드: √(9+16)=5  /  맨해튼: 3+4=7</div>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <span class="quiz-num">Q2</span>
+        <div>K-means에서 J가 단조 감소함을 설명하라.
+          <div class="quiz-ans">할당: 현재 μₖ 기준 최솟값 선택 → J 감소 or 유지<br>갱신: 평균이 MSE 최솟값 → J 감소 or 유지</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 핵심 암기 -->
+<div class="chapter">
+  <div class="chapter-header" style="background:#1a1a1a;">
+    <span class="chapter-num" style="background:#2e2e2e;color:var(--muted);">SUMMARY</span>
+    <span class="chapter-title" style="color:var(--text);">핵심 암기 모음</span>
+  </div>
+  <div class="chapter-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="mb"><div class="mt" style="color:var(--accent1);">기저 조건</div>선형 독립 + 벡터 수 = 차원</div>
+      <div class="mb"><div class="mt" style="color:var(--accent2);">MLE 편향</div>σ̂²=(1/N) → s²=(1/N-1) 불편</div>
+      <div class="mb"><div class="mt" style="color:var(--accent3);">베이즈</div>Prior + 데이터 → 사후 확률</div>
+      <div class="mb"><div class="mt" style="color:var(--accent4);">Chain Rule</div>∂L/∂z = ŷ−y (상쇄)</div>
+      <div class="mb"><div class="mt" style="color:var(--accent5);">차원의 저주</div>고차원 → PCA 선처리</div>
+      <div class="mb"><div class="mt" style="color:var(--accent1);">K-means</div>J 단조 감소 / 전역 비보장</div>
+      <div class="mb"><div class="mt" style="color:var(--accent2);">LDA 경계</div>x*=(μ₁+μ₂)/2</div>
+      <div class="mb"><div class="mt" style="color:var(--accent3);">Cat MLE</div>π̂ₖ=nₖ/n = Softmax 수렴</div>
+      <div class="mb"><div class="mt" style="color:var(--accent4);">Bias-Var</div>복잡도↑ → Bias↓, Var↑</div>
+      <div class="mb"><div class="mt" style="color:var(--accent5);">MLE vs MAP</div>MLE=Prior 무시 / MAP=반영</div>
+      <div class="mb"><div class="mt" style="color:var(--accent1);">CLT</div>n≥30 → 표본평균 → N분포</div>
+      <div class="mb"><div class="mt" style="color:var(--accent2);">회귀 직선</div>항상 (x̄, ȳ) 통과</div>
+    </div>
+  </div>
 </div>
 
 <footer>Machine Learning Cheat Sheet · CH01–CH07</footer>
-
-<div style="text-align:center;margin-top:20px;">
-  <a href="../notes.html?repo=Machine-Learning"
-     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#c77dff;border:0.5px solid #2a1a40;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;transition:border-color 0.2s,background 0.2s;">
-    자세히 보기 →
-  </a>
-</div>
+<a class="detail-btn" href="../notes.html?repo=Machine-Learning">자세히 보기 →</a>
 
 </body>
 </html>
