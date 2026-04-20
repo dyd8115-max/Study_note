@@ -4,165 +4,452 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web Programming 치트시트</title>
-<link rel="stylesheet" href="../assets/common.css">
+<link rel="stylesheet" href="common.css">
 </head>
 <body>
 
 <header>
-  <h1>Web Programming — 치트시트</h1>
-  <p>Web_01–04 · 렌더링, HTTP, 소켓, JS 런타임</p>
+  <h1 style="color:var(--accent4);">Web Programming</h1>
+  <p style="color:var(--muted);font-family:var(--mono);font-size:11px;margin-top:6px;">Web_01–07 · 웹 기초부터 Nginx까지</p>
 </header>
 
-<div class="grid">
-
-  <!-- 렌더링 방식 -->
-  <div class="card">
-    <div class="card-title orange">Web_01 · 렌더링 방식</div>
-    <table>
-      <thead><tr><th>방식</th><th>특징</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag a">SSR</span></td><td>서버에서 완성된 HTML 전달 · SEO 유리</td></tr>
-        <tr><td><span class="tag c">CSR</span></td><td>빈 HTML + JS → 클라이언트에서 렌더링 · SEO 불리</td></tr>
-        <tr><td><span class="tag g">하이브리드</span></td><td>Next.js, Nuxt.js — SSR+CSR 조합</td></tr>
-        <tr><td><span class="tag p">SPA</span></td><td>컴포넌트 바꿔치기 · 새로고침 없음 · AJAX</td></tr>
-        <tr><td><span class="tag o">MPA</span></td><td>페이지마다 HTML · 이동 시 새로고침</td></tr>
-      </tbody>
-    </table>
-    <p class="note">Render Tree = DOM + CSSOM 합쳐서 실제 화면에 그릴 요소만</p>
+<!-- ══════════════════════════════════════════ WEB 01 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 01</span>
+    <span class="chapter-title" style="color:var(--accent1);">웹 프로그래밍 기초</span>
   </div>
+  <div class="chapter-body">
 
-  <!-- HTTP -->
-  <div class="card">
-    <div class="card-title cyan">Web_02 · HTTP 메서드 & 상태코드</div>
-    <div class="two-col">
-      <div>
-        <table>
-          <thead><tr><th>메서드</th><th>용도</th></tr></thead>
-          <tbody>
-            <tr><td><span class="tag g">GET</span></td><td>조회</td></tr>
-            <tr><td><span class="tag a">POST</span></td><td>생성</td></tr>
-            <tr><td><span class="tag c">PUT</span></td><td>전체 수정</td></tr>
-            <tr><td><span class="tag o">PATCH</span></td><td>일부 수정</td></tr>
-            <tr><td><span class="tag p">DELETE</span></td><td>삭제</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <table>
-          <thead><tr><th>코드</th><th>의미</th></tr></thead>
-          <tbody>
-            <tr><td><span class="tag g">200</span></td><td>성공</td></tr>
-            <tr><td><span class="tag g">201</span></td><td>생성 성공</td></tr>
-            <tr><td><span class="tag a">400</span></td><td>잘못된 요청</td></tr>
-            <tr><td><span class="tag a">401</span></td><td>인증 필요</td></tr>
-            <tr><td><span class="tag o">404</span></td><td>없음</td></tr>
-            <tr><td><span class="tag p">500</span></td><td>서버 에러</td></tr>
-          </tbody>
-        </table>
+    <!-- 웹 3대 요소 -->
+    <div class="section">
+      <div class="section-title green">웹 개발 3대 요소</div>
+      <div class="three-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">HTML</div>
+          구조 & 내용 · DOM 트리
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">CSS</div>
+          디자인 & 스타일 · CSSOM 트리
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">JavaScript</div>
+          동작 & 기능 · 이벤트 처리
+        </div>
       </div>
     </div>
-    <p class="note">TCP: 안전·순서 보장 / UDP: 빠름·비보장 (게임·실시간)</p>
-  </div>
 
-  <!-- 소켓 & 웹서버 -->
-  <div class="card">
-    <div class="card-title green">Web_02 · 소켓 & 웹서버 흐름</div>
-    <div class="row"><span class="key">소켓 1</span><span class="val">리스닝 전용 · 새 클라이언트 대기</span></div>
-    <div class="row"><span class="key">소켓 2</span><span class="val">클라이언트 소켓 (브라우저 자동 생성)</span></div>
-    <div class="row"><span class="key">소켓 3</span><span class="val">클라이언트 전용 서버 소켓 · 통신 담당</span></div>
-    <div class="row"><span class="key">5-튜플</span><span class="val">출발지IP·포트 + 목적지IP·포트 + 프로토콜</span></div>
-    <div class="row"><span class="key">바인딩</span><span class="val">소켓에 IP+포트+프로토콜 등록</span></div>
-    <p class="note">Non-Persistent: 요청마다 연결 / Persistent: keep-alive로 재사용</p>
-  </div>
+    <!-- 렌더링 비교 -->
+    <div class="section">
+      <div class="section-title amber">렌더링 방식</div>
+      <table>
+        <thead><tr><th>방식</th><th>초기 로딩</th><th>페이지 전환</th><th>SEO</th><th>서버 부담</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">SSR</span></td><td>⚡ 빠름</td><td>느림 (새로고침)</td><td>✅ 좋음</td><td>높음</td><td>전통 서버</td></tr>
+          <tr><td><span class="tag c">CSR</span></td><td>❌ 느림</td><td>⚡ 빠름</td><td>나쁨</td><td>낮음</td><td>React, Vue</td></tr>
+          <tr><td><span class="tag p">하이브리드</span></td><td>⚡ 빠름</td><td>⚡ 빠름</td><td>✅ 좋음</td><td>중간</td><td>Next.js</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Render Tree = DOM + CSSOM 합쳐서 실제 그릴 요소만</div>
+    </div>
 
-  <!-- C10K -->
-  <div class="card">
-    <div class="card-title amber">Web_02 · C10K Problem</div>
-    <div class="row"><span class="key">문제</span><span class="val">동시 10K 연결 처리</span></div>
-    <div class="row"><span class="key">과거 방식</span><span class="val">클라이언트당 스레드 1개 → 메모리 부족</span></div>
-    <div class="row"><span class="key">NGINX</span><span class="val">이벤트 드리븐 + 비동기 논블로킹</span></div>
-    <div class="row"><span class="key">Node.js</span><span class="val">싱글 스레드 + 이벤트 루프</span></div>
-    <p class="note">worker = CPU 코어 수만큼 · 각 worker가 수천 개 연결 처리</p>
-  </div>
-
-  <!-- JS 자료형 -->
-  <div class="card">
-    <div class="card-title purple">Web_03 · JS 자료형 & 변수</div>
-    <div class="two-col">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent5)">원시 타입 (이뮤터블)</div>
-        string · number · boolean<br>null · undefined · bigint · symbol
-      </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent4)">참조 타입 (뮤터블)</div>
-        object · array · function<br>내부 값 직접 수정 가능
+    <!-- SPA vs MPA -->
+    <div class="section">
+      <div class="section-title cyan">SPA vs MPA</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">SPA (Single Page)</div>
+          컴포넌트 바꿔치기 · 새로고침 없음<br>AJAX로 데이터만 수신<br>부드러운 UX
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">MPA (Multi Page)</div>
+          페이지마다 HTML 파일<br>이동 시 새로고침<br>전체 재로드
+        </div>
       </div>
     </div>
-    <table style="margin-top:10px;">
-      <thead><tr><th>키워드</th><th>특징</th></tr></thead>
-      <tbody>
-        <tr><td><code>const</code></td><td>재할당 불가 · 객체 내부는 수정 가능</td></tr>
-        <tr><td><code>let</code></td><td>재할당 가능 · 블록 스코프</td></tr>
-        <tr><td><code>var</code></td><td>함수 스코프 · 호이스팅 · 비권장</td></tr>
-      </tbody>
-    </table>
-  </div>
 
-  <!-- 프로토타입 -->
-  <div class="card">
-    <div class="card-title cyan">Web_03 · 프로토타입 & 객체 생성</div>
-    <div class="row"><span class="key">프로토타입 체인</span><span class="val">없으면 위로 올라가며 탐색</span></div>
-    <div class="row"><span class="key">Object.prototype</span><span class="val">모든 객체의 최상위 (null에서 끝)</span></div>
-    <div class="row"><span class="key">객체 리터럴</span><span class="val"><code>{ }</code> — 실무에서 가장 많이 사용</span></div>
-    <div class="row"><span class="key">class (ES6+)</span><span class="val">현재 표준 · new 없이 호출 시 에러</span></div>
-    <div class="row"><span class="key">생성자 함수</span><span class="val">레거시 코드 · new 없이 호출 시 버그</span></div>
-    <p class="note">프로퍼티 디스크립터: writable · enumerable · configurable</p>
   </div>
-
-  <!-- JS 런타임 -->
-  <div class="card">
-    <div class="card-title orange">Web_04 · JS 런타임 & V8 엔진</div>
-    <div class="row"><span class="key">V8</span><span class="val">크롬·Node.js 사용 JS 엔진</span></div>
-    <div class="row"><span class="key">JIT 컴파일</span><span class="val">자주 쓰는 코드만 머신코드로 변환</span></div>
-    <div class="row"><span class="key">Ignition</span><span class="val">인터프리터 · 바이트코드로 즉시 실행</span></div>
-    <div class="row"><span class="key">TurboFan</span><span class="val">JIT 컴파일러 · 핫코드만 머신코드</span></div>
-    <div class="row"><span class="key">콜스택</span><span class="val">함수 실행 순서 관리 (LIFO)</span></div>
-    <div class="row"><span class="key">메모리 힙</span><span class="val">객체·배열 등 참조 타입 저장</span></div>
-    <p class="note">변환 흐름: JS → AST → 바이트코드 → (핫코드만) 머신코드</p>
-  </div>
-
-  <!-- 비동기 -->
-  <div class="card">
-    <div class="card-title green">Web_04 · 비동기 & 이벤트 루프</div>
-    <div class="row"><span class="key">싱글스레드</span><span class="val">한 번에 하나 · Web API에 위임</span></div>
-    <div class="row"><span class="key">Web API</span><span class="val">setTimeout · fetch · DOM 이벤트</span></div>
-    <div class="row"><span class="key">마이크로태스크 큐</span><span class="val">Promise · async/await — 우선순위 높음</span></div>
-    <div class="row"><span class="key">태스크 큐</span><span class="val">setTimeout · DOM 이벤트 — 우선순위 낮음</span></div>
-    <div class="row"><span class="key">이벤트 루프</span><span class="val">콜스택 빌 때 큐에서 꺼내 올려줌</span></div>
-    <div class="row"><span class="key">웹 워커</span><span class="val">별도 스레드 · DOM 접근 불가</span></div>
-    <p class="note">순서: 마이크로태스크 큐 먼저 → 태스크 큐</p>
-  </div>
-
-  <!-- 핵심 암기 -->
-  <div class="card wide">
-    <div class="card-title orange">핵심 암기 모음</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">CSR vs SSR</div>CSR = 빈 HTML + JS 렌더링 / SSR = 완성 HTML 전달</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">TCP vs UDP</div>TCP = 안전·순서 / UDP = 빠름·비보장</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">소켓 1 vs 3</div>소켓 1 = 대기 전용 / 소켓 3 = 클라이언트 전용 통신</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">큐 우선순위</div>마이크로태스크(Promise) > 태스크(setTimeout)</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">const vs let</div>const = 재할당 불가 (내부 수정 가능) / let = 재할당 가능</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">typeof null</div>"object" — JS 설계 버그, null은 원시 타입</div>
-    </div>
-  </div>
-
 </div>
 
-<footer>Web Programming Cheat Sheet · Web_01–04</footer>
+<!-- ══════════════════════════════════════════ WEB 02 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 02</span>
+    <span class="chapter-title" style="color:var(--accent3);">웹서버 & HTTP</span>
+  </div>
+  <div class="chapter-body">
 
-<div style="text-align:center;margin-top:20px;">
-  <a href="../notes.html?repo=Web-programming"
-     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#f4a261;border:0.5px solid #3a2010;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
+    <!-- OSI 계층 -->
+    <div class="section">
+      <div class="section-title cyan">OSI 7계층</div>
+      <table style="font-size:11px;">
+        <thead><tr><th>#</th><th>계층</th><th>프로토콜</th><th>주소</th></tr></thead>
+        <tbody>
+          <tr><td>7·6·5</td><td>응용·표현·세션</td><td>HTTP, HTTPS, FTP</td><td>도메인</td></tr>
+          <tr><td>4</td><td><span class="highlight">전송</span></td><td><span class="highlight">TCP, UDP</span></td><td>포트번호</td></tr>
+          <tr><td>3</td><td>네트워크</td><td>IP</td><td>IP주소</td></tr>
+          <tr><td>2</td><td>데이터링크</td><td>Ethernet</td><td>MAC주소</td></tr>
+          <tr><td>1</td><td>물리</td><td>케이블</td><td>-</td></tr>
+        </tbody>
+      </table>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">TCP</div>
+          안전·순서 보장<br>느림 · 웹, 이메일
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">UDP</div>
+          빠름·비보장<br>게임·실시간 스트리밍
+        </div>
+      </div>
+    </div>
+
+    <!-- HTTP 메서드 -->
+    <div class="section">
+      <div class="section-title amber">HTTP 메서드 & 상태코드</div>
+      <div class="two-col">
+        <div>
+          <table style="font-size:11px;">
+            <thead><tr><th>메서드</th><th>용도</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag g">GET</span></td><td>조회</td></tr>
+              <tr><td><span class="tag a">POST</span></td><td>생성</td></tr>
+              <tr><td><span class="tag c">PUT</span></td><td>전체 수정</td></tr>
+              <tr><td><span class="tag o">DELETE</span></td><td>삭제</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <table style="font-size:11px;">
+            <thead><tr><th>상태코드</th><th>의미</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag g">200</span></td><td>성공</td></tr>
+              <tr><td><span class="tag g">201</span></td><td>생성 성공</td></tr>
+              <tr><td><span class="tag a">400</span></td><td>잘못된 요청</td></tr>
+              <tr><td><span class="tag p">500</span></td><td>서버 에러</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 소켓 & C10K -->
+    <div class="section">
+      <div class="section-title orange">소켓 & C10K Problem</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">소켓 3개</div>
+          소켓 1 = 리스닝 전용<br>소켓 2 = 클라이언트<br>소켓 3 = 통신 담당
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">C10K 해결</div>
+          NGINX: 이벤트 드리븐<br>Node.js: 이벤트 루프<br>CPU 코어 수만큼 워커
+        </div>
+      </div>
+      <div class="note">5-튜플: 출발지IP·포트 + 목적지IP·포트 + 프로토콜</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ WEB 03 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 03</span>
+    <span class="chapter-title" style="color:var(--accent5);">JavaScript 기초</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 자료형 -->
+    <div class="section">
+      <div class="section-title purple">자료형 & 변수 선언</div>
+      <table>
+        <thead><tr><th>구분</th><th>타입들</th><th>특징</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag a">원시</span></td><td>string, number, boolean, null, undefined</td><td>이뮤터블 (값 변경 불가)</td></tr>
+          <tr><td><span class="tag c">참조</span></td><td>object, array, function</td><td>뮤터블 (내부 수정 가능)</td></tr>
+        </tbody>
+      </table>
+      <table style="margin-top:10px;">
+        <thead><tr><th>키워드</th><th>재할당</th><th>스코프</th><th>호이스팅</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">const</span></td><td>❌</td><td>블록</td><td>❌ (권장)</td></tr>
+          <tr><td><span class="tag c">let</span></td><td>✅</td><td>블록</td><td>❌</td></tr>
+          <tr><td><span class="tag p">var</span></td><td>✅</td><td>함수</td><td>✅ (구식)</td></tr>
+        </tbody>
+      </table>
+      <div class="note">const 주의: 참조 타입은 재할당 불가이지만 내부 값은 수정 가능</div>
+    </div>
+
+    <!-- 프로토타입 & 객체 생성 -->
+    <div class="section">
+      <div class="section-title orange">프로토타입 & 객체 생성</div>
+      <div class="formula">myObj → Object.prototype → null</div>
+      <table style="margin-top:10px;">
+        <thead><tr><th>방식</th><th>코드</th><th>사용</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">리터럴</span></td><td><code>{ name: "이용균" }</code></td><td>가장 흔함</td></tr>
+          <tr><td><span class="tag c">클래스</span></td><td><code>class User { ... }</code></td><td>현재 표준</td></tr>
+          <tr><td><span class="tag a">생성자</span></td><td><code>function User() { ... }</code></td><td>레거시</td></tr>
+        </tbody>
+      </table>
+      <div class="note">프로퍼티 디스크립터: writable · enumerable · configurable</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ WEB 04 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 04</span>
+    <span class="chapter-title" style="color:var(--accent4);">JS 실행 환경</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- V8 엔진 -->
+    <div class="section">
+      <div class="section-title orange">JS 엔진 (V8)</div>
+      <div class="formula" style="border-left-color:var(--accent4);color:var(--accent4);">JS → 파싱 → AST → 이그니션 → 바이트코드 → 터보팬 → 머신코드</div>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">이그니션</div>
+          인터프리터 · 바이트코드 즉시 실행
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">터보팬</div>
+          JIT 컴파일러 · 핫코드만 머신코드
+        </div>
+      </div>
+    </div>
+
+    <!-- 비동기 & 이벤트 루프 -->
+    <div class="section">
+      <div class="section-title cyan">비동기 & 이벤트 루프</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">동기</div>
+          순서대로 · 이전 작업 대기
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">비동기</div>
+          작업 위임 · 기다리지 않음
+        </div>
+      </div>
+      <table style="margin-top:10px;">
+        <thead><tr><th>큐</th><th>예시</th><th>우선순위</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">마이크로태스크</span></td><td>Promise, async/await</td><td>🔴 높음</td></tr>
+          <tr><td><span class="tag a">태스크</span></td><td>setTimeout, DOM 이벤트</td><td>🟡 낮음</td></tr>
+        </tbody>
+      </table>
+      <div class="note">이벤트 루프: 콜스택 비면 → 마이크로태스크 큐 먼저 → 태스크 큐</div>
+    </div>
+
+    <!-- 싱글스레드 & 웹 워커 -->
+    <div class="section">
+      <div class="section-title green">싱글스레드 & 웹 워커</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">싱글스레드</div>
+          한 번에 하나씩<br>Web API에 위임<br>이벤트 루프로 처리
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">웹 워커</div>
+          별도 스레드<br>DOM 접근 불가<br>메인 블로킹 없음
+        </div>
+      </div>
+      <div class="note">콜스택 블로킹: 초반에 무거운 작업 → 이후 콜백 모두 미뤄짐</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ WEB 05 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 05</span>
+    <span class="chapter-title" style="color:var(--accent2);">Iterator & Generator</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- Iterator -->
+    <div class="section">
+      <div class="section-title amber">Iterator Protocol</div>
+      <div style="font-size:12px;margin-bottom:10px;color:var(--muted);">Iterable (배열, Set, Map) → [Symbol.iterator]() → Iterator → next() → {value, done}</div>
+      <table style="font-size:11px;">
+        <thead><tr><th></th><th>정의</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">Iterable</span></td><td>for/of, spread에서 동작 · Array, Set, Map</td></tr>
+          <tr><td><span class="tag c">Iterator</span></td><td>next() 메서드 가진 객체</td></tr>
+          <tr><td><span class="tag a">Result</span></td><td>{value, done} 형태</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Generator -->
+    <div class="section">
+      <div class="section-title orange">Generator Function</div>
+      <div style="font-size:12px;margin-bottom:10px;color:var(--muted);">function* gen() { yield 1; yield 2; }</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">특징</div>
+          Iterator 자동 반환<br>yield로 일시 중지<br>next() 호출 시 재개
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">yield*</div>
+          다른 iterable 순회<br>재귀 generator 사용
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ WEB 06 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 06</span>
+    <span class="chapter-title" style="color:var(--accent5);">Modules</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 모듈 개념 -->
+    <div class="section">
+      <div class="section-title purple">Module 개념</div>
+      <div class="note" style="margin-top:0;">재사용 가능한 코드 집합 · 기본적으로 private · export로만 공개</div>
+      <table style="margin-top:10px;">
+        <thead><tr><th></th><th>CommonJS</th><th>ES6</th></tr></thead>
+        <tbody>
+          <tr><td>문법</td><td><code>module.exports</code></td><td><code>export / import</code></td></tr>
+          <tr><td>환경</td><td>Node.js (서버)</td><td>브라우저 (클라이언트)</td></tr>
+          <tr><td>로드</td><td>동기</td><td>비동기</td></tr>
+          <tr><td>브라우저</td><td>❌ (Webpack 필요)</td><td>✅ (직접 지원)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Webpack -->
+    <div class="section">
+      <div class="section-title cyan">Webpack</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">CommonJS → 브라우저 호환 · Entry → Graph → Bundle</div>
+      <div class="mini-card">
+        <div class="mc-title" style="color:var(--accent3)">역할</div>
+        여러 모듈 번들링<br>의존성 분석<br>단일 파일로 통합
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ WEB 07 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Web 07</span>
+    <span class="chapter-title" style="color:var(--accent1);">Nginx</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- Nginx 역할 -->
+    <div class="section">
+      <div class="section-title green">Nginx 역할</div>
+      <div class="three-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">웹 서버</div>
+          정적 파일 제공<br>HTML/CSS/JS/이미지
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">리버스 프록시</div>
+          요청 분석 · 백엔드 전달<br>응답 반환
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">로드 밸런서</div>
+          여러 백엔드에 분산<br>부하 분산
+        </div>
+      </div>
+    </div>
+
+    <!-- 아키텍처 & 설정 -->
+    <div class="section">
+      <div class="section-title orange">아키텍처</div>
+      <div class="formula" style="border-left-color:var(--accent4);color:var(--accent4);text-align:center;">클라이언트→ Nginx (80/443) → 정적/프록시 → 백엔드 (3000 등)</div>
+      <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border);">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent2);margin-bottom:8px;">설정 기본 구조</div>
+        <div style="background:var(--surface2);padding:10px;border-radius:5px;font-family:var(--mono);font-size:11px;color:#888;overflow-x:auto;">
+upstream backend { server 127.0.0.1:3000; }<br/>
+server {<br/>
+&nbsp;&nbsp;listen 80;<br/>
+&nbsp;&nbsp;location / { index index.html; }<br/>
+&nbsp;&nbsp;location /api { proxy_pass http://backend; }<br/>
+}
+        </div>
+      </div>
+    </div>
+
+    <!-- root vs alias -->
+    <div class="section">
+      <div class="section-title amber">root vs alias</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">root</div>
+          경로 합치기<br>/path + /root → /path/
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">alias</div>
+          경로 교체<br>/alias/ 만 사용
+        </div>
+      </div>
+    </div>
+
+    <!-- Docker -->
+    <div class="section">
+      <div class="section-title cyan">Docker Compose (권장)</div>
+      <div class="note" style="margin-top:0;">컨테이너 자동 네트워킹 · 이름으로 통신 · IP 변경 불필요</div>
+      <table style="margin-top:10px;font-size:11px;">
+        <thead><tr><th>항목</th><th>설정</th></tr></thead>
+        <tbody>
+          <tr><td>Nginx</td><td>포트 8080:80 · volumes: 정적파일</td></tr>
+          <tr><td>Backend</td><td>포트 3000:3000 · 백엔드 서버</td></tr>
+          <tr><td>Network</td><td>bridge · 자동 통신</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ 핵심 암기 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">암기</span>
+    <span class="chapter-title" style="color:var(--accent2);">핵심 암기 모음</span>
+  </div>
+  <div class="chapter-body">
+    <div class="section">
+      <div class="memory-grid">
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">CSR vs SSR</div>CSR = 빈 HTML + JS · SSR = 완성 HTML</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">TCP vs UDP</div>TCP = 안전·순서 · UDP = 빠름·비보장</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">const vs let</div>const = 재할당 불가 · let = 재할당 가능</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">동기 vs 비동기</div>동기 = 순서대로 · 비동기 = 위임</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">큐 우선순위</div>마이크로태스크 > 태스크</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">모듈 시스템</div>Node.js = CommonJS · 브라우저 = ES6</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">Nginx 경로</div>/ = 정적 · /api = 프록시</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">root vs alias</div>root = 합치기 · alias = 교체</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">프로토타입 체인</div>객체 → Object.prototype → null</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">Webpack 역할</div>모듈 번들링 · 의존성 분석</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">Iterator vs Generator</div>Iterator = 직접 구현 · Generator = function*</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">웹 워커</div>별도 스레드 · DOM 접근 불가</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Web Programming Cheat Sheet · Web_01–07</footer>
+
+<div style="text-align:center;margin-top:24px;margin-bottom:8px;">
+  <a href="README.md"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent1);border:0.5px solid var(--accent1);background:transparent;padding:10px 20px;border-radius:8px;text-decoration:none;opacity:0.7;transition:opacity 0.3s;">
     자세히 보기 →
   </a>
 </div>
