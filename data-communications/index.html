@@ -3,531 +3,823 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Machine Learning 치트시트</title>
+<title>Data Communications 치트시트</title>
 <link rel="stylesheet" href="../assets/common.css">
 <style>
-  body { padding: 0 16px 40px; max-width: 680px; margin: 0 auto; }
+  body { max-width: 720px; margin: 0 auto; padding: 32px 20px; }
 
-  header { border-left: 3px solid var(--accent5); padding: 20px 0 20px 16px; margin: 24px 0 8px; }
-  header h1 { font-family: var(--mono); font-size: 18px; color: var(--accent5); }
-  header p  { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
+  /* 챕터 그룹 박스 */
+  .chapter {
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
 
-  .chapter { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
-  .chapter-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid var(--border); }
-  .chapter-num { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; letter-spacing: 1px; flex-shrink: 0; }
-  .chapter-title { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: -0.3px; }
-  .chapter-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--surface2);
+  }
 
-  .panel { background: var(--surface2); border-radius: 8px; padding: 12px 14px; border: 0.5px solid #2a2a2a; }
-  .panel-title { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 7px; border-bottom: 0.5px solid var(--border); }
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
 
-  .eq { background: #111; border-left: 2px solid var(--accent2); border-radius: 0 5px 5px 0; padding: 7px 11px; font-family: var(--mono); font-size: 12px; color: var(--accent2); margin: 5px 0; white-space: pre; }
-  .eq.sm { font-size: 11px; }
-  .eq.g  { border-color: var(--accent1); color: var(--accent1); }
-  .eq.c  { border-color: var(--accent3); color: var(--accent3); }
-  .eq.p  { border-color: var(--accent5); color: var(--accent5); }
-  .eq.o  { border-color: var(--accent4); color: var(--accent4); }
+  .chapter-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
 
-  .quiz-panel { background: #0d1a12; border: 0.5px solid #1a3a25; border-radius: 8px; padding: 12px 14px; }
-  .quiz-title { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent1); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
-  .quiz-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 0.5px solid #1a3a25; font-size: 12px; align-items: flex-start; }
-  .quiz-item:last-child { border-bottom: none; }
-  .quiz-num { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent1); background: #1a3a25; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
-  .quiz-ans { margin-top: 5px; font-family: var(--mono); font-size: 11px; color: var(--accent2); background: #111; padding: 5px 9px; border-radius: 4px; border-left: 2px solid var(--accent2); }
+  .chapter-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .mb { background: #111; border-radius: 5px; padding: 8px 10px; font-size: 12px; }
-  .mb .mt { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+  /* 섹션 카드 */
+  .section {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
 
-  .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .panel th { color: var(--muted); font-size: 10px; padding: 4px 7px; border-bottom: 0.5px solid var(--border); text-align: left; }
-  .panel td { padding: 5px 7px; border-bottom: 0.5px solid #1e1e1e; vertical-align: top; font-size: 11px; }
-  .panel tr:last-child td { border-bottom: none; }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 0.5px solid var(--border);
+  }
 
-  .kv { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 0.5px solid #1e1e1e; font-size: 12px; }
-  .kv:last-child { border-bottom: none; }
-  .kv .k { color: var(--muted); font-size: 11px; }
-  .kv .v { font-family: var(--mono); font-size: 11px; text-align: right; }
+  .section-title.green  { color: var(--accent1); }
+  .section-title.amber  { color: var(--accent2); }
+  .section-title.cyan   { color: var(--accent3); }
+  .section-title.orange { color: var(--accent4); }
+  .section-title.purple { color: var(--accent5); }
 
-  .diagram { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 0; flex-wrap: wrap; }
-  .d-box { background: #111; border: 0.5px solid var(--border); border-radius: 6px; padding: 6px 10px; font-family: var(--mono); font-size: 10px; text-align: center; }
-  .d-arrow { color: var(--muted); font-size: 14px; }
+  /* 2열 그리드 */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-  .tag { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
-  .tag.g { background: #1a3a25; color: var(--accent1); }
-  .tag.a { background: #3a2e10; color: var(--accent2); }
-  .tag.c { background: #0e2e38; color: var(--accent3); }
-  .tag.o { background: #3a2010; color: var(--accent4); }
-  .tag.p { background: #2a1a40; color: var(--accent5); }
+  /* 수식 */
+  .formula {
+    background: var(--surface2);
+    border-left: 2px solid var(--accent2);
+    padding: 9px 14px;
+    border-radius: 0 5px 5px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent2);
+    margin: 6px 0;
+  }
+  .formula.green  { border-left-color: var(--accent1); color: var(--accent1); }
+  .formula.cyan   { border-left-color: var(--accent3); color: var(--accent3); }
+  .formula.purple { border-left-color: var(--accent5); color: var(--accent5); }
 
-  .note { font-size: 11px; color: var(--muted); margin-top: 7px; padding-left: 8px; border-left: 2px solid var(--border); }
-  .hi  { color: var(--accent1); font-weight: 600; }
-  .dim { color: var(--muted); }
-  svg text { font-family: 'IBM Plex Mono', monospace; }
-  footer { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--border); margin-top: 32px; }
-  .detail-btn { display: block; text-align: center; margin: 16px auto 0; font-family: var(--mono); font-size: 11px; color: var(--accent5); border: 0.5px solid #2a1a40; background: var(--surface); padding: 10px 20px; border-radius: 8px; text-decoration: none; width: fit-content; }
+  /* 변수 설명 */
+  .var-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3px 12px;
+    font-size: 11px;
+    margin: 6px 0;
+  }
+  .var-key { font-family: var(--mono); color: var(--accent3); }
+  .var-val { color: var(--muted); }
+
+  /* 노트 */
+  .note {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-left: 2px solid var(--border);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* 미니카드 */
+  .mini-card {
+    background: var(--surface2);
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .mc-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  /* 암기 그리드 */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+
+  /* SVG 래퍼 */
+  .svg-wrap { margin: 8px 0; }
+  .svg-wrap svg { width: 100%; display: block; }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Machine Learning — 치트시트</h1>
-  <p>CH01–CH07 · 선형대수 / 확률 / 통계 / MLE / 분류 / 군집화</p>
+<header style="margin-bottom:32px;">
+  <h1 style="color:var(--accent1);">Data Communications</h1>
+  <p style="color:var(--muted);font-family:var(--mono);font-size:11px;margin-top:6px;">CH01–CH05 · DC_01 ~ DC_06 핵심 요약</p>
 </header>
 
-<!-- CH01 -->
+<!-- ══════════════════════════════════════════ CH01 ══ -->
 <div class="chapter">
-  <div class="chapter-header" style="background:#0d1a0d;">
-    <span class="chapter-num" style="background:#1a3a25;color:var(--accent1);">CH 01</span>
-    <span class="chapter-title" style="color:var(--accent1);">선형대수 — 벡터 · 행렬 · 변환</span>
+  <div class="chapter-header">
+    <span class="chapter-num">CH 01</span>
+    <span class="chapter-title" style="color:var(--accent1);">데이터 통신의 개요</span>
   </div>
   <div class="chapter-body">
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent1);">벡터 기초 공식</div>
-      <div class="eq g">크기 (Norm)   ‖v‖ = √(v₁²+v₂²+…+vₙ²)</div>
-      <div class="eq g">단위벡터      û = v / ‖v‖</div>
-      <div class="eq g">내적          A·B = ΣAᵢBᵢ = ‖A‖‖B‖cosθ</div>
-      <div class="eq g">외적 크기     ‖A×B‖ = ‖A‖‖B‖sinθ</div>
-      <div class="cols" style="margin-top:8px;">
-        <div class="mb"><div class="mt" style="color:var(--accent1);">내적 부호</div>
-          <span class="tag g">양수</span> 같은 방향<br>
-          <span class="tag a">0</span> 직교 (90°)<br>
-          <span class="tag o">음수</span> 반대 방향
-        </div>
-        <div class="mb"><div class="mt" style="color:var(--accent3);">직교 조건</div>
-          a·b = 0<br>↔ cosθ = 0<br>↔ θ = 90°
-        </div>
+    <!-- 구성 요소 -->
+    <div class="section">
+      <div class="section-title green">구성 5요소</div>
+      <div class="three-col">
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">송신자</div>메시지를 보내는 장치</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">수신자</div>메시지를 받는 장치</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">메시지</div>전송되는 정보</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">전송매체</div>물리적 경로</div>
+        <div class="mini-card" style="border:0.5px solid var(--accent1);"><div class="mc-title" style="color:var(--accent1)">프로토콜 ← 자주 틀림</div>데이터 통신 수행 규칙 집합</div>
       </div>
+      <div class="note">데이터 흐름: 단방향(키보드) / 반이중(무전기) / 전이중(전화)</div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent3);">외적 (Cross Product) 계산</div>
-      <div class="eq c sm">A×B = | i   j   k  |
-        | A₁  A₂  A₃ |
-        | B₁  B₂  B₃ |</div>
-      <div class="kv"><span class="k">i 성분</span><span class="v">A₂B₃ − A₃B₂</span></div>
-      <div class="kv"><span class="k">j 성분</span><span class="v">−(A₁B₃ − A₃B₁)</span></div>
-      <div class="kv"><span class="k">k 성분</span><span class="v">A₁B₂ − A₂B₁</span></div>
-      <p class="note">예) [2,3,4]×[5,6,7] = [-3, 6, -3]</p>
-    </div>
+    <!-- 토폴로지 -->
+    <div class="section">
+      <div class="section-title amber">접속 형태 (Topology)</div>
+      <!-- 토폴로지 시각화 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- 그물형 -->
+          <text x="50" y="14" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">그물 (Mesh)</text>
+          <line x1="20" y1="40" x2="80" y2="40" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="20" y1="40" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="80" y1="40" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="20" y1="40" x2="50" y2="28" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="80" y1="40" x2="50" y2="28" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <line x1="50" y1="28" x2="50" y2="80" stroke="#7ee8a2" stroke-width="1" opacity="0.6"/>
+          <circle cx="20" cy="40" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="80" cy="40" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="50" cy="80" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="50" cy="28" r="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="50" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">안전·비싸</text>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent5);">행렬 연산 & 역행렬</div>
-      <div class="eq p">행렬곱  Cᵢⱼ = Σₗ AᵢₗBₗⱼ</div>
-      <div class="eq p">det(A) = ad − bc  (2×2)</div>
-      <div class="eq p">A⁻¹ = 1/det(A) · [ d  -b ]
-                              [-c   a ]</div>
-      <div class="kv"><span class="k">rank = n</span><span class="v hi">역행렬 존재</span></div>
-      <div class="kv"><span class="k">rank &lt; n</span><span class="v" style="color:var(--accent4);">역행렬 없음</span></div>
-      <div class="kv"><span class="k">rank 계산</span><span class="v">행 축소 후 0이 아닌 행 수</span></div>
-    </div>
+          <!-- 스타형 -->
+          <text x="215" y="14" font-family="monospace" font-size="10" fill="#f9c74f" text-anchor="middle">스타 (Star)</text>
+          <line x1="215" y1="55" x2="185" y2="35" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="245" y2="35" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="185" y2="80" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="245" y2="80" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <line x1="215" y1="55" x2="215" y2="30" stroke="#f9c74f" stroke-width="1" opacity="0.6"/>
+          <rect x="207" y="47" width="16" height="16" rx="3" fill="#3a2e10" stroke="#f9c74f" stroke-width="1.5"/>
+          <text x="215" y="58" font-family="monospace" font-size="8" fill="#f9c74f" text-anchor="middle">H</text>
+          <circle cx="185" cy="35" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="245" cy="35" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="185" cy="80" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="245" cy="80" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="215" cy="30" r="4" fill="#3a2e10" stroke="#f9c74f" stroke-width="1"/>
+          <text x="215" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">가장 많이 사용</text>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent4);">투영 & 선형변환</div>
-      <div class="eq o">proj(x) = (x·û)·û   [단위벡터 û에 투영]</div>
-      <div class="eq o">잔차  r = x − proj(x)  [투영 후 남은 성분]</div>
-      <div class="eq o">선형변환  y = Wx   [W: M×N 행렬]</div>
-      <div class="cols" style="margin-top:6px;">
-        <div class="mb"><div class="mt" style="color:var(--accent4);">차원 변환</div>M &lt; N → 축소<br>M &gt; N → 확대</div>
-        <div class="mb"><div class="mt" style="color:var(--accent1);">기저 조건</div>선형 독립<br>+ 벡터 수 = 차원</div>
+          <!-- 버스형 -->
+          <text x="390" y="14" font-family="monospace" font-size="10" fill="#f4a261" text-anchor="middle">버스 (Bus)</text>
+          <line x1="330" y1="55" x2="450" y2="55" stroke="#f4a261" stroke-width="2" opacity="0.8"/>
+          <line x1="355" y1="55" x2="355" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <line x1="390" y1="55" x2="390" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <line x1="425" y1="55" x2="425" y2="35" stroke="#f4a261" stroke-width="1" opacity="0.5"/>
+          <circle cx="355" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <circle cx="390" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <circle cx="425" cy="35" r="4" fill="#3a2010" stroke="#f4a261" stroke-width="1"/>
+          <text x="390" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">설치 쉬움·저렴</text>
+
+          <!-- 링형 -->
+          <text x="590" y="14" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">링 (Ring)</text>
+          <circle cx="590" cy="55" r="30" fill="none" stroke="#90e0ef" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="590" cy="25" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="620" cy="55" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="590" cy="85" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="560" cy="55" r="4" fill="#0e2e38" stroke="#90e0ef" stroke-width="1.5"/>
+          <text x="590" y="105" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">순환·중계기</text>
+        </svg>
       </div>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-title">✦ 연습문제</div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q1</span>
-        <div>A=[1,2,3], B=[4,0,-2]일 때 내적 A·B와 두 벡터의 관계는?
-          <div class="quiz-ans">A·B = 4+0−6 = −2 → 음수 → 둔각(반대 방향 성분)</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q2</span>
-        <div>2×2 행렬 A=[[3,1],[5,2]]의 역행렬을 구하라.
-          <div class="quiz-ans">det=3·2−1·5=1 → A⁻¹=[[2,-1],[-5,3]]</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q3</span>
-        <div>x=[3,4], û=[1,0]일 때 투영과 잔차는?
-          <div class="quiz-ans">proj=(3·1)·[1,0]=[3,0], 잔차=[0,4]</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CH02 -->
-<div class="chapter">
-  <div class="chapter-header" style="background:#0e1a2a;">
-    <span class="chapter-num" style="background:#0e2e38;color:var(--accent3);">CH 02</span>
-    <span class="chapter-title" style="color:var(--accent3);">확률 이론 — 공간 · 분포 · 베이즈</span>
-  </div>
-  <div class="chapter-body">
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent3);">확률 공간 (Ω, F, P)</div>
       <table>
-        <thead><tr><th>기호</th><th>이름</th><th>설명</th></tr></thead>
+        <thead><tr><th>순위</th><th>가격(저렴)</th><th>보안/안정</th><th>설치(쉬움)</th></tr></thead>
         <tbody>
-          <tr><td><span class="tag c">Ω</span></td><td>표본 공간</td><td>모든 결과의 집합</td></tr>
-          <tr><td><span class="tag g">ω</span></td><td>근원 사건</td><td>실험 결과 하나</td></tr>
-          <tr><td><span class="tag a">A</span></td><td>사건</td><td>Ω의 부분집합</td></tr>
-          <tr><td><span class="tag p">F</span></td><td>σ-대수</td><td>확률 계산 가능한 사건 모음</td></tr>
+          <tr><td>1위</td><td>버스</td><td>그물</td><td>버스</td></tr>
+          <tr><td>2위</td><td>링</td><td>스타</td><td>스타</td></tr>
+          <tr><td>3위</td><td>스타</td><td>링</td><td>링</td></tr>
+          <tr><td>4위</td><td>그물</td><td>버스</td><td>그물</td></tr>
         </tbody>
       </table>
-      <div class="eq c" style="margin-top:8px;">Kolmogorov: P(A)≥0,  P(Ω)=1
-P(A∪B)=P(A)+P(B)  [A,B 배반]</div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent2);">CDF / PMF / PDF</div>
-      <div class="eq">CDF   F(x) = P(X ≤ x)          [이산·연속 공통]</div>
-      <div class="eq">PMF   p(x) = P(X=x),  Σp(x)=1   [이산]</div>
-      <div class="eq">PDF   P(a≤X≤b) = ∫ₐᵇ f(x)dx     [연속]</div>
-      <div class="eq">구간  P(a&lt;X≤b) = F(b) − F(a)</div>
-      <p class="note">연속: P(X=x)=0 → 반드시 구간으로 계산</p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent5);">조건부 · 독립 · 베이즈</div>
-      <div class="eq p">조건부   P(A|B) = P(A∩B) / P(B)</div>
-      <div class="eq p">독립     P(A∩B) = P(A)·P(B)</div>
-      <div class="eq p">연쇄     P(A∩B) = P(A|B)·P(B)</div>
-      <div class="eq p">베이즈   P(θ|X) = P(X|θ)·P(θ) / P(X)</div>
-      <div class="cols" style="margin-top:8px;">
-        <div class="mb"><div class="mt" style="color:var(--accent5);">Prior</div>데이터 관측 전<br>θ에 대한 믿음</div>
-        <div class="mb"><div class="mt" style="color:var(--accent3);">Posterior</div>데이터 후<br>갱신된 믿음</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent1);">기댓값 · 분산</div>
-      <div class="eq g">E[X] = Σ x·p(x)          [이산]</div>
-      <div class="eq g">E[X] = ∫ x·f(x)dx        [연속]</div>
-      <div class="eq g">Var[X] = E[X²] − (E[X])²</div>
-      <div class="kv"><span class="k">선형성</span><span class="v">E[aX+b] = aE[X]+b</span></div>
-      <div class="kv"><span class="k">스케일</span><span class="v">Var[aX+b] = a²Var[X]</span></div>
-      <div class="kv"><span class="k">독립 합</span><span class="v">Var[X+Y] = Var[X]+Var[Y]</span></div>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-title">✦ 연습문제</div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q1</span>
-        <div>X의 PMF: P(0)=0.5, P(1)=0.3, P(2)=0.15, P(3)=0.05일 때 E[X]와 Var[X]를 구하라.
-          <div class="quiz-ans">E[X]=0.75,  E[X²]=1.35,  Var[X]=1.35−0.5625=0.7875</div>
+    <!-- 교환 방식 -->
+    <div class="section">
+      <div class="section-title cyan">교환 방식</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">회선 교환</div>
+          전용 경로 미리 확보 · 독점 사용<br>
+          효율 낮음 · 음성전화<br>
+          <span style="color:var(--muted);font-size:11px;">= 트럭 전세</span>
         </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q2</span>
-        <div>P(비)=0.3, P(흐림|비)=0.9, P(흐림|맑음)=0.4일 때 P(비|흐림)은?
-          <div class="quiz-ans">P(흐림)=0.9×0.3+0.4×0.7=0.55,  P(비|흐림)=0.27/0.55≈0.49</div>
+        <div class="mini-card" style="border:0.5px solid var(--accent1);">
+          <div class="mc-title" style="color:var(--accent1)">패킷 교환 ← 현재 주류</div>
+          패킷으로 쪼개 독립 전송<br>
+          효율 높음 · 인터넷<br>
+          <span style="color:var(--muted);font-size:11px;">= 합송 택배</span>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- CH03 -->
+<!-- ══════════════════════════════════════════ CH02 ══ -->
 <div class="chapter">
-  <div class="chapter-header" style="background:#1a1a0d;">
-    <span class="chapter-num" style="background:#3a2e10;color:var(--accent2);">CH 03</span>
-    <span class="chapter-title" style="color:var(--accent2);">통계 & MLE / MAP — 추정 이론</span>
+  <div class="chapter-header">
+    <span class="chapter-num">CH 02</span>
+    <span class="chapter-title" style="color:var(--accent3);">네트워크 모델</span>
   </div>
   <div class="chapter-body">
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent2);">통계 파라미터</div>
-      <div class="eq">평균     x̄ = (1/N) Σxᵢ</div>
-      <div class="eq">분산(편향) σ² = (1/N) Σ(xᵢ−x̄)²   ← MLE</div>
-      <div class="eq">분산(불편) s² = 1/(N-1) Σ(xᵢ−x̄)²</div>
-      <div class="eq">공분산  Cov = (1/N) Σ(xᵢ−x̄)(yᵢ−ȳ)</div>
-      <div class="eq">상관계수 ρ = Cov(X,Y)/(σₓσᵧ),  |ρ|≤1</div>
-      <p class="note">MLE σ² 편향 이유: μ̂ 추정으로 자유도 1 감소 → N-1 사용해야 불편 추정량</p>
+    <!-- OSI/TCP-IP -->
+    <div class="section">
+      <div class="section-title cyan">OSI 7계층 vs TCP/IP</div>
+      <table>
+        <thead><tr><th>#</th><th>OSI</th><th>TCP/IP</th><th>단위</th><th>주소</th></tr></thead>
+        <tbody>
+          <tr><td class="dim">7·6·5</td><td>응용·표현·세션</td><td>응용층</td><td>-</td><td>이름(도메인)</td></tr>
+          <tr><td class="dim">4</td><td>전송층</td><td>전송층</td><td>세그먼트</td><td>포트번호</td></tr>
+          <tr><td class="dim">3</td><td>네트워크층</td><td>인터넷층</td><td>패킷</td><td>IP주소</td></tr>
+          <tr><td class="dim">2</td><td>데이터링크층</td><td>데이터링크층</td><td>프레임</td><td>MAC주소</td></tr>
+          <tr><td class="dim">1</td><td>물리층</td><td>물리층</td><td>비트</td><td>없음</td></tr>
+        </tbody>
+      </table>
+      <div class="note">OSI = 교육용 개념 / TCP/IP = 실제 사용 · 세션·표현 → 응용으로 합쳐져 5계층</div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent5);">왜도 · 첨도 · Bias-Variance</div>
-      <div class="eq p">왜도 = Σ(xᵢ−x̄)³ / [Σ(xᵢ−x̄)²]^(3/2)</div>
-      <div class="eq p">첨도 = Σ(xᵢ−x̄)⁴ / [Σ(xᵢ−x̄)²]²</div>
-      <div class="cols" style="margin:8px 0;">
-        <div class="mb"><div class="mt" style="color:var(--accent5);">왜도</div>0 = 대칭<br>&gt;0 = 오른쪽 꼬리<br>&lt;0 = 왼쪽 꼬리</div>
-        <div class="mb"><div class="mt" style="color:var(--accent3);">첨도</div>3 = 정규분포<br>&gt;3 = 뾰족<br>&lt;3 = 평편</div>
+    <!-- 캡슐화 시각화 -->
+    <div class="section">
+      <div class="section-title amber">캡슐화 (Encapsulation)</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- 전송층 세그먼트 -->
+          <rect x="10" y="10" width="600" height="32" rx="5" fill="#2a1a40" stroke="#c77dff" stroke-width="0.5"/>
+          <rect x="10" y="10" width="100" height="32" rx="5" fill="#3a2a50" stroke="#c77dff" stroke-width="0.5"/>
+          <text x="60" y="31" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="middle">TCP 헤더</text>
+          <text x="330" y="31" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">데이터</text>
+          <text x="615" y="31" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="end">← 세그먼트 (전송층)</text>
+
+          <!-- 인터넷층 패킷 -->
+          <rect x="10" y="52" width="600" height="32" rx="5" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+          <rect x="10" y="52" width="80" height="32" rx="5" fill="#1a3a48" stroke="#90e0ef" stroke-width="0.5"/>
+          <text x="50" y="73" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">IP 헤더</text>
+          <text x="340" y="73" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">[TCP 세그먼트]</text>
+          <text x="615" y="73" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="end">← 패킷 (인터넷층)</text>
+
+          <!-- 데이터링크층 프레임 -->
+          <rect x="10" y="94" width="600" height="32" rx="5" fill="#1a3a25" stroke="#7ee8a2" stroke-width="0.5"/>
+          <rect x="10" y="94" width="70" height="32" rx="5" fill="#2a4a35" stroke="#7ee8a2" stroke-width="0.5"/>
+          <rect x="545" y="94" width="65" height="32" rx="5" fill="#2a4a35" stroke="#7ee8a2" stroke-width="0.5"/>
+          <text x="45" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">MAC 헤더</text>
+          <text x="300" y="115" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">[IP 패킷]</text>
+          <text x="577" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">FCS</text>
+          <text x="615" y="115" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="end">← 프레임 (링크층)</text>
+        </svg>
       </div>
-      <div class="eq p">E[(y−ŷ)²] = Bias² + Variance + Noise</div>
-      <p class="note">복잡도↑ → Bias↓, Variance↑ (Trade-off)</p>
+      <div class="note">송신: 위→아래 헤더 추가(캡슐화) · 수신: 아래→위 헤더 제거(역캡슐화) · IP는 전체 유지, MAC은 홉마다 교체</div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent1);">MLE / MAP</div>
-      <div class="eq g">우도     L(θ;X) = Πᵢ p(xᵢ|θ)   [i.i.d.]</div>
-      <div class="eq g">로그우도 ℓ(θ) = Σᵢ log p(xᵢ|θ)</div>
-      <div class="eq g">MLE     θ̂ = argmax ℓ(θ)</div>
-      <div class="eq g">MAP     θ̂ = argmax [ℓ(θ) + log P(θ)]</div>
-      <div class="diagram">
-        <div class="d-box" style="border-color:var(--accent5);color:var(--accent5);">Prior<br>P(θ)</div>
-        <span class="d-arrow">+</span>
-        <div class="d-box" style="border-color:var(--accent3);color:var(--accent3);">데이터<br>P(X|θ)</div>
-        <span class="d-arrow">→</span>
-        <div class="d-box" style="border-color:var(--accent1);color:var(--accent1);">Posterior<br>P(θ|X)</div>
+    <!-- MAC vs IP -->
+    <div class="section">
+      <div class="section-title purple">MAC vs IP · Switch vs Router</div>
+      <div class="two-col" style="margin-bottom:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent5)">MAC 주소</div>
+          2계층 · 물리주소 · LAN만 유효<br>홉마다 교체 · 48비트<br>
+          <span style="color:var(--muted);font-size:11px;">= 주민등록번호 (정거장)</span>
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">IP 주소</div>
+          3계층 · 논리주소 · 전체 경로 유지<br>네트워크마다 바뀜<br>
+          <span style="color:var(--muted);font-size:11px;">= 집 주소 (최종 목적지)</span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">Switch (2계층)</div>
+          MAC으로 LAN 내 전달<br>같은 네트워크 안 장치 연결
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">Router (3계층)</div>
+          IP로 네트워크 간 연결<br>외부망 연결 · 최적 경로 탐색
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH03 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 03</span>
+    <span class="chapter-title" style="color:var(--accent2);">물리층 개요</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 정현파 -->
+    <div class="section">
+      <div class="section-title green">정현파 & 신호 기초</div>
+      <div class="formula">s = A · sin(2πft + φ)</div>
+      <div class="var-list">
+        <span class="var-key">A</span><span class="var-val">최대 진폭 (신호 세기)</span>
+        <span class="var-key">f</span><span class="var-val">주파수 (Hz) — 높을수록 파형 촘촘 → 데이터 전송↑</span>
+        <span class="var-key">T</span><span class="var-val">주기 = 1/f (한 번 반복 시간)</span>
+        <span class="var-key">φ</span><span class="var-val">위상 (파형 시작 위치)</span>
+        <span class="var-key">t</span><span class="var-val">현재 시각 (흐르는 시간)</span>
+      </div>
+      <div class="formula" style="margin-top:10px;">λ = c/f &nbsp;&nbsp; c = 3×10⁸ m/s</div>
+      <div class="formula">BW (대역폭) = f_max − f_min</div>
+
+      <!-- 정현파 시각화 -->
+      <div class="svg-wrap" style="margin-top:12px;">
+        <svg viewBox="0 0 620 100" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="14" font-family="monospace" font-size="9" fill="#666">f 낮음 (파형 느슨)</text>
+          <line x1="10" y1="55" x2="290" y2="55" stroke="#333" stroke-width="0.5"/>
+          <path d="M10,55 C40,20 80,20 110,55 C140,90 180,90 210,55 C240,20 270,20 290,55" fill="none" stroke="#378ADD" stroke-width="2"/>
+          <text x="10" y="95" font-family="monospace" font-size="9" fill="#378ADD">데이터 전송↓</text>
+
+          <text x="320" y="14" font-family="monospace" font-size="9" fill="#666">f 높음 (파형 촘촘)</text>
+          <line x1="320" y1="55" x2="610" y2="55" stroke="#333" stroke-width="0.5"/>
+          <path d="M320,55 C332,30 348,30 360,55 C372,80 388,80 400,55 C412,30 428,30 440,55 C452,80 468,80 480,55 C492,30 508,30 520,55 C532,80 548,80 560,55 C572,30 588,30 600,55" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <text x="320" y="95" font-family="monospace" font-size="9" fill="#7ee8a2">데이터 전송↑</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 아날로그 vs 디지털 -->
+    <div class="section">
+      <div class="section-title amber">아날로그 vs 디지털 · 전압 준위</div>
+      <table>
+        <thead><tr><th></th><th>아날로그</th><th>디지털</th></tr></thead>
+        <tbody>
+          <tr><td>장점</td><td>자연 신호 그대로, 변환손실 없음</td><td>잡음에 강함, 암호화 용이, 복사 품질 유지</td></tr>
+          <tr><td>단점</td><td>잡음 취약, 복사 품질 저하, 암호화 어려움</td><td>변환 시 정보 손실, <strong>대역폭 많이 필요</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">단극형 (Unipolar)</div>
+          +V / 0V · 직류 성분 심함
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">극형 (Polar)</div>
+          +V / -V · 양음 균형 → 직류 성분 적음
+        </div>
+      </div>
+      <div class="note">디지털 신호 = 이론상 무한 대역폭 (수직 전환 → 무한 고주파 필요)</div>
+    </div>
+
+    <!-- 전송률 공식 -->
+    <div class="section">
+      <div class="section-title cyan">전송률 한계 공식</div>
+      <div class="two-col">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">나이퀴스트 — 잡음 없는 채널</div>
+          <div class="formula cyan">Bit Rate = 2 × BW × log₂L</div>
+          <div class="var-list">
+            <span class="var-key">BW</span><span class="var-val">대역폭 (Hz)</span>
+            <span class="var-key">L</span><span class="var-val">신호 준위 수</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">섀논 — 잡음 있는 채널</div>
+          <div class="formula">C = BW × log₂(1 + SNR)</div>
+          <div class="var-list">
+            <span class="var-key">SNR</span><span class="var-val">신호 대 잡음비</span>
+          </div>
+        </div>
+      </div>
+      <div class="formula" style="margin-top:10px;">SNR_dB = 10 × log₁₀(SNR)</div>
+      <div class="formula">감쇠 dB = 10 × log₁₀(P₂/P₁)</div>
+      <div class="note">1+SNR 이유: SNR=0이면 log₂(0)=음의 무한대 → C=0으로 자연스럽게 처리</div>
+      <div class="note">실제 설계: 섀논으로 이론 상한 → 나이퀴스트로 신호 준위 수 계산</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH04 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 04</span>
+    <span class="chapter-title" style="color:var(--accent4);">디지털 전송</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 회선 부호화 기본 -->
+    <div class="section">
+      <div class="section-title orange">회선 부호화 기본 개념 & 문제점</div>
+      <div class="formula" style="border-left-color:var(--accent4);color:var(--accent4);">S = N / r</div>
+      <div class="var-list">
+        <span class="var-key">S</span><span class="var-val">신호 전송률 (baud) — 1초당 신호 요소 수</span>
+        <span class="var-key">N</span><span class="var-val">데이터 전송률 (bps) — 1초당 비트 수</span>
+        <span class="var-key">r</span><span class="var-val">신호 요소당 데이터 요소 수</span>
+      </div>
+      <div style="margin-top:12px;">
+        <table>
+          <thead><tr><th>문제점</th><th>원인</th><th>해결</th></tr></thead>
+          <tbody>
+            <tr><td>기준선 표류</td><td>연속 0/1 → 수신측 기준선 이동</td><td>맨체스터</td></tr>
+            <tr><td>직류 성분</td><td>저주파 → 전선·변압기 통과 불가</td><td>극형 방식</td></tr>
+            <tr><td>자기 동기화</td><td>클럭 불일치 → 비트 오독</td><td>맨체스터</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 파형 비교 -->
+    <div class="section">
+      <div class="section-title amber">회선 부호화 파형 비교 (비트: 1 0 1 1 0)</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- 비트 구분선 & 레이블 -->
+          <text x="90" y="14" font-family="monospace" font-size="10" fill="#555">비트:</text>
+          <text x="152" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="218" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">0</text>
+          <text x="284" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="350" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">1</text>
+          <text x="416" y="14" font-family="monospace" font-size="11" fill="#ccc" font-weight="bold">0</text>
+          <line x1="120" y1="20" x2="120" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="186" y1="20" x2="186" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="252" y1="20" x2="252" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="318" y1="20" x2="318" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="384" y1="20" x2="384" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="450" y1="20" x2="450" y2="295" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+          <!-- NRZ -->
+          <text x="10" y="55" font-family="monospace" font-size="10" fill="#7ee8a2" font-weight="bold">NRZ</text>
+          <text x="10" y="67" font-family="monospace" font-size="8" fill="#555">전압유지</text>
+          <line x1="120" y1="58" x2="450" y2="58" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#7ee8a2" stroke-width="2" stroke-linecap="square"
+            points="120,42 186,42 186,74 252,74 252,42 318,42 318,42 384,42 384,74 450,74"/>
+          <text x="123" y="39" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="82" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- RZ -->
+          <text x="10" y="120" font-family="monospace" font-size="10" fill="#378ADD" font-weight="bold">RZ</text>
+          <text x="10" y="132" font-family="monospace" font-size="8" fill="#555">중간복귀</text>
+          <line x1="120" y1="122" x2="450" y2="122" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="120,106 153,106 153,122 186,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="186,138 219,138 219,122 252,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="252,106 285,106 285,122 318,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="318,106 351,106 351,122 384,122"/>
+          <polyline fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="square" points="384,138 417,138 417,122 450,122"/>
+          <text x="123" y="103" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="146" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- 맨체스터 -->
+          <text x="10" y="188" font-family="monospace" font-size="9" fill="#D85A30" font-weight="bold">맨체스터</text>
+          <text x="10" y="200" font-family="monospace" font-size="8" fill="#555">중간반전</text>
+          <line x1="120" y1="190" x2="450" y2="190" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="120,206 153,206 153,174 186,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="186,174 219,174 219,206 252,206"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="252,206 285,206 285,174 318,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="318,206 351,206 351,174 384,174"/>
+          <polyline fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="square" points="384,174 417,174 417,206 450,206"/>
+          <text x="157" y="170" font-family="monospace" font-size="8" fill="#D85A30">↑1</text>
+          <text x="223" y="170" font-family="monospace" font-size="8" fill="#D85A30">↓0</text>
+          <text x="123" y="171" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="213" font-family="monospace" font-size="8" fill="#555">-V</text>
+
+          <!-- 차분 맨체스터 -->
+          <text x="10" y="256" font-family="monospace" font-size="9" fill="#7F77DD" font-weight="bold">차분맨체스터</text>
+          <text x="10" y="268" font-family="monospace" font-size="8" fill="#555">전이유무</text>
+          <line x1="120" y1="258" x2="450" y2="258" stroke="#333" stroke-width="0.5"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="120,274 153,274 153,242 186,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="186,274 219,274 219,242 252,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="252,242 285,242 285,274 318,274"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="318,274 351,274 351,242 384,242"/>
+          <polyline fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="square" points="384,274 417,274 417,242 450,242"/>
+          <circle cx="186" cy="274" r="4" fill="#7F77DD"/>
+          <circle cx="384" cy="274" r="4" fill="#7F77DD"/>
+          <text x="123" y="239" font-family="monospace" font-size="8" fill="#555">+V</text>
+          <text x="123" y="281" font-family="monospace" font-size="8" fill="#555">-V</text>
+          <text x="180" y="292" font-family="monospace" font-size="8" fill="#7F77DD">전이=0</text>
+          <text x="378" y="292" font-family="monospace" font-size="8" fill="#7F77DD">전이=0</text>
+        </svg>
+      </div>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent4)">맨체스터 (절대적)</div>
+          반전 방향 자체가 비트<br>극성 뒤집히면 → 오독
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent5)">차분 맨체스터 (상대적)</div>
+          전이 유무만 봄<br>극성 뒤집혀도 → 정확히 읽음
+        </div>
+      </div>
+    </div>
+
+    <!-- 부호화 방식 표 -->
+    <div class="section">
+      <div class="section-title orange">부호화 방식 비교</div>
+      <table>
+        <thead><tr><th>방식</th><th>대역폭</th><th>동기화</th><th>잡음</th><th>사용</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">NRZ</span></td><td>1배</td><td>약함</td><td>보통</td><td>USB, 시리얼</td></tr>
+          <tr><td><span class="tag a">RZ</span></td><td>2배</td><td>좋음</td><td>보통</td><td>광섬유 일부</td></tr>
+          <tr><td><span class="tag g">맨체스터</span></td><td>2배</td><td>좋음</td><td>보통</td><td>이더넷, RFID</td></tr>
+          <tr><td><span class="tag p">차분맨체스터</span></td><td>2배</td><td>좋음</td><td><span class="highlight">강함</span></td><td>토큰링</td></tr>
+        </tbody>
+      </table>
+      <div class="note">RZ 대역폭 2배 이유: 비트당 변화가 NRZ 1번 → RZ 2번 → 2배 빠른 주파수 필요</div>
+
+      <!-- 4D-PAM5 -->
+      <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border);">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent3);margin-bottom:8px;">다준위 방식 — 4D-PAM5</div>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 500 60" xmlns="http://www.w3.org/2000/svg">
+            <!-- 4개 선 시각화 -->
+            <text x="10" y="14" font-family="monospace" font-size="9" fill="#555">선 4개 × 5준위(-2,-1,0,+1,+2)</text>
+            <rect x="10" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="115" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="220" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <rect x="325" y="22" width="90" height="14" rx="3" fill="#0e2e38" stroke="#90e0ef" stroke-width="0.5"/>
+            <text x="55" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 1</text>
+            <text x="160" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 2</text>
+            <text x="265" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 3</text>
+            <text x="370" y="33" font-family="monospace" font-size="8" fill="#90e0ef" text-anchor="middle">선 4</text>
+            <text x="440" y="33" font-family="monospace" font-size="9" fill="#f9c74f">× log₂5</text>
+            <text x="10" y="56" font-family="monospace" font-size="9" fill="#7ee8a2">4 × 2.32비트 ≈ 9비트/신호 → 1Gbps LAN 달성</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PCM -->
+    <div class="section">
+      <div class="section-title purple">PCM (아날로그→디지털) — 표양부</div>
+      <ul class="steps">
+        <li><div><strong>표본화 (Sampling)</strong> — 일정 간격으로 진폭 측정<br><span class="dim">표본화율 ≥ 최대주파수 × 2 · 예) 음성 4kHz → 8,000 samples/s</span></div></li>
+        <li><div><strong>양자화 (Quantizing)</strong> — 실수값을 정수로 근사<br><span class="dim">양자화 잡음 발생 (근사 오차)</span></div></li>
+        <li><div><strong>부호화 (Encoding)</strong> — n비트 코드로 변환</div></li>
+      </ul>
+      <div class="formula purple" style="margin-top:12px;">Δ = (V_max − V_min) / L</div>
+      <div class="var-list">
+        <span class="var-key">Δ</span><span class="var-val">양자화 간격 (구간 크기) — L↑ → Δ↓ → 잡음 감소</span>
+        <span class="var-key">V_max</span><span class="var-val">신호 최대 전압 (maximum voltage)</span>
+        <span class="var-key">V_min</span><span class="var-val">신호 최소 전압 (minimum voltage)</span>
+        <span class="var-key">L</span><span class="var-val">양자화 준위 수 (levels)</span>
+      </div>
+      <div class="formula purple" style="margin-top:8px;">Bit rate = f_s × n_b</div>
+      <div class="var-list">
+        <span class="var-key">f_s</span><span class="var-val">1초당 표본화 횟수 (sampling frequency)</span>
+        <span class="var-key">n_b</span><span class="var-val">표본당 비트 수 (number of bits per sample)</span>
+      </div>
+      <div class="note">예) 음성: 8,000 × 8bit = 64,000 bps</div>
+      <div class="note">PCM + 광대역: 아날로그→[PCM]→디지털→[광대역 변조]→전송 · 예) VoIP</div>
+    </div>
+
+    <!-- 전송 방식 -->
+    <div class="section">
+      <div class="section-title green">전송 방식 — 병렬 vs 직렬</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent3)">병렬 전송</div>
+          n비트 동시 · n배 빠름<br>비용 높음 · 단거리
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">직렬 전송</div>
+          1비트씩 순차 · 저렴<br>장거리 가능
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:8px;">
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent2)">비동기식</div>
+          시작비트(0)+데이터+정지비트(1)<br>바이트마다 재동기화
+        </div>
+        <div class="mini-card">
+          <div class="mc-title" style="color:var(--accent1)">동기식</div>
+          프레임 단위 전송<br>간격 없음 · 고속 유리
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CH05 ══ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">CH 05</span>
+    <span class="chapter-title" style="color:var(--accent5);">아날로그 전송 (변복조)</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 변조 방식 -->
+    <div class="section">
+      <div class="section-title purple">변조 방식 & 신호율 공식</div>
+      <div class="formula purple">S = N / r &nbsp;&nbsp; (신호율 = 비트율 / 신호당 비트수)</div>
+      <table style="margin-top:10px;">
+        <thead><tr><th>방식</th><th>변조 요소</th><th>특징</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">ASK</span></td><td>진폭</td><td>진폭만 변화 · 주파수·위상 유지</td></tr>
+          <tr><td><span class="tag g">FSK</span></td><td>주파수</td><td>주파수만 변화 (0→f₁, 1→f₂)</td></tr>
+          <tr><td><span class="tag a">PSK</span></td><td>위상</td><td>BPSK: 0°/180° · QPSK: 4위상→2bit/신호</td></tr>
+          <tr><td><span class="tag p">QAM</span></td><td>진폭+위상</td><td>ASK+PSK 조합 · 고속 통신에 유리</td></tr>
+        </tbody>
+      </table>
+      <div class="note">광대역 쓰는 이유: 전화선·무선은 0Hz 저대역 통과 불가 → 특정 주파수에 실어 전송</div>
+
+      <!-- 변조 파형 시각화 -->
+      <div class="svg-wrap" style="margin-top:12px;">
+        <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- 원본 디지털: 1=위(y=22), 0=아래(y=34) -->
+          <text x="8" y="13" font-family="monospace" font-size="9" fill="#666">디지털: 1  1  0  0  1</text>
+          <!-- 1→1→0→0→1 순서로 수직 전이 포함 -->
+          <polyline fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="square"
+            points="8,22 168,22 168,34 328,34 328,22 408,22"/>
+
+          <!-- ASK: 1=큰 파형(완전 1주기), 0=수평선 -->
+          <text x="8" y="62" font-family="monospace" font-size="9" fill="#90e0ef">ASK</text>
+          <line x1="8" y1="78" x2="408" y2="78" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 올라갔다 내려오는 완전 1주기 -->
+          <path d="M8,78 Q28,52 48,78 Q68,104 88,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트1 (88~168): 완전 1주기 -->
+          <path d="M88,78 Q108,52 128,78 Q148,104 168,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트0 (168~248): 평평 -->
+          <line x1="168" y1="78" x2="248" y2="78" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트0 (248~328): 평평 -->
+          <line x1="248" y1="78" x2="328" y2="78" stroke="#90e0ef" stroke-width="2"/>
+          <!-- 비트1 (328~408): 완전 1주기 -->
+          <path d="M328,78 Q348,52 368,78 Q388,104 408,78" fill="none" stroke="#90e0ef" stroke-width="2"/>
+          <text x="415" y="74" font-family="monospace" font-size="8" fill="#90e0ef">1=파형</text>
+          <text x="415" y="85" font-family="monospace" font-size="8" fill="#90e0ef">0=평평</text>
+
+          <!-- FSK: 1=고주파(촘촘), 0=저주파(완만한 1주기) -->
+          <text x="8" y="118" font-family="monospace" font-size="9" fill="#7ee8a2">FSK</text>
+          <line x1="8" y1="134" x2="408" y2="134" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 고주파 4주기 -->
+          <path d="M8,134 Q18,120 28,134 Q38,148 48,134 Q58,120 68,134 Q78,148 88,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트1 (88~168): 고주파 4주기 -->
+          <path d="M88,134 Q98,120 108,134 Q118,148 128,134 Q138,120 148,134 Q158,148 168,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트0 (168~248): 저주파 완전 1주기 (올라갔다 내려옴) -->
+          <path d="M168,134 Q188,110 208,134 Q228,158 248,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트0 (248~328): 저주파 완전 1주기 -->
+          <path d="M248,134 Q268,110 288,134 Q308,158 328,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <!-- 비트1 (328~408): 고주파 4주기 -->
+          <path d="M328,134 Q338,120 348,134 Q358,148 368,134 Q378,120 388,134 Q398,148 408,134" fill="none" stroke="#7ee8a2" stroke-width="2"/>
+          <text x="415" y="130" font-family="monospace" font-size="8" fill="#7ee8a2">1=고주파</text>
+          <text x="415" y="141" font-family="monospace" font-size="8" fill="#7ee8a2">0=저주파</text>
+
+          <!-- PSK: 위상 반전 (1=위로, 0=아래로) -->
+          <text x="8" y="175" font-family="monospace" font-size="9" fill="#c77dff">PSK</text>
+          <line x1="8" y1="191" x2="408" y2="191" stroke="#2a2a2a" stroke-width="0.5"/>
+          <!-- 비트1 (8~88): 정상 위상 - 올라갔다 내려옴 -->
+          <path d="M8,191 Q28,165 48,191 Q68,217 88,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트1 (88~168): 정상 위상 -->
+          <path d="M88,191 Q108,165 128,191 Q148,217 168,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트0 (168~248): 반전 위상 - 내려갔다 올라옴 -->
+          <path d="M168,191 Q188,217 208,191 Q228,165 248,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트0 (248~328): 반전 위상 -->
+          <path d="M248,191 Q268,217 288,191 Q308,165 328,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <!-- 비트1 (328~408): 정상 위상 -->
+          <path d="M328,191 Q348,165 368,191 Q388,217 408,191" fill="none" stroke="#c77dff" stroke-width="2"/>
+          <text x="415" y="187" font-family="monospace" font-size="8" fill="#c77dff">1=정상</text>
+          <text x="415" y="198" font-family="monospace" font-size="8" fill="#c77dff">0=반전</text>
+
+          <text x="8" y="230" font-family="monospace" font-size="8" fill="#444">QAM: 진폭+위상 동시 변화</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 성운도 -->
+    <div class="section">
+      <div class="section-title cyan">성운도 (Constellation Diagram)</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">X축=동위상 · Y축=구상 · 점 위치=진폭+위상 · 점↑=효율↑=잡음 취약↑</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- BPSK -->
+          <text x="70" y="14" font-family="monospace" font-size="10" fill="#90e0ef" text-anchor="middle">BPSK (2점)</text>
+          <line x1="10" y1="80" x2="130" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="70" y1="30" x2="70" y2="130" stroke="#333" stroke-width="0.5"/>
+          <circle cx="35" cy="80" r="7" fill="#185FA5" stroke="#90e0ef" stroke-width="1.5"/>
+          <circle cx="105" cy="80" r="7" fill="#185FA5" stroke="#90e0ef" stroke-width="1.5"/>
+          <text x="35" y="84" font-family="monospace" font-size="8" fill="#fff" text-anchor="middle">0</text>
+          <text x="105" y="84" font-family="monospace" font-size="8" fill="#fff" text-anchor="middle">1</text>
+          <text x="70" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">1bit/신호</text>
+
+          <!-- QPSK -->
+          <text x="280" y="14" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">QPSK (4점)</text>
+          <line x1="200" y1="80" x2="360" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="280" y1="25" x2="280" y2="135" stroke="#333" stroke-width="0.5"/>
+          <circle cx="245" cy="47" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="315" cy="47" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="245" cy="113" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <circle cx="315" cy="113" r="7" fill="#085041" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="245" y="51" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">00</text>
+          <text x="315" y="51" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">01</text>
+          <text x="245" y="117" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">10</text>
+          <text x="315" y="117" font-family="monospace" font-size="7" fill="#fff" text-anchor="middle">11</text>
+          <text x="280" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">2bit/신호</text>
+
+          <!-- 16-QAM 개념도 -->
+          <text x="480" y="14" font-family="monospace" font-size="10" fill="#f9c74f" text-anchor="middle">16-QAM (16점)</text>
+          <line x1="420" y1="80" x2="540" y2="80" stroke="#333" stroke-width="0.5"/>
+          <line x1="480" y1="25" x2="480" y2="135" stroke="#333" stroke-width="0.5"/>
+          <!-- 16개 점 4x4 -->
+          <circle cx="445" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="45" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="65" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="95" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="445" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="465" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="495" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <circle cx="515" cy="115" r="4" fill="#412402" stroke="#f9c74f" stroke-width="1"/>
+          <text x="480" y="155" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">4bit/신호</text>
+        </svg>
       </div>
       <table style="margin-top:8px;">
-        <thead><tr><th>Prior</th><th>로그 Prior</th><th>정규화</th></tr></thead>
+        <thead><tr><th>방식</th><th>점 수</th><th>비트/신호</th></tr></thead>
         <tbody>
-          <tr><td>Gaussian N(0,1/λ)</td><td>−λ/2·‖θ‖²</td><td><span class="tag c">L2 Ridge</span></td></tr>
-          <tr><td>Laplace L(0,1/λ)</td><td>−λ·‖θ‖₁</td><td><span class="tag a">L1 Lasso</span></td></tr>
+          <tr><td>BPSK</td><td>2</td><td>1</td></tr>
+          <tr><td>QPSK</td><td>4</td><td>2</td></tr>
+          <tr><td>16-QAM</td><td>16</td><td>4</td></tr>
+          <tr><td>64-QAM</td><td>64</td><td>6</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent4);">가우시안 MLE / LDA 결정 경계</div>
-      <div class="eq o">P(x|Cₖ) = 1/√(2πσ²) · exp(−(x−μₖ)²/2σ²)</div>
-      <div class="eq o">로그우도비 = 0  →  x*(μ₁−μ₂)/σ² = (μ₁²−μ₂²)/2σ²</div>
-      <div class="eq o">결정 경계  x* = (μ₁+μ₂)/2</div>
-      <p class="note">x² 항 상쇄 → 선형 경계 / 공통 σ²: (Σ편차²₁+Σ편차²₂)/(n₁+n₂)</p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent3);">정규분포 & CLT</div>
-      <div class="eq c">N(x;μ,σ²) = 1/√(2πσ²) · e^(−(x−μ)²/2σ²)</div>
-      <div class="eq c">CLT: X̄ₙ → N(μ, σ²/n)  as n→∞  (n≥30)</div>
-      <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin:8px 0;">
-        <path d="M20,70 Q60,68 80,55 Q110,30 160,12 Q210,30 240,55 Q260,68 300,70" fill="none" stroke="#90e0ef" stroke-width="1.5"/>
-        <line x1="110" y1="10" x2="110" y2="68" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <line x1="210" y1="10" x2="210" y2="68" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <line x1="75"  y1="10" x2="75"  y2="68" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <line x1="245" y1="10" x2="245" y2="68" stroke="#1e1e1e" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <text x="155" y="75" fill="#e8e8e0" font-size="8" text-anchor="middle" font-family="monospace">μ</text>
-        <text x="110" y="75" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">μ-σ</text>
-        <text x="210" y="75" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">μ+σ</text>
-        <text x="75"  y="75" fill="#666" font-size="7" text-anchor="middle" font-family="monospace">μ-2σ</text>
-        <text x="245" y="75" fill="#666" font-size="7" text-anchor="middle" font-family="monospace">μ+2σ</text>
-        <text x="160" y="42" fill="#7ee8a2" font-size="9" text-anchor="middle" font-family="monospace">68%</text>
-        <text x="160" y="54" fill="#f9c74f" font-size="8" text-anchor="middle" font-family="monospace">────── 95% ──────</text>
-      </svg>
-      <p class="note">68-95-99.7 규칙: P(μ±σ)≈68%, P(μ±2σ)≈95%</p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent2);">Categorical MLE — 라그랑주 승수법</div>
-      <div class="eq">ℓ = Σ nₖ log πₖ,   제약: Σπₖ = 1</div>
-      <div class="eq">L(π,λ) = ℓ − λ(Σπₖ − 1)</div>
-      <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">1</span>
-          ∂L/∂πₖ = 0  →  πₖ = nₖ/λ
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">2</span>
-          제약 Σπₖ=1 대입  →  λ = n
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent2);background:#3a2e10;padding:2px 5px;border-radius:3px;flex-shrink:0;">3</span>
-          <span class="hi">π̂ₖ = nₖ/n</span>  (경험적 확률 = Softmax 수렴값)
-        </div>
-      </div>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-title">✦ 연습문제</div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q1</span>
-        <div>X~N(70,100). P(60≤X≤80)과 P(X>85)를 구하라. (Φ(1.5)≈0.9332)
-          <div class="quiz-ans">P(60≤X≤80)≈68%  /  P(X>85)=1−0.9332≈6.7%</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q2</span>
-        <div>C₁ 40개, C₂ 60개. Categorical MLE로 π̂₁, π̂₂를 구하라.
-          <div class="quiz-ans">π̂₁=0.4,  π̂₂=0.6</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q3</span>
-        <div>μ₁=2, μ₂=6, σ²=4(공통)일 때 LDA 결정 경계 x*는?
-          <div class="quiz-ans">x* = (2+6)/2 = 4</div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- CH04-05 -->
+<!-- ══════════════════════════════════════════ 핵심 암기 ══ -->
 <div class="chapter">
-  <div class="chapter-header" style="background:#1a0d1a;">
-    <span class="chapter-num" style="background:#2a1a40;color:var(--accent5);">CH 04-05</span>
-    <span class="chapter-title" style="color:var(--accent5);">선형 회귀 & 로지스틱 회귀</span>
+  <div class="chapter-header">
+    <span class="chapter-num">암기</span>
+    <span class="chapter-title" style="color:var(--accent2);">핵심 암기 모음</span>
   </div>
   <div class="chapter-body">
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent5);">선형 회귀 (MSE 최소화)</div>
-      <div class="eq p">모델   ŷ = θ₁x + θ₀</div>
-      <div class="eq p">MSE   J(θ) = (1/N) Σ(θ₁xᵢ+θ₀−yᵢ)²</div>
-      <div class="eq p">∂J/∂θ₀ = 0  →  θ₁Σxᵢ + Nθ₀ = Σyᵢ</div>
-      <div class="eq p">∂J/∂θ₁ = 0  →  θ₁Σxᵢ² + θ₀Σxᵢ = Σxᵢyᵢ</div>
-      <div class="eq p">정규방정식  θ = (XᵀX)⁻¹Xᵀy</div>
-      <div class="cols" style="margin-top:8px;">
-        <div class="mb"><div class="mt" style="color:var(--accent5);">볼록 함수</div>편미분=0이<br>전역 최솟값 보장</div>
-        <div class="mb"><div class="mt" style="color:var(--accent2);">성질</div>회귀 직선은<br>항상 (x̄, ȳ) 통과</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent4);">로지스틱 회귀</div>
-      <div class="eq o">σ(z) = 1/(1+e⁻ᶻ),   σ'(z) = σ(z)(1−σ(z))</div>
-      <div class="eq o">BCE  L = −[y log ŷ + (1−y) log(1−ŷ)]</div>
-      <div class="eq o">∂L/∂z = ŷ − y   ← 시그모이드+로그 상쇄</div>
-      <div class="eq o">∂J/∂θ₀ = (1/N) Σ(ŷᵢ−yᵢ)</div>
-      <div class="eq o">∂J/∂θ₁ = (1/N) Σ xᵢ(ŷᵢ−yᵢ)</div>
-      <div class="eq o">θ ← θ − α·∂J/∂θ   [경사하강법]</div>
-      <svg viewBox="0 0 260 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin:8px 0;">
-        <line x1="10" y1="50" x2="250" y2="50" stroke="#2e2e2e" stroke-width="0.5"/>
-        <line x1="130" y1="5" x2="130" y2="55" stroke="#2e2e2e" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <path d="M10,48 Q50,47 80,42 Q110,32 130,30 Q150,28 180,18 Q210,13 250,12" fill="none" stroke="#f4a261" stroke-width="1.5"/>
-        <text x="130" y="58" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">z=0, σ=0.5</text>
-        <text x="20"  y="14" fill="#666" font-size="7" font-family="monospace">σ→0</text>
-        <text x="220" y="14" fill="#666" font-size="7" font-family="monospace">σ→1</text>
-        <text x="5"   y="30" fill="#f4a261" font-size="8" font-family="monospace">σ(z)</text>
-      </svg>
-      <p class="note">초기 θ=0 → 모든 ŷ=0.5 → J=log2≈0.693 (최대 불확실성)</p>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-title">✦ 연습문제</div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q1</span>
-        <div>θ₀=−3, θ₁=1일 때 x=3에서 로지스틱 예측값 ŷ는?
-          <div class="quiz-ans">z=1·3+(−3)=0,  ŷ=σ(0)=0.5</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q2</span>
-        <div>BCE 손실: y=1, ŷ=0.9일 때 손실 L은?
-          <div class="quiz-ans">L=−log(0.9)≈0.105  (예측이 좋으면 손실 작음)</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q3</span>
-        <div>θ₀=−6, θ₁=1, θ₂=1일 때 결정 경계 2D 직선은?
-          <div class="quiz-ans">x₁+x₂=6  (θᵀx=0 조건)</div>
-        </div>
+    <div class="section">
+      <div class="memory-grid">
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">OSI 7계층</div>물데네전세표응</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">PCM 3단계</div>표양부 (표본화→양자화→부호화)</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">IP vs MAC</div>IP = 집주소 유지 / MAC = 정거장 교체</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">교환방식</div>회선 = 트럭 전세 / 패킷 = 합송 택배</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">나이퀴스트 vs 섀논</div>잡음 없음 vs 잡음 있음</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">디지털 단점</div>변환 손실 + 대역폭 많이 필요</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">맨체스터 vs 차분</div>방향(절대) vs 전이유무(상대) → 차분이 잡음에 강함</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">RZ 대역폭 2배</div>비트당 2번 변화 → 2배 빠른 주파수 필요</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">양자화 잡음 줄이기</div>L↑ → Δ↓ → 더 세밀하게 근사</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">광대역 쓰는 이유</div>전화선·무선이 저대역(0Hz) 통과 불가</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">스타 토폴로지 단점</div>허브 고장 → 전체 마비</div>
+        <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">섀논 1+SNR</div>SNR=0일 때 log₂(0)=∞ 방지 → C=0 처리</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CH07 -->
-<div class="chapter">
-  <div class="chapter-header" style="background:#0d1a1a;">
-    <span class="chapter-num" style="background:#0e2e38;color:var(--accent3);">CH 07</span>
-    <span class="chapter-title" style="color:var(--accent3);">KNN & K-means — 분류 & 군집화</span>
-  </div>
-  <div class="chapter-body">
+<footer>Data Communications Cheat Sheet · CH01–CH05 · DC_01–DC_06</footer>
 
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent3);">KNN (K-Nearest Neighbors)</div>
-      <div class="eq c">유클리드  d = √(Σ(xᵢ−zᵢ)²)</div>
-      <div class="eq c">맨해튼   d = Σ|xᵢ−zᵢ|</div>
-      <div class="diagram" style="margin:8px 0;">
-        <div class="d-box" style="border-color:var(--accent3);color:var(--accent3);font-size:9px;">데이터<br>저장</div>
-        <span class="d-arrow">→</span>
-        <div class="d-box" style="font-size:9px;">거리<br>계산</div>
-        <span class="d-arrow">→</span>
-        <div class="d-box" style="font-size:9px;">K개<br>선택</div>
-        <span class="d-arrow">→</span>
-        <div class="d-box" style="border-color:var(--accent1);color:var(--accent1);font-size:9px;">다수결<br>/평균</div>
-      </div>
-      <div class="kv"><span class="k">K=1</span><span class="v" style="color:var(--accent4);">과적합 (낮은 편향, 높은 분산)</span></div>
-      <div class="kv"><span class="k">K=n</span><span class="v" style="color:var(--accent4);">과소적합 (높은 편향, 낮은 분산)</span></div>
-      <div class="kv"><span class="k">복잡도</span><span class="v">O(n·d)  Lazy Learning</span></div>
-      <p class="note">고차원 → 거리 집중 → PCA 선처리 / 스케일 정규화 필수</p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent1);">K-means 클러스터링</div>
-      <div class="eq g">J = Σₖ Σ_{xᵢ∈Cₖ} ‖xᵢ−μₖ‖²  →  min</div>
-      <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">1</span>K개 초기 중심 선택 (K-means++ 권장)
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">2</span>할당: cᵢ = argminₖ ‖xᵢ−μₖ‖²
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;border-bottom:0.5px solid #1e1e1e;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">3</span>갱신: μₖ = 평균(Cₖ)
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0;">
-          <span style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent1);background:#1a3a25;padding:2px 6px;border-radius:3px;flex-shrink:0;">4</span>할당 변화 없을 때까지 2~3 반복
-        </div>
-      </div>
-      <div class="kv"><span class="k">K 선택</span><span class="v">Elbow Method / Silhouette Score</span></div>
-      <div class="kv"><span class="k">수렴 보장</span><span class="v">J 단조 감소 + 유한 경우의 수</span></div>
-      <p class="note">전역 최솟값 비보장 → n_init으로 여러 번 실행 후 최소 J 선택</p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title" style="color:var(--accent5);">KNN vs K-means 비교</div>
-      <table>
-        <thead><tr><th>항목</th><th>KNN</th><th>K-means</th></tr></thead>
-        <tbody>
-          <tr><td>학습 유형</td><td><span class="tag g">지도학습</span></td><td><span class="tag p">비지도학습</span></td></tr>
-          <tr><td>레이블</td><td>필요</td><td>불필요</td></tr>
-          <tr><td>K 의미</td><td>이웃 개수</td><td>클러스터 수</td></tr>
-          <tr><td>훈련</td><td>없음 (Lazy)</td><td>반복 최적화</td></tr>
-          <tr><td>복잡도</td><td>O(n·d)</td><td>O(K·n·d·t)</td></tr>
-          <tr><td>스케일</td><td colspan="2" style="text-align:center;color:var(--accent4);">둘 다 정규화 필수</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-title">✦ 연습문제</div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q1</span>
-        <div>A=[0,0], B=[3,4]의 유클리드 거리와 맨해튼 거리는?
-          <div class="quiz-ans">유클리드: √(9+16)=5  /  맨해튼: 3+4=7</div>
-        </div>
-      </div>
-      <div class="quiz-item">
-        <span class="quiz-num">Q2</span>
-        <div>K-means에서 J가 단조 감소함을 설명하라.
-          <div class="quiz-ans">할당: 현재 μₖ 기준 최솟값 선택 → J 감소 or 유지<br>갱신: 평균이 MSE 최솟값 → J 감소 or 유지</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div style="text-align:center;margin-top:24px;margin-bottom:8px;">
+  <a href="../notes.html?repo=Data-Communications"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7ee8a2;border:0.5px solid #1a3a25;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
+    자세히 보기 →
+  </a>
 </div>
-
-<!-- 핵심 암기 -->
-<div class="chapter">
-  <div class="chapter-header" style="background:#1a1a1a;">
-    <span class="chapter-num" style="background:#2e2e2e;color:var(--muted);">SUMMARY</span>
-    <span class="chapter-title" style="color:var(--text);">핵심 암기 모음</span>
-  </div>
-  <div class="chapter-body">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div class="mb"><div class="mt" style="color:var(--accent1);">기저 조건</div>선형 독립 + 벡터 수 = 차원</div>
-      <div class="mb"><div class="mt" style="color:var(--accent2);">MLE 편향</div>σ̂²=(1/N) → s²=(1/N-1) 불편</div>
-      <div class="mb"><div class="mt" style="color:var(--accent3);">베이즈</div>Prior + 데이터 → 사후 확률</div>
-      <div class="mb"><div class="mt" style="color:var(--accent4);">Chain Rule</div>∂L/∂z = ŷ−y (상쇄)</div>
-      <div class="mb"><div class="mt" style="color:var(--accent5);">차원의 저주</div>고차원 → PCA 선처리</div>
-      <div class="mb"><div class="mt" style="color:var(--accent1);">K-means</div>J 단조 감소 / 전역 비보장</div>
-      <div class="mb"><div class="mt" style="color:var(--accent2);">LDA 경계</div>x*=(μ₁+μ₂)/2</div>
-      <div class="mb"><div class="mt" style="color:var(--accent3);">Cat MLE</div>π̂ₖ=nₖ/n = Softmax 수렴</div>
-      <div class="mb"><div class="mt" style="color:var(--accent4);">Bias-Var</div>복잡도↑ → Bias↓, Var↑</div>
-      <div class="mb"><div class="mt" style="color:var(--accent5);">MLE vs MAP</div>MLE=Prior 무시 / MAP=반영</div>
-      <div class="mb"><div class="mt" style="color:var(--accent1);">CLT</div>n≥30 → 표본평균 → N분포</div>
-      <div class="mb"><div class="mt" style="color:var(--accent2);">회귀 직선</div>항상 (x̄, ȳ) 통과</div>
-    </div>
-  </div>
-</div>
-
-<footer>Machine Learning Cheat Sheet · CH01–CH07</footer>
-<a class="detail-btn" href="../notes.html?repo=Machine-Learning">자세히 보기 →</a>
 
 </body>
 </html>
