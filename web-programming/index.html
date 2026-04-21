@@ -162,6 +162,8 @@
     font-size: 11px;
     margin: 10px 0;
     color: var(--accent3);
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   /* 시각적 다이어그램 */
@@ -176,19 +178,6 @@
     text-align: center;
     overflow-x: auto;
   }
-
-  /* 박스 형 다이어그램 */
-  .box-diagram {
-    background: #1e1e1e;
-    border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: 4px;
-    margin: 10px 0;
-    font-size: 11px;
-  }
-
-  .box { display: inline-block; border: 1px solid var(--text); padding: 8px 12px; margin: 2px; }
-  .arrow { display: inline-block; margin: 0 4px; color: var(--accent3); font-weight: 700; }
 
   /* 목록 */
   .desc-list {
@@ -708,8 +697,15 @@ server {
 </div>
 
 <footer>
-  Web Programming Cheat Sheet · Web_01–07 · 내용 추가됨 · 세로 웹툰 형식
+  Web Programming Cheat Sheet · Web_01–07
 </footer>
+
+<div style="text-align:center;margin-top:40px;margin-bottom:20px;">
+  <a href="../notes.html?repo=Web-Programming"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--accent1);border:0.5px solid var(--accent1);background:transparent;padding:12px 24px;border-radius:8px;text-decoration:none;opacity:0.8;transition:opacity 0.3s;">
+    자세히 보기 →
+  </a>
+</div>
 
 </div>
 
