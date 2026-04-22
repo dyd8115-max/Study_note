@@ -47,9 +47,12 @@
   .tag-c { background: #0e2e38; color: var(--accent3); }
   .tag-o { background: #3a1a10; color: var(--accent4); }
   code { background: #1a1a1a; padding: 1px 4px; border-radius: 2px; font-family: var(--mono); font-size: 10px; color: var(--accent3); }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-  .list-item { margin: 6px 0; padding-left: 18px; position: relative; font-size: 11px; line-height: 1.4; }
-  .list-item:before { content: "▸"; position: absolute; left: 0; }
+  details { margin: 10px 0; background: #1e1e1e; border: 0.5px solid var(--border); border-radius: 3px; padding: 10px; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--accent1); font-size: 11px; user-select: none; }
+  details summary:hover { color: var(--accent2); }
+  details[open] { background: #252525; }
+  details[open] summary { color: var(--accent2); margin-bottom: 8px; }
+  .answer { background: #1a2a1a; border-left: 3px solid var(--accent1); padding: 8px 10px; margin-top: 8px; border-radius: 2px; font-size: 10px; }
   footer { margin-top: 40px; text-align: center; font-family: var(--mono); font-size: 9px; color: var(--muted); }
 </style>
 </head>
@@ -83,24 +86,30 @@
     <div class="section">
       <div class="section-title amber">렌더링 방식 3가지</div>
       <table>
-        <tr><th>방식</th><th>초기 로딩</th><th>페이지 전환</th><th>SEO</th><th>예시</th></tr>
-        <tr><td><span class="tag tag-g">SSR</span></td><td>⚡ 빠름</td><td>느림</td><td>✅ 좋음</td><td>전통 PHP/JSP</td></tr>
-        <tr><td><span class="tag tag-c">CSR</span></td><td>❌ 느림</td><td>⚡ 빠름</td><td>나쁨</td><td>React/Vue</td></tr>
-        <tr><td><span class="tag tag-o">하이브리드</span></td><td>⚡ 빠름</td><td>⚡ 빠름</td><td>✅ 좋음</td><td>Next.js</td></tr>
+        <tr><th>방식</th><th>초기</th><th>전환</th><th>SEO</th><th>예시</th></tr>
+        <tr><td><span class="tag tag-g">SSR</span></td><td>⚡</td><td>느림</td><td>✅</td><td>전통</td></tr>
+        <tr><td><span class="tag tag-c">CSR</span></td><td>❌</td><td>⚡</td><td>나쁨</td><td>React</td></tr>
+        <tr><td><span class="tag tag-o">하이브리드</span></td><td>⚡</td><td>⚡</td><td>✅</td><td>Next.js</td></tr>
       </table>
-      <div class="desc" style="margin-top:8px;"><strong>Render Tree</strong> = DOM + CSSOM을 합쳐서 실제 그릴 요소만 모은 것</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          <strong>Render Tree</strong> = DOM + CSSOM을 합쳐서 실제 그릴 요소만 모은 것<br>
+          display: none 등 보이지 않는 요소는 제외됨
+        </div>
+      </details>
     </div>
 
     <div class="section">
       <div class="section-title cyan">SPA vs MPA</div>
       <div class="compare-grid">
         <div class="compare-item">
-          <div class="compare-item-title">SPA (Single Page)</div>
-          <div class="compare-item-desc">• 컴포넌트만 바꿔치기<br>• AJAX로 데이터만 수신<br>• 빠른 전환 (이미 JS 로드)</div>
+          <div class="compare-item-title">SPA</div>
+          <div class="compare-item-desc">• 컴포넌트만 바꿔치기<br>• AJAX로 데이터만 수신<br>• 빠른 전환</div>
         </div>
         <div class="compare-item">
-          <div class="compare-item-title">MPA (Multi Page)</div>
-          <div class="compare-item-desc">• 페이지마다 HTML 파일<br>• 이동 시 새로고침<br>• SEO 좋음</div>
+          <div class="compare-item-title">MPA</div>
+          <div class="compare-item-desc">• 페이지마다 HTML<br>• 이동 시 새로고침<br>• SEO 좋음</div>
         </div>
       </div>
     </div>
@@ -120,12 +129,19 @@
       <div class="section-title cyan">OSI 7계층</div>
       <table>
         <tr><th>#</th><th>계층</th><th>프로토콜</th><th>주소</th></tr>
-        <tr><td>7~5</td><td>응용/표현/세션</td><td>HTTP, HTTPS, FTP</td><td>도메인</td></tr>
-        <tr><td style="color:var(--accent2);font-weight:700;">4⭐</td><td style="color:var(--accent2);font-weight:700;">전송</td><td style="color:var(--accent2);font-weight:700;">TCP, UDP</td><td style="color:var(--accent2);font-weight:700;">포트</td></tr>
+        <tr><td>7~5</td><td>응용/표현/세션</td><td>HTTP, HTTPS</td><td>도메인</td></tr>
+        <tr><td style="color:var(--accent2);font-weight:700;">4⭐</td><td style="color:var(--accent2);">전송</td><td style="color:var(--accent2);">TCP, UDP</td><td style="color:var(--accent2);">포트</td></tr>
         <tr><td>3</td><td>네트워크</td><td>IP</td><td>IP주소</td></tr>
-        <tr><td>2</td><td>데이터링크</td><td>Ethernet</td><td>MAC주소</td></tr>
+        <tr><td>2</td><td>데이터링크</td><td>Ethernet</td><td>MAC</td></tr>
         <tr><td>1</td><td>물리</td><td>케이블</td><td>-</td></tr>
       </table>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          <strong>4계층이 핵심!</strong> TCP/UDP가 작동하는 곳 · 포트번호 단위<br>
+          HTTP는 7계층 · TCP는 4계층이므로 서로 다른 계층
+        </div>
+      </details>
     </div>
 
     <div class="section">
@@ -133,11 +149,11 @@
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">TCP</div>
-          <div class="compare-item-desc">• 안전 & 순서 보장<br>• 느림 · 신뢰도 높음<br>• 웹, 이메일, FTP</div>
+          <div class="compare-item-desc">• 안전<br>• 느림<br>• 웹, 이메일</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">UDP</div>
-          <div class="compare-item-desc">• 빠름 · 보장 안 함<br>• 경량 · 신뢰도 낮음<br>• 게임, 스트리밍</div>
+          <div class="compare-item-desc">• 빠름<br>• 손실 가능<br>• 게임, 스트리밍</div>
         </div>
       </div>
     </div>
@@ -146,19 +162,32 @@
       <div class="section-title green">HTTP 메서드</div>
       <table>
         <tr><th>메서드</th><th>CRUD</th><th>멱등성</th></tr>
-        <tr><td><span class="tag tag-g">GET</span></td><td>Read (조회)</td><td>✅</td></tr>
-        <tr><td><span class="tag tag-a">POST</span></td><td>Create (생성)</td><td>❌</td></tr>
-        <tr><td><span class="tag tag-c">PUT</span></td><td>Update (전체 수정)</td><td>✅</td></tr>
-        <tr><td><span class="tag tag-o">DELETE</span></td><td>Delete (삭제)</td><td>✅</td></tr>
+        <tr><td><span class="tag tag-g">GET</span></td><td>Read</td><td>✅</td></tr>
+        <tr><td><span class="tag tag-a">POST</span></td><td>Create</td><td>❌</td></tr>
+        <tr><td><span class="tag tag-c">PUT</span></td><td>Update</td><td>✅</td></tr>
+        <tr><td><span class="tag tag-o">DELETE</span></td><td>Delete</td><td>✅</td></tr>
       </table>
-      <div class="desc" style="margin-top:8px;"><strong>상태코드:</strong> 1xx (진행) · 2xx (성공) · 3xx (리다이렉트) · 4xx (클라이언트 오류) · 5xx (서버 오류)</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          <strong>멱등성:</strong> 같은 요청을 여러 번 해도 결과가 같아야 함<br>
+          GET: 조회만 하므로 멱등 · POST: 생성이므로 비멱등
+        </div>
+      </details>
     </div>
 
     <div class="section">
       <div class="section-title purple">C10K Problem</div>
-      <div class="list-item"><strong>문제:</strong> 동시 10,000명 연결 시 서버 크래시</div>
-      <div class="list-item"><strong>원인:</strong> 클라이언트당 스레드 1개 → 메모리 부족</div>
-      <div class="list-item"><strong>해결:</strong> NGINX (이벤트 드리븐) · Node.js (비동기)</div>
+      <div class="desc"><strong>문제:</strong> 동시 10,000명 연결 불가</div>
+      <div class="desc"><strong>원인:</strong> 클라이언트당 스레드 1개 → 메모리 부족</div>
+      <div class="desc"><strong>해결:</strong> NGINX (이벤트 드리븐) · Node.js (비동기)</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          스레드 1개가 수천 개 클라이언트 처리 (블로킹 없음)<br>
+          Event Loop가 계속 돌면서 이벤트 발생할 때마다 처리
+        </div>
+      </details>
     </div>
 
   </div>
@@ -175,29 +204,35 @@
     <div class="section">
       <div class="section-title purple">자료형 분류</div>
       <table>
-        <tr><th>구분</th><th>타입들</th><th>특징</th></tr>
-        <tr><td><span class="tag tag-a">원시</span></td><td>string, number, boolean, null, undefined</td><td>이뮤터블 (값 변경 불가)</td></tr>
-        <tr><td><span class="tag tag-c">참조</span></td><td>object, array, function</td><td>뮤터블 (내부 수정 가능)</td></tr>
+        <tr><th>구분</th><th>타입</th><th>특징</th></tr>
+        <tr><td><span class="tag tag-a">원시</span></td><td>string, number, boolean</td><td>이뮤터블</td></tr>
+        <tr><td><span class="tag tag-c">참조</span></td><td>object, array, function</td><td>뮤터블</td></tr>
       </table>
     </div>
 
     <div class="section">
-      <div class="section-title amber">변수 선언 비교</div>
+      <div class="section-title amber">변수 선언</div>
       <table>
         <tr><th>키워드</th><th>재할당</th><th>스코프</th><th>호이스팅</th><th>추천</th></tr>
         <tr><td><span class="tag tag-g">const</span></td><td>❌</td><td>블록</td><td>❌</td><td>✅ 1순위</td></tr>
         <tr><td><span class="tag tag-c">let</span></td><td>✅</td><td>블록</td><td>❌</td><td>✅ 2순위</td></tr>
-        <tr><td><span class="tag tag-o">var</span></td><td>✅</td><td>함수</td><td>✅</td><td>❌ 구식</td></tr>
+        <tr><td><span class="tag tag-o">var</span></td><td>✅</td><td>함수</td><td>✅</td><td>❌</td></tr>
       </table>
-      <div class="note" style="margin-top:8px;">⚠️ const는 재할당 불가지만, 참조 타입은 내부 값 수정 가능 (obj.prop = value)</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          <strong>const 주의:</strong> 재할당 불가지만, 참조 타입의 내부 값은 수정 가능<br>
+          obj.name = "이순신" ✅ · obj = {} ❌
+        </div>
+      </details>
     </div>
 
     <div class="section">
-      <div class="section-title cyan">프로토타입 & 객체</div>
-      <div class="list-item"><strong>프로토타입:</strong> 모든 객체는 프로토타입 체인으로 상속</div>
-      <div class="list-item"><strong>리터럴:</strong> {name: "이용균"} (가장 흔함)</div>
-      <div class="list-item"><strong>클래스:</strong> class User {} (현재 표준)</div>
-      <div class="list-item"><strong>생성자:</strong> function User() {} (레거시)</div>
+      <div class="section-title cyan">프로토타입</div>
+      <div class="desc">모든 객체는 프로토타입 체인으로 상속</div>
+      <div class="list-item"><strong>리터럴:</strong> {name: "이용균"}</div>
+      <div class="list-item"><strong>클래스:</strong> class User {}</div>
+      <div class="list-item"><strong>생성자:</strong> function User() {}</div>
     </div>
 
   </div>
@@ -212,34 +247,33 @@
   <div class="chapter-body">
 
     <div class="section">
-      <div class="section-title orange">V8 엔진 변환 흐름</div>
-      <div class="example">JS 소스코드
-  ↓ (파싱)
-Abstract Syntax Tree (AST)
-  ↓ (이그니션 인터프리터)
-바이트코드
-  ↓ (터보팬 JIT)
-머신코드 (최적화)</div>
+      <div class="section-title orange">V8 엔진</div>
+      <div class="example">JS → AST → 바이트코드 → 머신코드</div>
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">이그니션</div>
-          <div class="compare-item-desc">• 인터프리터<br>• 느리지만 준비 빠름</div>
+          <div class="compare-item-desc">인터프리터 · 느림</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">터보팬</div>
-          <div class="compare-item-desc">• JIT 컴파일러<br>• 핫코드 최적화</div>
+          <div class="compare-item-desc">JIT · 최적화</div>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <div class="section-title cyan">비동기 & Event Loop</div>
+      <div class="section-title cyan">Event Loop</div>
       <table>
         <tr><th>큐</th><th>포함</th><th>우선순위</th></tr>
-        <tr><td><span class="tag tag-c">마이크로태스크</span></td><td>Promise, async/await</td><td>🔴 높음</td></tr>
+        <tr><td><span class="tag tag-c">마이크로</span></td><td>Promise, async/await</td><td>🔴 높음</td></tr>
         <tr><td><span class="tag tag-a">태스크</span></td><td>setTimeout, setInterval</td><td>🟡 낮음</td></tr>
       </table>
-      <div class="note" style="margin-top:8px;">흐름: Call Stack 비움 → 마이크로태스크 → 태스크</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          실행 순서: Call Stack 비움 → 마이크로태스크 (전부) → 태스크 (1개)
+        </div>
+      </details>
     </div>
 
     <div class="section">
@@ -247,7 +281,7 @@ Abstract Syntax Tree (AST)
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">싱글스레드</div>
-          <div class="compare-item-desc">• 한 번에 하나씩<br>• Event Loop로 처리<br>• DOM 접근 가능</div>
+          <div class="compare-item-desc">• 한 번에 하나씩<br>• Event Loop<br>• DOM 접근 가능</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">웹 워커</div>
@@ -272,24 +306,19 @@ Abstract Syntax Tree (AST)
       <table>
         <tr><th>용어</th><th>설명</th></tr>
         <tr><td><span class="tag tag-g">Iterable</span></td><td>for/of 가능 · Array, Set, Map</td></tr>
-        <tr><td><span class="tag tag-c">Iterator</span></td><td>next() 메서드 가진 객체</td></tr>
-        <tr><td><span class="tag tag-a">Result</span></td><td>{value, done} 형태</td></tr>
+        <tr><td><span class="tag tag-c">Iterator</span></td><td>next() 메서드</td></tr>
+        <tr><td><span class="tag tag-a">Result</span></td><td>{value, done}</td></tr>
       </table>
-      <div class="example">for (const item of array) {
-  console.log(item);  // 자동으로 Iterator 사용
-}</div>
     </div>
 
     <div class="section">
-      <div class="section-title orange">Generator Function</div>
+      <div class="section-title orange">Generator</div>
       <div class="example">function* gen() {
   yield 1;
   yield 2;
-  yield 3;
 }</div>
       <div class="list-item"><strong>특징:</strong> Iterator 자동 반환</div>
-      <div class="list-item"><strong>yield:</strong> 실행 일시 중지 · next() 호출 시 재개</div>
-      <div class="list-item"><strong>yield*:</strong> 다른 iterable 위임 · 재귀 가능</div>
+      <div class="list-item"><strong>yield:</strong> 일시 중지 · next() 호출 시 재개</div>
     </div>
 
   </div>
@@ -304,28 +333,31 @@ Abstract Syntax Tree (AST)
   <div class="chapter-body">
 
     <div class="section">
-      <div class="section-title purple">모듈화 개념</div>
-      <div class="note">재사용 가능한 코드 집합 · 기본적으로 private · export로만 공개</div>
+      <div class="section-title purple">모듈화</div>
       <table>
-        <tr><th></th><th>CommonJS</th><th>ES6 Module</th></tr>
-        <tr><td>문법</td><td><code>module.exports</code></td><td><code>export const</code></td></tr>
+        <tr><th></th><th>CommonJS</th><th>ES6</th></tr>
+        <tr><td>문법</td><td>module.exports</td><td>export const</td></tr>
         <tr><td>환경</td><td>Node.js</td><td>브라우저</td></tr>
         <tr><td>방식</td><td>동기</td><td>비동기</td></tr>
-        <tr><td>브라우저</td><td>❌ (Webpack)</td><td>✅ 직접</td></tr>
       </table>
     </div>
 
     <div class="section">
       <div class="section-title cyan">Webpack</div>
       <div class="example">Entry → Dependency Graph → Bundle</div>
-      <div class="list-item"><strong>역할:</strong> CommonJS를 브라우저 호환 형태로</div>
-      <div class="list-item"><strong>기능:</strong> 번들링, 코드 스플릿, 최소화</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          여러 CommonJS 파일을 1개 번들로 합침<br>
+          브라우저에서 CommonJS 사용 가능하게 함
+        </div>
+      </details>
     </div>
 
   </div>
 </div>
 
-<!-- WEB 07: Async -->
+<!-- WEB 07 -->
 <div class="chapter">
   <div class="chapter-header">
     <span class="chapter-num">Web 07</span>
@@ -338,66 +370,61 @@ Abstract Syntax Tree (AST)
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">동기</div>
-          <div class="compare-item-desc">• 순서대로 실행<br>• 대기 필수<br>• ❌ 블로킹</div>
+          <div class="compare-item-desc">• 순서대로<br>• 대기<br>• ❌ 블로킹</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">비동기</div>
-          <div class="compare-item-desc">• 백그라운드 실행<br>• 기다리지 않음<br>• ✅ 논블로킹</div>
+          <div class="compare-item-desc">• 백그라운드<br>• 기다리지 않음<br>• ✅ 논블로킹</div>
         </div>
       </div>
     </div>
 
     <div class="section">
       <div class="section-title amber">Promise 3가지 상태</div>
-      <div class="example">Pending → Fulfilled (.then())
-          ↘ Rejected (.catch())</div>
       <table>
         <tr><th>상태</th><th>메서드</th><th>설명</th></tr>
-        <tr><td><span class="tag tag-g">Fulfilled</span></td><td>.then()</td><td>resolve() 호출</td></tr>
-        <tr><td><span class="tag tag-o">Rejected</span></td><td>.catch()</td><td>reject() 호출</td></tr>
+        <tr><td><span class="tag tag-g">Fulfilled</span></td><td>.then()</td><td>resolve()</td></tr>
+        <tr><td><span class="tag tag-o">Rejected</span></td><td>.catch()</td><td>reject()</td></tr>
         <tr><td><span class="tag tag-a">항상</span></td><td>.finally()</td><td>성공/실패 무관</td></tr>
       </table>
-      <div class="warning" style="margin-top:8px;">⚠️ Promise는 한 번만 변경 · resolve 후 reject 호출은 무시</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          Promise는 한 번 상태가 변경되면 다시 변할 수 없음!<br>
+          resolve() 후 reject()는 무시됨
+        </div>
+      </details>
     </div>
 
     <div class="section">
-      <div class="section-title cyan">Fetch API</div>
+      <div class="section-title cyan">Fetch & Promise</div>
       <div class="example">fetch(url)
-  .then(res => res.json())  // Promise 반환!
-  .then(data => console.log(data))
-  .catch(err => console.log(err))</div>
-      <div class="list-item"><strong>Promise 반환:</strong> 비동기 네트워크</div>
-      <div class="list-item"><strong>response.json():</strong> 바디 크기 크면 Promise</div>
+  .then(res => res.json())  // Promise 반환
+  .then(data => console.log(data))</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          response.json()도 Promise를 반환!<br>
+          바디 크기가 크면 파싱에 시간 소요 → 비동기 처리 필요
+        </div>
+      </details>
     </div>
 
     <div class="section">
       <div class="section-title purple">async/await</div>
       <div class="example">async function getData() {
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    return data;
-  } catch(error) {
-    console.log(error);
-  }
+  const data = await fetch(url);
 }</div>
-      <div class="list-item"><strong>async:</strong> 함수를 비동기로 · 항상 Promise</div>
+      <div class="list-item"><strong>async:</strong> 함수 비동기화 · Promise 반환</div>
       <div class="list-item"><strong>await:</strong> Promise settle 대기 · async 내에서만</div>
-      <div class="note" style="margin-top:8px;">💡 병렬: await Promise.all([p1, p2, p3])</div>
     </div>
 
     <div class="section">
-      <div class="section-title orange">HTTP 헤더 & HTTPS</div>
-      <table>
-        <tr><th>항목</th><th>요청</th><th>응답</th></tr>
-        <tr><td>인증</td><td>Authorization</td><td>Set-Cookie</td></tr>
-        <tr><td>형식</td><td>Content-Type</td><td>Content-Type</td></tr>
-        <tr><td>CORS</td><td>Referer</td><td>Access-Control</td></tr>
-      </table>
+      <div class="section-title orange">HTTP vs HTTPS</div>
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">HTTP (80)</div>
-          <div class="compare-item-desc">• 평문 전송<br>• ❌ 보안 낮음</div>
+          <div class="compare-item-desc">• 평문<br>• ❌ 보안 낮음</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">HTTPS (443)</div>
@@ -413,141 +440,66 @@ Abstract Syntax Tree (AST)
 <div class="chapter">
   <div class="chapter-header">
     <span class="chapter-num">Web 07_Nginx</span>
-    <span class="chapter-title" style="color:var(--accent4);">Nginx (인프라)</span>
+    <span class="chapter-title" style="color:var(--accent4);">Nginx</span>
   </div>
   <div class="chapter-body">
 
     <div class="section">
       <div class="section-title cyan">Nginx 3가지 역할</div>
-      <div class="list-item"><strong>웹 서버:</strong> 정적 파일 제공 (HTML/CSS/JS)</div>
-      <div class="list-item"><strong>리버스 프록시:</strong> 요청 분석 → 백엔드 선택</div>
-      <div class="list-item"><strong>로드 밸런서:</strong> 여러 서버에 요청 분산</div>
+      <div class="list-item"><strong>웹 서버:</strong> 정적 파일 제공</div>
+      <div class="list-item"><strong>리버스 프록시:</strong> 요청 분석 후 백엔드 선택</div>
+      <div class="list-item"><strong>로드 밸런서:</strong> 여러 서버에 분산</div>
     </div>
 
     <div class="section">
       <div class="section-title green">포트 정리</div>
       <table>
-        <tr><th>포트</th><th>프로토콜</th><th>용도</th><th>노출</th></tr>
-        <tr><td>80</td><td>HTTP</td><td>웹</td><td>✅ 공개</td></tr>
-        <tr><td>443</td><td>HTTPS</td><td>보안 웹</td><td>✅ 공개</td></tr>
-        <tr><td>3000</td><td>Node.js</td><td>백엔드</td><td>❌ 숨김</td></tr>
-        <tr><td>5432</td><td>PostgreSQL</td><td>DB</td><td>❌ 내부</td></tr>
+        <tr><th>포트</th><th>용도</th><th>노출</th></tr>
+        <tr><td>80</td><td>HTTP</td><td>✅ 공개</td></tr>
+        <tr><td>443</td><td>HTTPS</td><td>✅ 공개</td></tr>
+        <tr><td>3000</td><td>Node.js</td><td>❌ 숨김</td></tr>
+        <tr><td>5432</td><td>PostgreSQL</td><td>❌ 내부</td></tr>
       </table>
-      <div class="note" style="margin-top:8px;">💡 클라이언트는 80만 봄 · 3000 숨김 = 보안</div>
+      <details>
+        <summary>자세히보기</summary>
+        <div class="answer">
+          클라이언트는 포트 80만 봄 · 포트 3000 숨김 = 보안 강화<br>
+          Nginx가 중간에서 요청 분석 후 3000으로 프록시
+        </div>
+      </details>
     </div>
 
     <div class="section">
-      <div class="section-title orange">nginx.conf 구조</div>
-      <div class="example">http {
-  upstream backend {
-    server 127.0.0.1:3000;
-  }
-  server {
-    listen 80;
-    location / { index index.html; }
-    location /api { proxy_pass http://backend; }
-  }
-}</div>
+      <div class="section-title orange">location 우선순위</div>
       <table>
-        <tr><th>블록</th><th>역할</th></tr>
-        <tr><td><span class="tag tag-g">http</span></td><td>전체 설정</td></tr>
-        <tr><td><span class="tag tag-c">upstream</span></td><td>백엔드 정의</td></tr>
-        <tr><td><span class="tag tag-a">server</span></td><td>가상 호스트</td></tr>
-        <tr><td><span class="tag tag-o">location</span></td><td>경로별 처리</td></tr>
+        <tr><th>순위</th><th>매칭</th></tr>
+        <tr><td>1</td><td><span class="tag tag-c">= /</span> (정확)</td></tr>
+        <tr><td>2</td><td><span class="tag tag-a">^~ /api</span> (우선정규)</td></tr>
+        <tr><td>3</td><td><span class="tag tag-g">~ \.json$</span> (정규)</td></tr>
+        <tr><td>4</td><td><span class="tag tag-o">/static</span> (접두)</td></tr>
+        <tr><td>5</td><td><span class="tag tag-c">/</span> (기본)</td></tr>
       </table>
     </div>
 
     <div class="section">
-      <div class="section-title purple">location 우선순위</div>
-      <table>
-        <tr><th>순위</th><th>매칭</th><th>예시</th></tr>
-        <tr><td>1</td><td><span class="tag tag-c">정확</span></td><td><code>= /</code></td></tr>
-        <tr><td>2</td><td><span class="tag tag-a">우선정규</span></td><td><code>^~ /api</code></td></tr>
-        <tr><td>3</td><td><span class="tag tag-g">정규</span></td><td><code>~ \.json$</code></td></tr>
-        <tr><td>4</td><td><span class="tag tag-o">접두</span></td><td><code>/static</code></td></tr>
-        <tr><td>5</td><td>기본</td><td><code>/</code></td></tr>
-      </table>
-    </div>
-
-    <div class="section">
-      <div class="section-title amber">root vs alias</div>
+      <div class="section-title purple">root vs alias</div>
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">root</div>
-          <div class="compare-item-desc">• 경로 합치기<br>• /path + /root</div>
+          <div class="compare-item-desc">경로 합치기<br>/path + /root</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">alias</div>
-          <div class="compare-item-desc">• 경로 교체<br>• location만 사용</div>
+          <div class="compare-item-desc">경로 교체<br>location만 사용</div>
         </div>
       </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title cyan">Docker Compose</div>
-      <div class="example">클라이언트
-  ↓ (포트 8080)
-Nginx (포트 80)
-  ↓ (컨테이너 네트워크)
-Express (포트 3000)</div>
-      <div class="list-item"><strong>자동 네트워킹:</strong> bridge 네트워크</div>
-      <div class="list-item"><strong>이름으로 통신:</strong> express-server:3000</div>
-      <div class="list-item"><strong>IP 불필요:</strong> 컨테이너 이름 사용</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- 최종 정리 -->
-<div class="chapter">
-  <div class="chapter-header">
-    <span class="chapter-num">Final</span>
-    <span class="chapter-title" style="color:var(--accent2);">시험 체크리스트</span>
-  </div>
-  <div class="chapter-body">
-
-    <div class="section">
-      <div class="section-title amber">핵심 개념 정리</div>
-      <table>
-        <tr><th>개념</th><th>설명</th></tr>
-        <tr><td>Render Tree</td><td>DOM + CSSOM 합쳐진 것</td></tr>
-        <tr><td>OSI 4계층</td><td>⭐ TCP/UDP (포트)</td></tr>
-        <tr><td>C10K</td><td>동시 10,000명 문제</td></tr>
-        <tr><td>Event Loop</td><td>마이크로 > 태스크 순서</td></tr>
-        <tr><td>Promise 상태</td><td>Pending → Fulfilled/Rejected</td></tr>
-        <tr><td>async/await</td><td>Promise를 동기처럼</td></tr>
-        <tr><td>Nginx 포트</td><td>80 공개, 3000 숨김</td></tr>
-        <tr><td>location 우선</td><td>정확 > 우선정규 > 정규 > 접두 > 기본</td></tr>
-      </table>
-    </div>
-
-    <div class="section">
-      <div class="section-title cyan">패턴 비교</div>
-      <table>
-        <tr><th>패턴</th><th>가독성</th><th>에러</th><th>추천</th></tr>
-        <tr><td><span class="tag tag-a">Callback</span></td><td>❌</td><td>복잡</td><td>기초</td></tr>
-        <tr><td><span class="tag tag-c">Promise</span></td><td>✅</td><td>간단</td><td>중간</td></tr>
-        <tr><td><span class="tag tag-g">async/await</span></td><td>✅✅</td><td>try/catch</td><td>✅ 실무</td></tr>
-      </table>
-    </div>
-
-    <div class="section">
-      <div class="section-title green">출제 예상 (필수!)</div>
-      <div class="list-item">📌 Event Loop 흐름 (Call Stack → 마이크로 → 태스크)</div>
-      <div class="list-item">📌 Promise 상태 변경 (한 번만)</div>
-      <div class="list-item">📌 await 사용 조건 (async 내에서만)</div>
-      <div class="list-item">📌 Nginx 포트 (80 공개, 3000 숨김)</div>
-      <div class="list-item">📌 location 우선순위 (5단계)</div>
-      <div class="list-item">📌 콜백 헬 해결 (Promise → async/await)</div>
-      <div class="list-item">📌 HTTP vs HTTPS (TLS 암호화)</div>
-      <div class="list-item">📌 SPA vs MPA (페이지 전환 속도)</div>
     </div>
 
   </div>
 </div>
 
 <footer>
-  Web Programming Complete Cheatsheet · Web_01~07 · 2025 Final Exam<br>
+  Web Programming Complete Cheatsheet · Web_01~07_Nginx<br>
   🚀 동기 → Event Loop → setTimeout → Promise → async/await → Nginx
 </footer>
 
