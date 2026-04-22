@@ -19,9 +19,12 @@
   header h1 { font-family: var(--mono); font-size: 28px; font-weight: 700; }
   header p { color: var(--muted); font-size: 11px; font-family: var(--mono); margin-top: 4px; }
   .chapter { margin-bottom: 40px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .chapter-header { background: var(--surface2); padding: 16px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .chapter-header { background: var(--surface2); padding: 16px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+  .chapter-header-left { display: flex; align-items: center; gap: 12px; }
   .chapter-num { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent3); background: #0e2e38; padding: 4px 8px; border-radius: 3px; min-width: 50px; text-align: center; }
   .chapter-title { font-family: var(--mono); font-size: 14px; font-weight: 600; }
+  .detail-btn { display: inline-block; padding: 4px 10px; background: #1a3a25; color: var(--accent1); border-radius: 3px; font-size: 10px; text-decoration: none; font-weight: 600; transition: all 0.2s; }
+  .detail-btn:hover { background: #1a4a2a; color: var(--accent2); }
   .chapter-body { padding: 18px; display: flex; flex-direction: column; gap: 20px; }
   .section { padding: 14px; background: var(--surface2); border-radius: 5px; border-left: 3px solid var(--accent2); }
   .section-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; display: inline-block; padding: 2px 6px; border-radius: 3px; }
@@ -47,12 +50,8 @@
   .tag-c { background: #0e2e38; color: var(--accent3); }
   .tag-o { background: #3a1a10; color: var(--accent4); }
   code { background: #1a1a1a; padding: 1px 4px; border-radius: 2px; font-family: var(--mono); font-size: 10px; color: var(--accent3); }
-  details { margin: 10px 0; background: #1e1e1e; border: 0.5px solid var(--border); border-radius: 3px; padding: 10px; }
-  details summary { cursor: pointer; font-weight: 600; color: var(--accent1); font-size: 11px; user-select: none; }
-  details summary:hover { color: var(--accent2); }
-  details[open] { background: #252525; }
-  details[open] summary { color: var(--accent2); margin-bottom: 8px; }
-  .answer { background: #1a2a1a; border-left: 3px solid var(--accent1); padding: 8px 10px; margin-top: 8px; border-radius: 2px; font-size: 10px; }
+  .list-item { margin: 6px 0; padding-left: 18px; position: relative; font-size: 11px; line-height: 1.4; }
+  .list-item:before { content: "▸"; position: absolute; left: 0; }
   footer { margin-top: 40px; text-align: center; font-family: var(--mono); font-size: 9px; color: var(--muted); }
 </style>
 </head>
@@ -68,8 +67,11 @@
 <!-- WEB 01 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 01</span>
-    <span class="chapter-title" style="color:var(--accent4);">웹 프로그래밍 기초</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 01</span>
+      <span class="chapter-title" style="color:var(--accent4);">웹 프로그래밍 기초</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_01" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -91,13 +93,7 @@
         <tr><td><span class="tag tag-c">CSR</span></td><td>❌</td><td>⚡</td><td>나쁨</td><td>React</td></tr>
         <tr><td><span class="tag tag-o">하이브리드</span></td><td>⚡</td><td>⚡</td><td>✅</td><td>Next.js</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          <strong>Render Tree</strong> = DOM + CSSOM을 합쳐서 실제 그릴 요소만 모은 것<br>
-          display: none 등 보이지 않는 요소는 제외됨
-        </div>
-      </details>
+      <div class="desc" style="margin-top:8px;"><strong>Render Tree</strong> = DOM + CSSOM을 합쳐서 실제 그릴 요소만 모은 것</div>
     </div>
 
     <div class="section">
@@ -120,8 +116,11 @@
 <!-- WEB 02 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 02</span>
-    <span class="chapter-title" style="color:var(--accent3);">웹서버 & 네트워킹</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 02</span>
+      <span class="chapter-title" style="color:var(--accent3);">웹서버 & 네트워킹</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_02" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -135,13 +134,7 @@
         <tr><td>2</td><td>데이터링크</td><td>Ethernet</td><td>MAC</td></tr>
         <tr><td>1</td><td>물리</td><td>케이블</td><td>-</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          <strong>4계층이 핵심!</strong> TCP/UDP가 작동하는 곳 · 포트번호 단위<br>
-          HTTP는 7계층 · TCP는 4계층이므로 서로 다른 계층
-        </div>
-      </details>
+      <div class="desc" style="margin-top:8px;"><strong>4계층이 핵심!</strong> TCP/UDP가 작동하는 곳 · 포트번호 단위</div>
     </div>
 
     <div class="section">
@@ -167,13 +160,7 @@
         <tr><td><span class="tag tag-c">PUT</span></td><td>Update</td><td>✅</td></tr>
         <tr><td><span class="tag tag-o">DELETE</span></td><td>Delete</td><td>✅</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          <strong>멱등성:</strong> 같은 요청을 여러 번 해도 결과가 같아야 함<br>
-          GET: 조회만 하므로 멱등 · POST: 생성이므로 비멱등
-        </div>
-      </details>
+      <div class="desc" style="margin-top:8px;"><strong>멱등성:</strong> 같은 요청을 여러 번 해도 결과가 같아야 함</div>
     </div>
 
     <div class="section">
@@ -181,13 +168,6 @@
       <div class="desc"><strong>문제:</strong> 동시 10,000명 연결 불가</div>
       <div class="desc"><strong>원인:</strong> 클라이언트당 스레드 1개 → 메모리 부족</div>
       <div class="desc"><strong>해결:</strong> NGINX (이벤트 드리븐) · Node.js (비동기)</div>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          스레드 1개가 수천 개 클라이언트 처리 (블로킹 없음)<br>
-          Event Loop가 계속 돌면서 이벤트 발생할 때마다 처리
-        </div>
-      </details>
     </div>
 
   </div>
@@ -196,8 +176,11 @@
 <!-- WEB 03 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 03</span>
-    <span class="chapter-title" style="color:var(--accent5);">JavaScript 기초</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 03</span>
+      <span class="chapter-title" style="color:var(--accent5);">JavaScript 기초</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_03" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -218,18 +201,11 @@
         <tr><td><span class="tag tag-c">let</span></td><td>✅</td><td>블록</td><td>❌</td><td>✅ 2순위</td></tr>
         <tr><td><span class="tag tag-o">var</span></td><td>✅</td><td>함수</td><td>✅</td><td>❌</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          <strong>const 주의:</strong> 재할당 불가지만, 참조 타입의 내부 값은 수정 가능<br>
-          obj.name = "이순신" ✅ · obj = {} ❌
-        </div>
-      </details>
+      <div class="note" style="margin-top:8px;">⚠️ const 주의: 재할당 불가지만, 참조 타입의 내부 값은 수정 가능</div>
     </div>
 
     <div class="section">
       <div class="section-title cyan">프로토타입</div>
-      <div class="desc">모든 객체는 프로토타입 체인으로 상속</div>
       <div class="list-item"><strong>리터럴:</strong> {name: "이용균"}</div>
       <div class="list-item"><strong>클래스:</strong> class User {}</div>
       <div class="list-item"><strong>생성자:</strong> function User() {}</div>
@@ -241,8 +217,11 @@
 <!-- WEB 04 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 04</span>
-    <span class="chapter-title" style="color:var(--accent4);">JavaScript 실행 환경</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 04</span>
+      <span class="chapter-title" style="color:var(--accent4);">JavaScript 실행 환경</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_04" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -268,12 +247,7 @@
         <tr><td><span class="tag tag-c">마이크로</span></td><td>Promise, async/await</td><td>🔴 높음</td></tr>
         <tr><td><span class="tag tag-a">태스크</span></td><td>setTimeout, setInterval</td><td>🟡 낮음</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          실행 순서: Call Stack 비움 → 마이크로태스크 (전부) → 태스크 (1개)
-        </div>
-      </details>
+      <div class="note" style="margin-top:8px;">흐름: Call Stack 비움 → 마이크로태스크 (전부) → 태스크 (1개)</div>
     </div>
 
     <div class="section">
@@ -281,7 +255,7 @@
       <div class="compare-grid">
         <div class="compare-item">
           <div class="compare-item-title">싱글스레드</div>
-          <div class="compare-item-desc">• 한 번에 하나씩<br>• Event Loop<br>• DOM 접근 가능</div>
+          <div class="compare-item-desc">• 한 번에 하나씩<br>• Event Loop<br>• DOM 접근</div>
         </div>
         <div class="compare-item">
           <div class="compare-item-title">웹 워커</div>
@@ -296,8 +270,11 @@
 <!-- WEB 05 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 05</span>
-    <span class="chapter-title" style="color:var(--accent2);">Iterator & Generator</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 05</span>
+      <span class="chapter-title" style="color:var(--accent2);">Iterator & Generator</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_05" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -327,8 +304,11 @@
 <!-- WEB 06 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 06</span>
-    <span class="chapter-title" style="color:var(--accent5);">Modules</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 06</span>
+      <span class="chapter-title" style="color:var(--accent5);">Modules</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_06" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -345,13 +325,7 @@
     <div class="section">
       <div class="section-title cyan">Webpack</div>
       <div class="example">Entry → Dependency Graph → Bundle</div>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          여러 CommonJS 파일을 1개 번들로 합침<br>
-          브라우저에서 CommonJS 사용 가능하게 함
-        </div>
-      </details>
+      <div class="desc" style="margin-top:8px;">여러 CommonJS 파일을 1개 번들로 합침 · 브라우저에서 CommonJS 사용 가능</div>
     </div>
 
   </div>
@@ -360,8 +334,11 @@
 <!-- WEB 07 -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 07</span>
-    <span class="chapter-title" style="color:var(--accent1);">Asynchronous Programming</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 07</span>
+      <span class="chapter-title" style="color:var(--accent1);">Asynchronous Programming</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_07" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -387,27 +364,15 @@
         <tr><td><span class="tag tag-o">Rejected</span></td><td>.catch()</td><td>reject()</td></tr>
         <tr><td><span class="tag tag-a">항상</span></td><td>.finally()</td><td>성공/실패 무관</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          Promise는 한 번 상태가 변경되면 다시 변할 수 없음!<br>
-          resolve() 후 reject()는 무시됨
-        </div>
-      </details>
+      <div class="warning" style="margin-top:8px;">⚠️ Promise는 한 번 상태가 변경되면 다시 변할 수 없음!</div>
     </div>
 
     <div class="section">
       <div class="section-title cyan">Fetch & Promise</div>
       <div class="example">fetch(url)
-  .then(res => res.json())  // Promise 반환
+  .then(res => res.json())
   .then(data => console.log(data))</div>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          response.json()도 Promise를 반환!<br>
-          바디 크기가 크면 파싱에 시간 소요 → 비동기 처리 필요
-        </div>
-      </details>
+      <div class="desc" style="margin-top:8px;">response.json()도 Promise 반환! 바디 크기가 크면 파싱에 시간 소요</div>
     </div>
 
     <div class="section">
@@ -439,8 +404,11 @@
 <!-- WEB 07_NGINX -->
 <div class="chapter">
   <div class="chapter-header">
-    <span class="chapter-num">Web 07_Nginx</span>
-    <span class="chapter-title" style="color:var(--accent4);">Nginx</span>
+    <div class="chapter-header-left">
+      <span class="chapter-num">Web 07_Nginx</span>
+      <span class="chapter-title" style="color:var(--accent4);">Nginx</span>
+    </div>
+    <a href="../notes.html?repo=Web-Programming&file=Web_07_Nginx" class="detail-btn">자세히 보기 →</a>
   </div>
   <div class="chapter-body">
 
@@ -460,13 +428,6 @@
         <tr><td>3000</td><td>Node.js</td><td>❌ 숨김</td></tr>
         <tr><td>5432</td><td>PostgreSQL</td><td>❌ 내부</td></tr>
       </table>
-      <details>
-        <summary>자세히보기</summary>
-        <div class="answer">
-          클라이언트는 포트 80만 봄 · 포트 3000 숨김 = 보안 강화<br>
-          Nginx가 중간에서 요청 분석 후 3000으로 프록시
-        </div>
-      </details>
     </div>
 
     <div class="section">
