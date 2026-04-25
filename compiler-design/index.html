@@ -3,167 +3,808 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compiler Design 치트시트</title>
-<link rel="stylesheet" href="../assets/common.css">
+<title>Compiler CH4 — 어휘 분석</title>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #171717;
+    --surface2: #1f1f1f;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --muted: #666;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --sans: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    --green:  #7ee8a2;
+    --yellow: #f9c74f;
+    --cyan:   #90e0ef;
+    --orange: #f4a261;
+    --purple: #c77dff;
+    --red:    #ff6b6b;
+    --blue:   #378ADD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── 헤더 ── */
+  header { margin-bottom: 40px; }
+  header h1 { font-family: var(--mono); font-size: 22px; color: var(--green); }
+  header p  { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* ── 큰 박스 (웹툰 한 컷) ── */
+  .panel {
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--surface2);
+  }
+  .panel-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .panel-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── 작은 박스 (카드) ── */
+  .card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 0.5px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* ── 2열 그리드 ── */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* ── 미니 카드 ── */
+  .mini {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .mini-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  /* ── 표 ── */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--surface2); color: var(--muted); font-family: var(--mono); font-size: 10px; padding: 7px 10px; text-align: left; font-weight: 600; }
+  td { padding: 7px 10px; border-top: 0.5px solid var(--border); vertical-align: top; }
+  tr:hover td { background: var(--surface2); }
+
+  /* ── 공식 블록 ── */
+  .formula {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 14px;
+    border-radius: 0 6px 6px 0;
+    border-left: 2px solid var(--yellow);
+    background: #1a1800;
+    color: var(--yellow);
+    margin: 6px 0;
+  }
+  .formula.green  { border-color: var(--green);  background: #0a1a0f; color: var(--green); }
+  .formula.cyan   { border-color: var(--cyan);   background: #001a20; color: var(--cyan); }
+  .formula.purple { border-color: var(--purple); background: #150a20; color: var(--purple); }
+  .formula.orange { border-color: var(--orange); background: #1a0e00; color: var(--orange); }
+
+  /* ── 노트 ── */
+  .note {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-left: 2px solid var(--border);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .note b { color: var(--text); }
+
+  /* ── 태그 ── */
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .tag.g { background: #0a1a0f; color: var(--green);  border: 0.5px solid var(--green); }
+  .tag.y { background: #1a1400; color: var(--yellow); border: 0.5px solid var(--yellow); }
+  .tag.c { background: #001a20; color: var(--cyan);   border: 0.5px solid var(--cyan); }
+  .tag.p { background: #150a20; color: var(--purple); border: 0.5px solid var(--purple); }
+  .tag.o { background: #1a0e00; color: var(--orange); border: 0.5px solid var(--orange); }
+  .tag.r { background: #1a0000; color: var(--red);    border: 0.5px solid var(--red); }
+
+  /* ── 행 KV ── */
+  .row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 0.5px solid var(--border); font-size: 12px; gap: 10px; }
+  .row:last-child { border-bottom: none; }
+  .row .k { color: var(--muted); font-family: var(--mono); font-size: 11px; flex-shrink: 0; }
+  .row .v { color: var(--text); text-align: right; }
+
+  /* ── 코드 블록 ── */
+  pre {
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.7;
+    color: #ccc;
+    overflow-x: auto;
+    margin: 6px 0;
+  }
+  code { font-family: var(--mono); font-size: 11px; }
+
+  /* ── SVG 래퍼 ── */
+  .svg-wrap { margin: 8px 0; }
+  .svg-wrap svg { width: 100%; display: block; }
+
+  /* ── 스텝 리스트 ── */
+  .steps { list-style: none; counter-reset: step; }
+  .steps li { counter-increment: step; display: flex; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step);
+    display: flex; align-items: center; justify-content: center;
+    min-width: 20px; height: 20px;
+    background: var(--surface2);
+    border-radius: 50%;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .steps li .dim { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+
+  footer { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 48px; padding-top: 20px; border-top: 0.5px solid var(--border); }
+</style>
 </head>
 <body>
 
 <header>
-  <h1>Compiler Design — 치트시트</h1>
-  <p>CH01–CH03 · 컴파일러 구조, CFG, 파싱</p>
+  <h1>Compiler Design </h1>
+  <p>어휘 분석 (Lexical Analysis) · Scanner · Token · FA · RE</p>
 </header>
 
-<div class="grid">
 
-  <!-- 컴파일러 구조 -->
-  <div class="card">
-    <div class="card-title amber">CH01 · 컴파일러 구조</div>
-    <div class="row"><span class="key">전단부 (Front-end)</span><span class="val">언어 의존적 · 분석 담당</span></div>
-    <div class="row"><span class="key">후단부 (Back-end)</span><span class="val">기계 의존적 · 합성 담당</span></div>
-    <div class="row"><span class="key">중간 코드 (IC)</span><span class="val">기계 독립적 중간 표현</span></div>
-    <div class="row"><span class="key">심볼 테이블</span><span class="val">식별자 정보 · 모든 단계 공유</span></div>
-    <div class="row"><span class="key">리터럴 테이블</span><span class="val">상수값 저장 · 중복 방지</span></div>
-    <p class="note">IC 예시: Java 바이트코드, LLVM IR, Python .pyc</p>
+<!-- ══════════════════════════════════ PANEL 1 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 01</span>
+    <span class="panel-title" style="color:var(--green)">어휘분석이란? — 스캐너의 역할</span>
   </div>
+  <div class="panel-body">
 
-  <!-- 컴파일 단계 -->
-  <div class="card">
-    <div class="card-title cyan">CH01 · 컴파일 단계 (6단계)</div>
-    <ul class="steps">
-      <li><div><strong>어휘 분석 (Scanner)</strong> — 소스 → 토큰<br><span class="dim">a[index] = 4+2 → id1 := id2 + id3 * 60</span></div></li>
-      <li><div><strong>구문 분석 (Parser)</strong> — 토큰 → 구문 트리<br><span class="dim">AST 생성 (불필요한 기호 제거)</span></div></li>
-      <li><div><strong>의미 분석 (Semantic)</strong> — AST → 주석 트리<br><span class="dim">타입 정보 추가, inttoreal 삽입</span></div></li>
-      <li><div><strong>중간 코드 생성</strong> — 주석 트리 → IC<br><span class="dim">3주소 코드: t = a op b</span></div></li>
-      <li><div><strong>코드 최적화</strong> — 상수 접기 등<br><span class="dim">4+2 → 6 (컴파일 시점에 미리 계산)</span></div></li>
-      <li><div><strong>코드 생성</strong> — IC → 기계어<br><span class="dim">레지스터 할당, 주소 지정</span></div></li>
-    </ul>
-  </div>
+    <!-- 전체 흐름 SVG -->
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">컴파일러 속 어휘분석기의 위치</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- 소스 코드 -->
+          <rect x="10" y="35" width="110" height="40" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="0.8"/>
+          <text x="65" y="52" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">소스 프로그램</text>
+          <text x="65" y="66" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">a[index]=4+2</text>
+          <!-- 화살표 →어휘분석기 -->
+          <line x1="120" y1="55" x2="170" y2="55" stroke="#7ee8a2" stroke-width="1" marker-end="url(#arr-g)"/>
+          <!-- 어휘분석기 -->
+          <rect x="170" y="30" width="130" height="50" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="235" y="50" font-family="monospace" font-size="11" fill="#7ee8a2" text-anchor="middle" font-weight="bold">어휘 분석기</text>
+          <text x="235" y="65" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Scanner)</text>
+          <!-- 토큰 화살표 -->
+          <line x1="300" y1="45" x2="360" y2="45" stroke="#f9c74f" stroke-width="1" marker-end="url(#arr-y)"/>
+          <text x="330" y="38" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">토큰</text>
+          <!-- 다음토큰 요구 화살표 -->
+          <line x1="360" y1="65" x2="300" y2="65" stroke="#90e0ef" stroke-width="1" marker-end="url(#arr-c)"/>
+          <text x="330" y="80" font-family="monospace" font-size="9" fill="#90e0ef" text-anchor="middle">다음 토큰 요구</text>
+          <!-- 구문분석기 -->
+          <rect x="360" y="30" width="130" height="50" rx="8" fill="#001a20" stroke="#90e0ef" stroke-width="1.5"/>
+          <text x="425" y="50" font-family="monospace" font-size="11" fill="#90e0ef" text-anchor="middle" font-weight="bold">구문 분석기</text>
+          <text x="425" y="65" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Parser)</text>
+          <line x1="490" y1="55" x2="530" y2="55" stroke="#90e0ef" stroke-width="1" marker-end="url(#arr-c)"/>
+          <text x="555" y="50" font-family="monospace" font-size="10" fill="#555" text-anchor="middle">이후 단계→</text>
+          <!-- 기호표 -->
+          <rect x="235" y="95" width="100" height="30" rx="6" fill="#150a20" stroke="#c77dff" stroke-width="0.8"/>
+          <text x="285" y="115" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="middle">기호표 (Symbol Table)</text>
+          <line x1="235" y1="80" x2="285" y2="95" stroke="#c77dff" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <line x1="425" y1="80" x2="335" y2="95" stroke="#c77dff" stroke-width="0.5" stroke-dasharray="3 2"/>
 
-  <!-- 번역기 종류 -->
-  <div class="card">
-    <div class="card-title green">CH02 · 번역기 종류</div>
-    <table>
-      <thead><tr><th>번역기</th><th>입력</th><th>출력</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag a">컴파일러</span></td><td>고급 언어</td><td>어셈블리/기계어</td></tr>
-        <tr><td><span class="tag c">인터프리터</span></td><td>고급 언어</td><td>실행 결과</td></tr>
-        <tr><td><span class="tag g">어셈블러</span></td><td>어셈블리어</td><td>기계어</td></tr>
-        <tr><td><span class="tag o">전처리기</span></td><td>고급 언어</td><td>고급 언어</td></tr>
-        <tr><td><span class="tag p">링커</span></td><td>목적 파일들</td><td>실행 파일</td></tr>
-      </tbody>
-    </table>
-    <p class="note">컴파일러 = 전체 번역 후 실행 / 인터프리터 = 한 줄씩 실행</p>
-  </div>
-
-  <!-- Chomsky 분류 -->
-  <div class="card">
-    <div class="card-title purple">CH02 · Chomsky 형식 언어 분류</div>
-    <table>
-      <thead><tr><th>타입</th><th>언어</th><th>용도</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag g">Type-3</span></td><td>정규 언어</td><td>토큰 패턴 → 스캐너</td></tr>
-        <tr><td><span class="tag a">Type-2</span></td><td>문맥 자유 언어</td><td>문장 구조 → 파서</td></tr>
-        <tr><td><span class="tag c">Type-1</span></td><td>문맥 인식 언어</td><td>문맥 의존적 의미</td></tr>
-        <tr><td><span class="tag o">Type-0</span></td><td>재귀 열거 언어</td><td>튜링 머신</td></tr>
-      </tbody>
-    </table>
-    <p class="note">안쪽 ⊂ 바깥쪽 (정규 ⊂ 문맥자유 ⊂ 문맥인식 ⊂ 재귀열거)</p>
-  </div>
-
-  <!-- CFG / ac 언어 -->
-  <div class="card">
-    <div class="card-title amber">CH02 · CFG & ac 언어</div>
-    <div class="row"><span class="key">비단말 기호</span><span class="val">LHS+RHS 등장 · 확장 가능</span></div>
-    <div class="row"><span class="key">단말 기호</span><span class="val">RHS만 등장 · 더 이상 확장 불가</span></div>
-    <div class="row"><span class="key">시작 기호</span><span class="val">LHS에 한 번만 등장 (ac: Prog)</span></div>
-    <div class="row"><span class="key">λ (람다)</span><span class="val">빈 문자열 · 생략 가능</span></div>
-    <div class="row"><span class="key">$ (달러)</span><span class="val">입력 스트림의 끝</span></div>
-    <div style="margin-top: 10px;" class="two-col">
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent2)">ac 키워드</div>
-        f (float)<br>i (integer)<br>p (print)
+          <!-- arrowhead markers -->
+          <defs>
+            <marker id="arr-g" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#7ee8a2"/>
+            </marker>
+            <marker id="arr-y" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#f9c74f"/>
+            </marker>
+            <marker id="arr-c" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#90e0ef"/>
+            </marker>
+          </defs>
+        </svg>
       </div>
-      <div class="mini-card">
-        <div class="mc-title" style="color:var(--accent3)">목적 코드</div>
-        dc (역폴란드)<br>2 3 + → 5<br>스택 기반 계산
-      </div>
+      <div class="note"><b>핵심</b> — Scanner는 토큰을 한꺼번에 다 찾는 게 아니다. Parser가 <code>getToken()</code>을 호출할 때마다 하나씩 꺼내서 넘긴다.</div>
     </div>
-  </div>
 
-  <!-- 토큰 명세 -->
-  <div class="card">
-    <div class="card-title cyan">CH02 · ac 토큰 명세</div>
-    <table>
-      <thead><tr><th>토큰 타입</th><th>정규 표현식</th><th>예시</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tag a">floatdcl</span></td><td><code>"f"</code></td><td>f</td></tr>
-        <tr><td><span class="tag a">intdcl</span></td><td><code>"i"</code></td><td>i</td></tr>
-        <tr><td><span class="tag g">id</span></td><td><code>[a-e|g-h|j-o|q-z]</code></td><td>a, b, x</td></tr>
-        <tr><td><span class="tag c">inum</span></td><td><code>[0-9]+</code></td><td>5, 123</td></tr>
-        <tr><td><span class="tag c">fnum</span></td><td><code>[0-9]+.[0-9]+</code></td><td>3.14</td></tr>
-        <tr><td><span class="tag o">assign</span></td><td><code>"="</code></td><td>=</td></tr>
-        <tr><td><span class="tag o">plus/minus</span></td><td><code>"+" | "-"</code></td><td>+, -</td></tr>
-      </tbody>
-    </table>
-  </div>
+    <!-- 기능 3가지 + getToken -->
+    <div class="two">
+      <div class="card">
+        <div class="card-title" style="color:var(--yellow)">어휘분석기의 기능</div>
+        <ul class="steps">
+          <li><div><strong>토큰 전달</strong><span class="dim">Parser 요청 시 getToken() 호출 → 토큰 반환</span></div></li>
+          <li><div><strong>공백·주석 제거</strong><span class="dim">white space, comment 무시하고 skip</span></div></li>
+          <li><div><strong>기호표 구성</strong><span class="dim">식별자를 symbol table에 등록</span></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--cyan)">getToken() 동작</div>
+        <pre style="font-size:10px;">TokenType getToken(void);
 
-  <!-- 순환 하강 파싱 -->
-  <div class="card">
-    <div class="card-title green">CH03 · 순환 하강 파싱 원칙</div>
-    <table>
-      <thead><tr><th>생성 규칙 RHS</th><th>코드 처리</th></tr></thead>
-      <tbody>
-        <tr><td>비단말기호</td><td>해당 함수 호출</td></tr>
-        <tr><td>단말기호</td><td><code>match()</code> 로 비교</td></tr>
-        <tr><td>λ (빈 생성)</td><td><code>pass</code></td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:10px;">
-      <div class="note" style="margin-top:0;padding:8px 10px;background:var(--surface2);border-radius:4px;border-left:2px solid var(--accent1);">
-        <strong style="color:var(--accent1)">λ-생성 조건</strong><br>
-        Dcls() λ : ID, PRINT, EOF<br>
-        Stmts() λ : EOF<br>
-        Expr() λ : ID, PRINT, EOF
+// 입력 버퍼:
+// a [ i n d e x ] = 4 + 2
+// ↑
+// 첫 호출 → return ID("a")
+
+// Token의 type : ID
+// Token의 value: "a"</pre>
+        <div class="note">Parser가 부를 때마다 버퍼에서 다음 토큰을 하나 읽어 반환한다.</div>
       </div>
     </div>
-  </div>
 
-  <!-- Parser 함수 구조 -->
-  <div class="card">
-    <div class="card-title orange">CH03 · Parser 함수 구조</div>
-    <div class="row"><span class="key">Prog()</span><span class="val">시작기호 · Scanner 첫 호출</span></div>
-    <div class="row"><span class="key">Dcls()</span><span class="val">Dcl Dcls | λ</span></div>
-    <div class="row"><span class="key">Dcl()</span><span class="val">floatdcl id | intdcl id</span></div>
-    <div class="row"><span class="key">Stmts()</span><span class="val">Stmt Stmts | λ</span></div>
-    <div class="row"><span class="key">Stmt()</span><span class="val">id assign Val Expr | print id</span></div>
-    <div class="row"><span class="key">Expr()</span><span class="val">plus Val Expr | minus Val Expr | λ</span></div>
-    <div class="row"><span class="key">Val()</span><span class="val">id | inum | fnum</span></div>
-    <div class="row"><span class="key">match(t)</span><span class="val">토큰 일치 확인 → 다음 토큰 읽기</span></div>
-  </div>
-
-  <!-- 핵심 암기 -->
-  <div class="card wide">
-    <div class="card-title amber">핵심 암기 모음</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">컴파일 6단계</div>어휘→구문→의미→IC생성→최적화→코드생성</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent1)">전단부 출력</div>토큰 → 파스트리 → 주석트리</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent3)">AST vs 파스트리</div>AST = 파스트리에서 불필요 기호 제거</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent4)">3주소 코드</div>t = a op b (임시변수로 쪼갬)</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent5)">상수 접기</div>컴파일 시점에 4+2 → 6 미리 계산</div>
-      <div class="mini-card"><div class="mc-title" style="color:var(--accent2)">역폴란드 표기</div>2 + 3 → 2 3 + (연산자 뒤에)</div>
+    <!-- 용어 정리 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">핵심 용어 3가지</div>
+      <table>
+        <thead><tr><th>용어</th><th>정의</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="tag p">Token</span></td>
+            <td>Terminal 기호로만 구성된 <b>문법적 최소 단위</b></td>
+            <td><code>if</code>, <code>123</code>, <code>+</code>, <code>myVar</code></td>
+          </tr>
+          <tr>
+            <td><span class="tag y">Pattern</span></td>
+            <td>토큰의 특징을 표현하는 규칙 → <b>정규 표현(RE)</b></td>
+            <td><code>letter(letter|digit)*</code></td>
+          </tr>
+          <tr>
+            <td><span class="tag g">Lexeme</span></td>
+            <td>Pattern과 <b>매칭되는 실제 문자열</b></td>
+            <td><code>count</code>, <code>total2</code>, <code>_var</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note"><b>비유</b> — 패턴은 "식별자란 알파벳으로 시작하는 문자열"이라는 규칙, 렉심은 소스코드 속 실제 문자열 (<code>myVar</code>, <code>count</code>).</div>
     </div>
-  </div>
 
+  </div>
 </div>
 
-<footer>Compiler Design Cheat Sheet · CH01–CH03</footer>
 
-<div style="text-align:center;margin-top:20px;">
-  <a href="../notes.html?repo=Compiler-Design"
-     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#f9c74f;border:0.5px solid #3a2e10;background:#1a1a1a;padding:10px 20px;border-radius:8px;text-decoration:none;">
-    자세히 보기 →
-  </a>
+<!-- ══════════════════════════════════ PANEL 2 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 02</span>
+    <span class="panel-title" style="color:var(--yellow)">Delimiter & Lookahead — 경계를 어떻게 처리하나</span>
+  </div>
+  <div class="panel-body">
+
+    <div class="two">
+      <div class="card">
+        <div class="card-title" style="color:var(--yellow)">Delimiter (구분기호)</div>
+        <div class="row"><span class="k">정의</span><span class="v">현재 토큰이 여기까지임을 알려주는 경계</span></div>
+        <div class="row"><span class="k">중요</span><span class="v">구분기호는 현재 토큰에 <b>포함 안 됨</b></span></div>
+        <div style="margin-top:10px; font-size:12px;">
+          <div style="margin-bottom:6px;"><code style="color:var(--yellow)">xtemp=ytemp</code><br>
+            <span style="color:var(--muted)">→ <code>=</code>이 delimiter, <code>xtemp</code>가 토큰</span></div>
+          <div style="margin-bottom:6px;"><code style="color:var(--yellow)">while x</code><br>
+            <span style="color:var(--muted)">→ 공백(blank)이 delimiter</span></div>
+          <div><code style="color:var(--yellow)">do/* */if</code><br>
+            <span style="color:var(--muted)">→ 주석(comment)이 delimiter</span></div>
+        </div>
+        <div class="formula" style="margin-top:10px;">whitespace = (newline | blank | tab | comment)+</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color:var(--orange)">Lookahead (미리 보기)</div>
+        <div class="note" style="margin-bottom:10px;"><b>문제</b> — delimiter가 다음 토큰의 일부일 수 있다</div>
+        <table>
+          <thead><tr><th>입력</th><th>delimiter</th><th>다음 토큰</th></tr></thead>
+          <tbody>
+            <tr><td><code>xtemp=ytemp</code></td><td><code>=</code></td><td><code>=</code> 자체</td></tr>
+            <tr><td><code>x+=2;</code></td><td><code>+</code></td><td><code>+=</code></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px; font-size:12px; color:var(--text);">
+          <strong>해결:</strong> 읽은 문자를 버리지 말고<br>
+          <span style="color:var(--muted)">• 현재 토큰 일부 → 지금 처리<br>
+          • 아니면 → 버퍼에 돌려두고 다음 토큰 때 사용</span>
+        </div>
+        <div class="note" style="margin-top:8px;"><b>비유</b> — 신호등 노란불: 읽었지만 아직 처리할지 결정 안 한 상태</div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+
+<!-- ══════════════════════════════════ PANEL 3 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 03</span>
+    <span class="panel-title" style="color:var(--cyan)">삼위일체 — RE · FA · RG는 같은 표현력</span>
+  </div>
+  <div class="panel-body">
+
+    <!-- 삼각형 SVG -->
+    <div class="card">
+      <div class="card-title" style="color:var(--cyan)">정규 표현 = 유한 오토마타 = 정규 문법</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- 삼각형 꼭짓점 -->
+          <!-- 상단: RE -->
+          <rect x="185" y="10" width="130" height="36" rx="8" fill="#001a20" stroke="#90e0ef" stroke-width="1"/>
+          <text x="250" y="28" font-family="monospace" font-size="11" fill="#90e0ef" text-anchor="middle" font-weight="bold">Regular Expression</text>
+          <text x="250" y="42" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">정규 표현</text>
+          <!-- 좌하단: RG -->
+          <rect x="30" y="95" width="130" height="36" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1"/>
+          <text x="95" y="113" font-family="monospace" font-size="11" fill="#7ee8a2" text-anchor="middle" font-weight="bold">Regular Grammar</text>
+          <text x="95" y="127" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">정규 문법</text>
+          <!-- 우하단: FA -->
+          <rect x="340" y="95" width="130" height="36" rx="8" fill="#150a20" stroke="#c77dff" stroke-width="1"/>
+          <text x="405" y="113" font-family="monospace" font-size="11" fill="#c77dff" text-anchor="middle" font-weight="bold">Finite Automata</text>
+          <text x="405" y="127" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">유한 오토마타</text>
+          <!-- 연결선 -->
+          <line x1="185" y1="46" x2="130" y2="95" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+          <line x1="315" y1="46" x2="340" y2="95" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+          <line x1="160" y1="113" x2="340" y2="113" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+          <!-- 가운데 라벨 -->
+          <text x="250" y="100" font-family="monospace" font-size="10" fill="#f9c74f" text-anchor="middle">↔ 서로 동치 (같은 표현력) ↔</text>
+          <text x="250" y="115" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">변환 가능</text>
+        </svg>
+      </div>
+      <div class="note"><b>어휘분석기 설계 흐름</b>: 토큰 패턴 → 정규 표현 → NFA → DFA → 최소화된 DFA → 코드</div>
+    </div>
+
+    <!-- Chomsky 분류 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">Chomsky 형식 문법 분류</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- 동심 박스 -->
+          <rect x="10"  y="10"  width="580" height="140" rx="12" fill="none" stroke="#333" stroke-width="0.8"/>
+          <text x="30"  y="30"  font-family="monospace" font-size="10" fill="#555">Type 0 — 무제약 문법 (Turing Machine)</text>
+
+          <rect x="30"  y="38"  width="540" height="105" rx="10" fill="none" stroke="#444" stroke-width="0.8"/>
+          <text x="50"  y="58"  font-family="monospace" font-size="10" fill="#666">Type 1 — 문맥인식 문법 CSG (선형한계 오토마타)</text>
+
+          <rect x="55"  y="65"  width="490" height="72" rx="8" fill="none" stroke="#555" stroke-width="0.8"/>
+          <text x="75"  y="85"  font-family="monospace" font-size="10" fill="#888">Type 2 — 문맥자유 문법 CFG → <tspan fill="#90e0ef">파서에서 사용</tspan></text>
+
+          <rect x="80"  y="92"  width="440" height="40" rx="7" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.2"/>
+          <text x="300" y="112" font-family="monospace" font-size="11" fill="#7ee8a2" text-anchor="middle" font-weight="bold">Type 3 — 정규 문법 RG → 어휘분석(스캐너)에서 사용</text>
+          <text x="300" y="127" font-family="monospace" font-size="9"  fill="#555" text-anchor="middle">유한 오토마타 (FA) 로 인식</text>
+        </svg>
+      </div>
+      <table>
+        <thead><tr><th>Type</th><th>문법</th><th>언어</th><th>인식기</th><th>컴파일러</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">3</span></td><td>정규 문법 RG</td><td>정규 언어 RL</td><td>유한 오토마타 FA</td><td><span class="tag g">스캐너</span></td></tr>
+          <tr><td><span class="tag c">2</span></td><td>문맥자유 CFG</td><td>문맥자유 CFL</td><td>푸시다운 오토마타</td><td><span class="tag c">파서</span></td></tr>
+          <tr><td><span class="tag p">1</span></td><td>문맥인식 CSG</td><td>문맥인식 CSL</td><td>선형한계 오토마타</td><td>—</td></tr>
+          <tr><td><span class="tag r">0</span></td><td>무제약 UG</td><td>재귀열거</td><td>튜링 기계</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><b>자주 나오는 언어 분류</b>: aⁿbⁿ → CFL / aⁿbⁿcⁿ → CSL / 회문(palindrome) → CFL / 괄호 → CFL</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════ PANEL 4 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 04</span>
+    <span class="panel-title" style="color:var(--orange)">FA → 정규 문법 변환</span>
+  </div>
+  <div class="panel-body">
+
+    <!-- 변환 규칙 -->
+    <div class="two">
+      <div class="card">
+        <div class="card-title" style="color:var(--orange)">변환 규칙</div>
+        <div class="row"><span class="k">VN = Q</span><span class="v">상태 → Nonterminal</span></div>
+        <div class="row"><span class="k">VT = Σ</span><span class="v">입력 알파벳 → Terminal</span></div>
+        <div class="row"><span class="k">S = q₀</span><span class="v">시작 상태 → 시작 기호</span></div>
+        <div style="margin-top:12px;">
+          <div class="formula orange">δ(q,a)=r → q → ar</div>
+          <div class="formula orange">q ∈ F → q → ε</div>
+        </div>
+        <div class="note">결과물은 <b>Right-linear Grammar</b> (A → aB 형태)</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color:var(--yellow)">핵심 공식 — RE 방정식의 해</div>
+        <div class="formula" style="font-size:14px; padding: 12px 14px;">X = αX + β  →  X = α*β</div>
+        <div style="margin-top:10px; font-size:12px; color:var(--muted);">증명:</div>
+        <pre style="font-size:10px; margin-top:4px;">X = α(α*β) + β
+  = α⁺β + β
+  = (α⁺ + ε)β
+  = α*β  ∎</pre>
+        <div class="note"><b>모든 변환 문제</b>가 이 꼴로 귀결됨. 외워야 함.</div>
+      </div>
+    </div>
+
+    <!-- FA 예제 SVG -->
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">예제 — FA → RE 변환 (L = (a+b)*abb)</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#7ee8a2"/>
+            </marker>
+          </defs>
+          <!-- 시작 화살표 -->
+          <line x1="10" y1="40" x2="45" y2="40" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arr)"/>
+          <!-- 상태 A -->
+          <circle cx="70" cy="40" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="70" y="44" font-family="monospace" font-size="13" fill="#7ee8a2" text-anchor="middle" font-weight="bold">A</text>
+          <!-- A 자기루프 a|b -->
+          <path d="M60,18 Q45,2 70,2 Q95,2 80,18" fill="none" stroke="#7ee8a2" stroke-width="1" marker-end="url(#arr)"/>
+          <text x="70" y="0" font-family="monospace" font-size="9" fill="#7ee8a2" text-anchor="middle">a|b</text>
+          <!-- A→B a -->
+          <line x1="92" y1="40" x2="168" y2="40" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arr)"/>
+          <text x="130" y="33" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">a</text>
+          <!-- 상태 B -->
+          <circle cx="193" cy="40" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="193" y="44" font-family="monospace" font-size="13" fill="#7ee8a2" text-anchor="middle" font-weight="bold">B</text>
+          <!-- B→C b -->
+          <line x1="215" y1="40" x2="288" y2="40" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arr)"/>
+          <text x="251" y="33" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">b</text>
+          <!-- 상태 C -->
+          <circle cx="313" cy="40" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="313" y="44" font-family="monospace" font-size="13" fill="#7ee8a2" text-anchor="middle" font-weight="bold">C</text>
+          <!-- C→D b -->
+          <line x1="335" y1="40" x2="408" y2="40" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arr)"/>
+          <text x="372" y="33" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">b</text>
+          <!-- 상태 D (종결) -->
+          <circle cx="433" cy="40" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="2.5"/>
+          <circle cx="433" cy="40" r="18" fill="none" stroke="#7ee8a2" stroke-width="0.8"/>
+          <text x="433" y="44" font-family="monospace" font-size="13" fill="#7ee8a2" text-anchor="middle" font-weight="bold">D</text>
+          <!-- 정규문법 표기 -->
+          <text x="490" y="30" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">A→aA|bA|aB</text>
+          <text x="490" y="44" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">B→bC</text>
+          <text x="490" y="58" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">C→bD, D→ε</text>
+        </svg>
+      </div>
+      <pre style="font-size:11px; margin-top:8px;">D = ε,   C = bD = b,   B = bC = bb
+A = aA + bA + aB = (a+b)A + abb
+  →  A = (a+b)* abb
+
+∴ L(M) = (a+b)*abb</pre>
+    </div>
+
+    <!-- RE 대수법칙 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">정규 표현 대수 법칙</div>
+      <div class="two">
+        <div>
+          <table>
+            <thead><tr><th>법칙</th><th>식</th></tr></thead>
+            <tbody>
+              <tr><td>결합</td><td><code>(α+β)+γ = α+(β+γ)</code></td></tr>
+              <tr><td>교환</td><td><code>α+β = β+α</code></td></tr>
+              <tr><td>분배</td><td><code>α(β+γ) = αβ+αγ</code></td></tr>
+              <tr><td>항등</td><td><code>α+α = α, εα = α</code></td></tr>
+              <tr><td>클리니</td><td><code>ε+αα* = α*</code></td></tr>
+              <tr><td>이중클리니</td><td><code>(α*)* = α*</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="mini" style="margin-bottom:8px;">
+            <div class="mini-title" style="color:var(--yellow)">기호 의미</div>
+            <code>+</code> 또는 <code>|</code> → OR (선택)<br>
+            <code>·</code> → 연결 (concatenate)<br>
+            <code>*</code> → 0회 이상 반복 (Kleene star)<br>
+            <code>+</code> 위첨자 → 1회 이상 반복
+          </div>
+          <div class="mini">
+            <div class="mini-title" style="color:var(--green)">ε vs ∅</div>
+            <code>{ε}</code> = ε 원소 1개 있는 집합<br>
+            <code>∅</code> = 원소가 하나도 없는 공집합<br>
+            <span style="color:var(--muted); font-size:11px;">→ 다르다!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════ PANEL 5 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 05</span>
+    <span class="panel-title" style="color:var(--purple)">변환 예제 모음 — 정규 문법 → 정규 표현</span>
+  </div>
+  <div class="panel-body">
+
+    <!-- 예제 1 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">예제 1 — L(G) = (aa+b)*ab(a+b)*</div>
+      <div class="two">
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">정규 문법</div>
+          <pre style="font-size:10px;">S → aA | bS
+A → aS | bB
+B → aB | bB | ε</pre>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">풀이</div>
+          <pre style="font-size:10px;">B = (a+b)B + ε  →  B = (a+b)*
+A = aS + b(a+b)*
+S = aA + bS = a(aS+b(a+b)*) + bS
+  = aaS + ab(a+b)* + bS
+  = (aa+b)S + ab(a+b)*
+  →  S = (aa+b)* ab(a+b)*</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- 예제 2 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--cyan)">예제 2 — L(G) = b*a(a+b)*b</div>
+      <div class="two">
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">정규 문법</div>
+          <pre style="font-size:10px;">S → aA | bS
+A → aA | bA | b</pre>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">풀이</div>
+          <pre style="font-size:10px;">A = (a+b)A + b  →  A = (a+b)*b
+S = a(a+b)*b + bS
+  = bS + a(a+b)*b
+  →  S = b*a(a+b)*b</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- 예제 4 (unreachable) -->
+    <div class="card">
+      <div class="card-title" style="color:var(--orange)">예제 4 — Unreachable State 제거 → L(G) = (ab+ba)*</div>
+      <div class="two">
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">도달 불가 전이 제거 후</div>
+          <pre style="font-size:10px;">A → aB | bC | ε
+B → bA   (aD 제거)
+C → aA   (bD 제거)</pre>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">풀이</div>
+          <pre style="font-size:10px;">B = bA, C = aA
+A = aB + bC + ε
+  = a(bA) + b(aA) + ε
+  = (ab+ba)A + ε
+  →  A = (ab+ba)*</pre>
+        </div>
+      </div>
+      <div class="note"><b>Unreachable state</b> — 시작 상태에서 절대 도달할 수 없는 상태. 해당 전이는 정규 문법 변환 시 무시한다.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════ PANEL 6 ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 06</span>
+    <span class="panel-title" style="color:var(--green)">토큰 인식 — 정수 & 식별자</span>
+  </div>
+  <div class="panel-body">
+
+    <!-- 정수 인식 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--yellow)">정수(Integer) 인식 — d+</div>
+      <div class="two">
+        <div>
+          <!-- DFA 시각화 -->
+          <div class="svg-wrap">
+            <svg viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arri" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#f9c74f"/>
+                </marker>
+              </defs>
+              <text x="30" y="12" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">상수</text>
+              <line x1="10" y1="40" x2="45" y2="40" stroke="#f9c74f" stroke-width="1.2" marker-end="url(#arri)"/>
+              <circle cx="68" cy="40" r="20" fill="#1a1400" stroke="#f9c74f" stroke-width="1.5"/>
+              <text x="68" y="44" font-family="monospace" font-size="12" fill="#f9c74f" text-anchor="middle">S</text>
+              <line x1="88" y1="40" x2="148" y2="40" stroke="#f9c74f" stroke-width="1.2" marker-end="url(#arri)"/>
+              <text x="118" y="33" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">d</text>
+              <circle cx="171" cy="40" r="20" fill="#1a1400" stroke="#f9c74f" stroke-width="2.5"/>
+              <circle cx="171" cy="40" r="16" fill="none" stroke="#f9c74f" stroke-width="0.8"/>
+              <text x="171" y="44" font-family="monospace" font-size="12" fill="#f9c74f" text-anchor="middle">C</text>
+              <!-- 자기 루프 d -->
+              <path d="M161,20 Q145,4 171,4 Q197,4 181,20" fill="none" stroke="#f9c74f" stroke-width="1" marker-end="url(#arri)"/>
+              <text x="171" y="2" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">d</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <pre style="font-size:11px;">정규 문법:
+S → dC
+C → dC | ε
+
+정규 표현:
+C = dC + ε  →  C = d*
+S = dC = dd*
+
+∴ L(G) = d+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- 식별자 인식 -->
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">식별자(Identifier) 인식 — (l+_)(l+d+_)*</div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrid" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#7ee8a2"/>
+            </marker>
+          </defs>
+          <text x="35" y="12" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">식별자</text>
+          <line x1="10" y1="45" x2="48" y2="45" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arrid)"/>
+          <!-- S -->
+          <circle cx="72" cy="45" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
+          <text x="72" y="49" font-family="monospace" font-size="12" fill="#7ee8a2" text-anchor="middle">S</text>
+          <!-- S→A l|_ -->
+          <line x1="94" y1="45" x2="178" y2="45" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arrid)"/>
+          <text x="136" y="38" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">l | _</text>
+          <!-- A (종결) -->
+          <circle cx="202" cy="45" r="22" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="2.5"/>
+          <circle cx="202" cy="45" r="18" fill="none" stroke="#7ee8a2" stroke-width="0.8"/>
+          <text x="202" y="49" font-family="monospace" font-size="12" fill="#7ee8a2" text-anchor="middle">A</text>
+          <!-- A 자기 루프 l|d|_ -->
+          <path d="M190,23 Q172,5 202,5 Q232,5 214,23" fill="none" stroke="#7ee8a2" stroke-width="1" marker-end="url(#arrid)"/>
+          <text x="202" y="3" font-family="monospace" font-size="9" fill="#7ee8a2" text-anchor="middle">l | d | _</text>
+          <!-- 설명 텍스트 -->
+          <text x="310" y="30" font-family="monospace" font-size="10" fill="#555">l = letter (알파벳)</text>
+          <text x="310" y="45" font-family="monospace" font-size="10" fill="#555">d = digit  (숫자)</text>
+          <text x="310" y="60" font-family="monospace" font-size="10" fill="#555">_ = underscore</text>
+          <text x="310" y="78" font-family="monospace" font-size="10" fill="#7ee8a2">반드시 l 또는 _로 시작</text>
+        </svg>
+      </div>
+      <div class="two" style="margin-top:8px;">
+        <pre style="font-size:11px;">정규 문법:
+S → lA | _A
+A → lA | dA | _A | ε</pre>
+        <pre style="font-size:11px;">정규 표현:
+A = (l+d+_)A+ε → (l+d+_)*
+S = (l+_)A
+
+∴ L(G) = (l+_)(l+d+_)*</pre>
+      </div>
+      <div class="note">
+        가능: <code>sum</code>, <code>_count</code>, <code>myVar2</code> &nbsp;&nbsp;
+        불가: <code>2user</code>(숫자 시작), <code>123</code>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════ PANEL 7 (암기) ══ -->
+<div class="panel">
+  <div class="panel-header">
+    <span class="panel-num">SCENE 07</span>
+    <span class="panel-title" style="color:var(--yellow)">핵심 암기 모음</span>
+  </div>
+  <div class="panel-body">
+    <div class="card">
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:10px;">
+        <div class="mini">
+          <div class="mini-title" style="color:var(--green)">어휘분석기 3대 기능</div>
+          토큰 전달 / 공백주석 제거 / 기호표 구성
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--yellow)">핵심 공식</div>
+          X = αX + β  →  X = <b style="color:var(--yellow)">α*β</b>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--cyan)">삼위일체</div>
+          RE ↔ FA ↔ RG<br>
+          <span style="color:var(--muted);font-size:11px;">서로 변환 가능, 표현력 동일</span>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--orange)">FA→RG 변환</div>
+          δ(q,a)=r → q→ar<br>
+          q∈F → q→ε<br>
+          <span style="color:var(--muted);font-size:11px;">= Right-linear Grammar</span>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--purple)">Lookahead</div>
+          읽은 문자를 버리지 않고<br>버퍼에 되돌려 다음 토큰 때 사용
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--green)">식별자 RE</div>
+          <code style="color:var(--green)">(l+_)(l+d+_)*</code><br>
+          <span style="color:var(--muted);font-size:11px;">알파벳/_로 시작, 이후 자유</span>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--yellow)">정수 RE</div>
+          <code style="color:var(--yellow)">d+</code><br>
+          <span style="color:var(--muted);font-size:11px;">숫자 1개 이상</span>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--red)">Unreachable State</div>
+          시작 상태에서 도달 불가<br>→ 전이 변환 시 <b>무시</b>
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--cyan)">설계 흐름</div>
+          패턴 → RE → NFA → DFA → 최소화 DFA → 코드
+        </div>
+        <div class="mini">
+          <div class="mini-title" style="color:var(--purple)">종결 상태 처리</div>
+          FA → RG 변환 시<br>종결 상태 q ∈ F → <code>q → ε</code> 추가
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Compiler Design  · 어휘 분석 (Lexical Analysis) · Scanner · Token · FA · RE</footer>
 
 </body>
 </html>
