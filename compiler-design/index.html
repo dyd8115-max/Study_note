@@ -206,7 +206,7 @@
 <body>
 
 <header>
-  <h1>Compiler Design </h1>
+  <h1>Compiler Design — CH04</h1>
   <p>어휘 분석 (Lexical Analysis) · Scanner · Token · FA · RE</p>
 </header>
 
@@ -223,36 +223,7 @@
     <div class="card">
       <div class="card-title" style="color:var(--green)">컴파일러 속 어휘분석기의 위치</div>
       <div class="svg-wrap">
-        <svg viewBox="0 0 680 110" xmlns="http://www.w3.org/2000/svg">
-          <!-- 소스 코드 -->
-          <rect x="10" y="35" width="110" height="40" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="0.8"/>
-          <text x="65" y="52" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">소스 프로그램</text>
-          <text x="65" y="66" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">a[index]=4+2</text>
-          <!-- 화살표 →어휘분석기 -->
-          <line x1="120" y1="55" x2="170" y2="55" stroke="#7ee8a2" stroke-width="1" marker-end="url(#arr-g)"/>
-          <!-- 어휘분석기 -->
-          <rect x="170" y="30" width="130" height="50" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.5"/>
-          <text x="235" y="50" font-family="monospace" font-size="11" fill="#7ee8a2" text-anchor="middle" font-weight="bold">어휘 분석기</text>
-          <text x="235" y="65" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Scanner)</text>
-          <!-- 토큰 화살표 -->
-          <line x1="300" y1="45" x2="360" y2="45" stroke="#f9c74f" stroke-width="1" marker-end="url(#arr-y)"/>
-          <text x="330" y="38" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">토큰</text>
-          <!-- 다음토큰 요구 화살표 -->
-          <line x1="360" y1="65" x2="300" y2="65" stroke="#90e0ef" stroke-width="1" marker-end="url(#arr-c)"/>
-          <text x="330" y="80" font-family="monospace" font-size="9" fill="#90e0ef" text-anchor="middle">다음 토큰 요구</text>
-          <!-- 구문분석기 -->
-          <rect x="360" y="30" width="130" height="50" rx="8" fill="#001a20" stroke="#90e0ef" stroke-width="1.5"/>
-          <text x="425" y="50" font-family="monospace" font-size="11" fill="#90e0ef" text-anchor="middle" font-weight="bold">구문 분석기</text>
-          <text x="425" y="65" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Parser)</text>
-          <line x1="490" y1="55" x2="530" y2="55" stroke="#90e0ef" stroke-width="1" marker-end="url(#arr-c)"/>
-          <text x="555" y="50" font-family="monospace" font-size="10" fill="#555" text-anchor="middle">이후 단계→</text>
-          <!-- 기호표 -->
-          <rect x="235" y="95" width="100" height="30" rx="6" fill="#150a20" stroke="#c77dff" stroke-width="0.8"/>
-          <text x="285" y="115" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="middle">기호표 (Symbol Table)</text>
-          <line x1="235" y1="80" x2="285" y2="95" stroke="#c77dff" stroke-width="0.5" stroke-dasharray="3 2"/>
-          <line x1="425" y1="80" x2="335" y2="95" stroke="#c77dff" stroke-width="0.5" stroke-dasharray="3 2"/>
-
-          <!-- arrowhead markers -->
+        <svg viewBox="0 0 600 170" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arr-g" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
               <path d="M0,0 L6,3 L0,6 Z" fill="#7ee8a2"/>
@@ -263,7 +234,50 @@
             <marker id="arr-c" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
               <path d="M0,0 L6,3 L0,6 Z" fill="#90e0ef"/>
             </marker>
+            <marker id="arr-p" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#c77dff"/>
+            </marker>
           </defs>
+
+          <!-- 소스 프로그램 -->
+          <rect x="10" y="30" width="115" height="44" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="0.8"/>
+          <text x="67" y="49" font-family="monospace" font-size="10" fill="#7ee8a2" text-anchor="middle">소스 프로그램</text>
+          <text x="67" y="64" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">a[index]=4+2</text>
+
+          <!-- 소스→어휘 화살표 -->
+          <line x1="125" y1="52" x2="158" y2="52" stroke="#7ee8a2" stroke-width="1.2" marker-end="url(#arr-g)"/>
+
+          <!-- 어휘 분석기 -->
+          <rect x="160" y="22" width="130" height="60" rx="8" fill="#0a1a0f" stroke="#7ee8a2" stroke-width="1.8"/>
+          <text x="225" y="47" font-family="monospace" font-size="11" fill="#7ee8a2" text-anchor="middle" font-weight="bold">어휘 분석기</text>
+          <text x="225" y="63" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Scanner)</text>
+
+          <!-- 토큰 →구문 -->
+          <line x1="290" y1="42" x2="348" y2="42" stroke="#f9c74f" stroke-width="1.2" marker-end="url(#arr-y)"/>
+          <text x="319" y="35" font-family="monospace" font-size="9" fill="#f9c74f" text-anchor="middle">토큰</text>
+
+          <!-- 다음 토큰 요구 ← -->
+          <line x1="348" y1="62" x2="290" y2="62" stroke="#90e0ef" stroke-width="1.2" marker-end="url(#arr-c)"/>
+          <text x="319" y="78" font-family="monospace" font-size="9" fill="#90e0ef" text-anchor="middle">다음 토큰 요구</text>
+
+          <!-- 구문 분석기 -->
+          <rect x="350" y="22" width="130" height="60" rx="8" fill="#001a20" stroke="#90e0ef" stroke-width="1.8"/>
+          <text x="415" y="47" font-family="monospace" font-size="11" fill="#90e0ef" text-anchor="middle" font-weight="bold">구문 분석기</text>
+          <text x="415" y="63" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">(Parser)</text>
+
+          <!-- 구문 → 이후 -->
+          <line x1="480" y1="52" x2="515" y2="52" stroke="#90e0ef" stroke-width="1.2" marker-end="url(#arr-c)"/>
+          <text x="548" y="56" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">이후 단계 →</text>
+
+          <!-- 기호표 박스 (하단 중앙) -->
+          <rect x="170" y="120" width="240" height="36" rx="8" fill="#150a20" stroke="#c77dff" stroke-width="1"/>
+          <text x="290" y="138" font-family="monospace" font-size="10" fill="#c77dff" text-anchor="middle" font-weight="bold">기호표 (Symbol Table)</text>
+          <text x="290" y="151" font-family="monospace" font-size="9" fill="#555" text-anchor="middle">식별자 정보 저장 · 모든 단계 공유</text>
+
+          <!-- 어휘분석기 → 기호표 점선 -->
+          <line x1="225" y1="82" x2="225" y2="120" stroke="#c77dff" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr-p)"/>
+          <!-- 구문분석기 → 기호표 점선 -->
+          <line x1="415" y1="82" x2="360" y2="120" stroke="#c77dff" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr-p)"/>
         </svg>
       </div>
       <div class="note"><b>핵심</b> — Scanner는 토큰을 한꺼번에 다 찾는 게 아니다. Parser가 <code>getToken()</code>을 호출할 때마다 하나씩 꺼내서 넘긴다.</div>
@@ -804,7 +818,14 @@ S = (l+_)A
   </div>
 </div>
 
-<footer>Compiler Design  · 어휘 분석 (Lexical Analysis) · Scanner · Token · FA · RE</footer>
+<div style="text-align:center; margin-top:32px;">
+  <a href="../notes.html?repo=Compiler-Design"
+     style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7ee8a2;border:0.5px solid #1a3a25;background:#0a1a0f;padding:10px 24px;border-radius:8px;text-decoration:none;">
+    자세히 보기 →
+  </a>
+</div>
+
+<footer>Compiler Design CH04 · 어휘 분석 (Lexical Analysis) · Scanner · Token · FA · RE</footer>
 
 </body>
 </html>
